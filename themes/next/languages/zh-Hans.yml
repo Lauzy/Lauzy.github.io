@@ -1,6 +1,6 @@
 title:
   archive: 归档
-  category: 分类
+  categorie: 分类
   tag: 标签
   schedule: 日程表
 
@@ -74,6 +74,7 @@ search:
   placeholder: 搜索...
 
 cheers:
+  lauzy: Lauzy
   um: 嗯..
   ok: OK
   nice: 好
@@ -81,7 +82,7 @@ cheers:
   great: 非常好
   excellent: 太棒了
 
-keep_on: 继续努力。
+keep_on: Keep On !
 
 symbol:
   comma: '， '

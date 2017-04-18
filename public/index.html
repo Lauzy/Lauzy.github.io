@@ -402,11 +402,20 @@
 <p>确定提供的子视图是否具有另一个特定的兄弟视图作为布局依赖关系。即用来确定依赖关系，如果某个控件需要依赖控件，则重写改方法<br>如AppBarLayout</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">layoutDependsOn</span><span class="params">(CoordinatorLayout parent, View child, View dependency)</span> </span>&#123;</div><div class="line">	<span class="comment">// We depend on any AppBarLayouts</span></div><div class="line">	<span class="keyword">return</span> dependency <span class="keyword">instanceof</span> AppBarLayout;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>2.onDependentViewChanged<br>依赖视图的大小、位置发生变化时调用此方法，重写此方法可以处理child的响应。如常用的AppBarLayout，当其发生变化时，childView会根据重写的方法作出响应。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onDependentViewChanged</span><span class="params">(CoordinatorLayout parent, View child,View dependency)</span> </span>&#123;</div><div class="line">	offsetChildAsNeeded(parent, child, dependency);</div><div class="line">	<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onDependentViewChanged</span><span class="params">(CoordinatorLayout parent, View child, View dependency)</span> </span>&#123;</div><div class="line">	offsetChildAsNeeded(parent, child, dependency);</div><div class="line">	<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>3.onStartNestedScroll<br>当CoordinatorLayout的子View开始嵌套滑动时（此处的滑动View必须实现NestedScrollingChild接口），触发此方法。添加Behavior的控件需要为CoordinatorLayout的直接子View，否则不会继续流程。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//判断是否垂直滑动</span></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onStartNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout, View child, View directTargetChild, View target, <span class="keyword">int</span> nestedScrollAxes)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> (nestedScrollAxes &amp; ViewCompat.SCROLL_AXIS_VERTICAL) != <span class="number">0</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>4.onNestedPreScroll</p>
-<p>/**</p>
+<p>4.onNestedPreScroll<br>    触发滑动嵌套滚动之前调用的方法。可以在此处指定 consumed,指的是父布局要消费的滚动距离,consumed[0]为水平方向消耗的距离,consumed[1]为垂直方向消耗的距离,可控制此参数作出相应的调整。<br>    如垂直滑动时,若设置consumed[1]=dy,则代表子View全部消耗了滑动的距离,此时</p>
+<pre><code>/**
+ * 在嵌套滑动的子View未滑动之前告诉过来的准备滑动的情况
+ * @param target 具体嵌套滑动的那个子类
+ * @param dx 水平方向嵌套滑动的子View想要变化的距离
+ * @param dy 垂直方向嵌套滑动的子View想要变化的距离
+ * @param consumed 这个参数要我们在实现这个函数的时候指定，回头告诉子View当前父View消耗的距离 
+ *                    consumed[0] 水平消耗的距离，consumed[1] 垂直消耗的距离 好让子view做出相应的调整
+ */
+public void onNestedPreScroll
+</code></pre><p>5.onNestedScroll<br>    /**</p>
 <pre><code> * 嵌套滑动的子View在滑动之后报告过来的滑动情况
  *
  * @param target 具体嵌套滑动的那个子类
@@ -417,16 +426,6 @@
  */
 public void onNestedScroll(View target, int dxConsumed, int dyConsumed,
                            int dxUnconsumed, int dyUnconsumed);
-
-/**
- * 在嵌套滑动的子View未滑动之前告诉过来的准备滑动的情况
- * @param target 具体嵌套滑动的那个子类
- * @param dx 水平方向嵌套滑动的子View想要变化的距离
- * @param dy 垂直方向嵌套滑动的子View想要变化的距离
- * @param consumed 这个参数要我们在实现这个函数的时候指定，回头告诉子View当前父View消耗的距离 
- *                    consumed[0] 水平消耗的距离，consumed[1] 垂直消耗的距离 好让子view做出相应的调整
- */
-public void onNestedPreScroll(View target, int dx, int dy, int[] consumed);
 </code></pre><p>|onStartNestedScroll|<br>|onNestedPreScroll|<br>|onNestedScroll|</p>
 
           

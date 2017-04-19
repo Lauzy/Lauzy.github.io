@@ -379,56 +379,16 @@
 
       
         
-          
-            <blockquote>
-<p>Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior就是用来给CoordinatorLayout的子view们实现交互的。<br>本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了一款干货集中营的客户端，做的时候采用自定义Behavior实现了整个嵌套滑动，并抽离了出来作为一个lib方便使用。</p>
+          <blockquote>
+<p>Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。<br>本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了一款干货集中营的客户端，做的时候采用自定义Behavior实现了整个嵌套滑动，并抽离了出来作为一个lib方便使用。</p>
 </blockquote>
-<h2 id="先来一波效果图："><a href="#先来一波效果图：" class="headerlink" title="先来一波效果图："></a>先来一波效果图：</h2><p><img src="http://i.imgur.com/93zTA4s.gif" width="270" height="450" alt="效果图1" align="center">    <img src="http://i.imgur.com/U02iHGv.gif" width="270" height="450" alt="效果图2" align="center"></p>
-<h2 id="效果实现思路："><a href="#效果实现思路：" class="headerlink" title="效果实现思路："></a>效果实现思路：</h2><ol>
-<li><p>判断手势</p>
-</li>
-<li><p>计算距离</p>
-</li>
-<li><p>触发动画</p>
-</li>
-</ol>
-<h2 id="文章目录："><a href="#文章目录：" class="headerlink" title="文章目录："></a>文章目录：</h2><ol>
-<li>CoordinatorLayout及Behavior简介</li>
-<li>自定义Behavior</li>
-<li>仿知乎效果的动画实现及个性化</li>
-</ol>
-<h3 id="1、CoordinatorLayout和Behavior简介"><a href="#1、CoordinatorLayout和Behavior简介" class="headerlink" title="1、CoordinatorLayout和Behavior简介"></a>1、CoordinatorLayout和Behavior简介</h3><p>Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了，这里推荐鸿神的<a href="http://blog.csdn.net/lmj623565791/article/details/52204039" target="_blank" rel="external">Android NestedScrolling机制完全解析</a>以及Loader大神的<a href="http://blog.csdn.net/qibin0506/article/details/50377592" target="_blank" rel="external">源码看CoordinatorLayout.Behavior原理</a>。本篇主要介绍下具体的实现方法：<br><a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html" target="_blank" rel="external">Behavior官网</a></p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>1.layoutDependsOn</p>
-<p>确定提供的子视图是否具有另一个特定的兄弟视图作为布局依赖关系。即用来确定依赖关系，如果某个控件需要依赖控件，则重写改方法<br>如AppBarLayout</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">layoutDependsOn</span><span class="params">(CoordinatorLayout parent, View child, View dependency)</span> </span>&#123;</div><div class="line">	<span class="comment">// We depend on any AppBarLayouts</span></div><div class="line">	<span class="keyword">return</span> dependency <span class="keyword">instanceof</span> AppBarLayout;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>2.onDependentViewChanged<br>依赖视图的大小、位置发生变化时调用此方法，重写此方法可以处理child的响应。如常用的AppBarLayout，当其发生变化时，childView会根据重写的方法作出响应。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onDependentViewChanged</span><span class="params">(CoordinatorLayout parent, View child, View dependency)</span> </span>&#123;</div><div class="line">	offsetChildAsNeeded(parent, child, dependency);</div><div class="line">	<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>3.onStartNestedScroll<br>当CoordinatorLayout的子View开始嵌套滑动时（此处的滑动View必须实现NestedScrollingChild接口），触发此方法。添加Behavior的控件需要为CoordinatorLayout的直接子View，否则不会继续流程。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//判断是否垂直滑动</span></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onStartNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout, View child, View directTargetChild, View target, <span class="keyword">int</span> nestedScrollAxes)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> (nestedScrollAxes &amp; ViewCompat.SCROLL_AXIS_VERTICAL) != <span class="number">0</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>4.onNestedPreScroll<br>    触发滑动嵌套滚动之前调用的方法。可以在此处指定 consumed,指的是父布局要消费的滚动距离,consumed[0]为水平方向消耗的距离,consumed[1]为垂直方向消耗的距离,可控制此参数作出相应的调整。<br>    如垂直滑动时,若设置consumed[1]=dy,则代表子View全部消耗了滑动的距离,此时</p>
-<pre><code>/**
- * 在嵌套滑动的子View未滑动之前告诉过来的准备滑动的情况
- * @param target 具体嵌套滑动的那个子类
- * @param dx 水平方向嵌套滑动的子View想要变化的距离
- * @param dy 垂直方向嵌套滑动的子View想要变化的距离
- * @param consumed 这个参数要我们在实现这个函数的时候指定，回头告诉子View当前父View消耗的距离 
- *                    consumed[0] 水平消耗的距离，consumed[1] 垂直消耗的距离 好让子view做出相应的调整
- */
-public void onNestedPreScroll
-</code></pre><p>5.onNestedScroll<br>    /**</p>
-<pre><code> * 嵌套滑动的子View在滑动之后报告过来的滑动情况
- *
- * @param target 具体嵌套滑动的那个子类
- * @param dxConsumed 水平方向嵌套滑动的子View滑动的距离(消耗的距离)
- * @param dyConsumed 垂直方向嵌套滑动的子View滑动的距离(消耗的距离)
- * @param dxUnconsumed 水平方向嵌套滑动的子View未滑动的距离(未消耗的距离)
- * @param dyUnconsumed 垂直方向嵌套滑动的子View未滑动的距离(未消耗的距离)
- */
-public void onNestedScroll(View target, int dxConsumed, int dyConsumed,
-                           int dxUnconsumed, int dyUnconsumed);
-</code></pre><p>|onStartNestedScroll|<br>|onNestedPreScroll|<br>|onNestedScroll|</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/04/14/Behavior/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

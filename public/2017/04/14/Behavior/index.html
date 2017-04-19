@@ -87,18 +87,18 @@
 
 
 
-<meta name="description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior就是用来给CoordinatorLayout的子view们实现交互的。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
+<meta name="description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LBehavior">
 <meta property="og:url" content="http://lauzy.github.io/2017/04/14/Behavior/index.html">
 <meta property="og:site_name" content="Lauzy">
-<meta property="og:description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior就是用来给CoordinatorLayout的子view们实现交互的。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
+<meta property="og:description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
 <meta property="og:image" content="http://i.imgur.com/93zTA4s.gif">
 <meta property="og:image" content="http://i.imgur.com/U02iHGv.gif">
-<meta property="og:updated_time" content="2017-04-17T09:29:32.504Z">
+<meta property="og:updated_time" content="2017-04-18T12:56:26.589Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LBehavior">
-<meta name="twitter:description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior就是用来给CoordinatorLayout的子view们实现交互的。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
+<meta name="twitter:description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
 <meta name="twitter:image" content="http://i.imgur.com/93zTA4s.gif">
 
 
@@ -378,9 +378,10 @@
 
       
         <blockquote>
-<p>Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior就是用来给CoordinatorLayout的子view们实现交互的。<br>本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了一款干货集中营的客户端，做的时候采用自定义Behavior实现了整个嵌套滑动，并抽离了出来作为一个lib方便使用。</p>
+<p>Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。<br>本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了一款干货集中营的客户端，做的时候采用自定义Behavior实现了整个嵌套滑动，并抽离了出来作为一个lib方便使用。</p>
 </blockquote>
-<h2 id="先来一波效果图："><a href="#先来一波效果图：" class="headerlink" title="先来一波效果图："></a>先来一波效果图：</h2><p><img src="http://i.imgur.com/93zTA4s.gif" width="270" height="450" alt="效果图1" align="center">    <img src="http://i.imgur.com/U02iHGv.gif" width="270" height="450" alt="效果图2" align="center"></p>
+<a id="more"></a>
+<h2 id="先来一波效果图："><a href="#先来一波效果图：" class="headerlink" title="先来一波效果图："></a>先来一波效果图：</h2><p><img src="http://i.imgur.com/93zTA4s.gif" width="270" height="450" alt="效果图1" align="center"><img src="http://i.imgur.com/U02iHGv.gif" width="270" height="450" alt="效果图2" align="center"></p>
 <h2 id="效果实现思路："><a href="#效果实现思路：" class="headerlink" title="效果实现思路："></a>效果实现思路：</h2><ol>
 <li><p>判断手势</p>
 </li>
@@ -394,37 +395,48 @@
 <li>自定义Behavior</li>
 <li>仿知乎效果的动画实现及个性化</li>
 </ol>
-<h3 id="1、CoordinatorLayout和Behavior简介"><a href="#1、CoordinatorLayout和Behavior简介" class="headerlink" title="1、CoordinatorLayout和Behavior简介"></a>1、CoordinatorLayout和Behavior简介</h3><p>Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了，这里推荐鸿神的<a href="http://blog.csdn.net/lmj623565791/article/details/52204039" target="_blank" rel="external">Android NestedScrolling机制完全解析</a>以及Loader大神的<a href="http://blog.csdn.net/qibin0506/article/details/50377592" target="_blank" rel="external">源码看CoordinatorLayout.Behavior原理</a>。本篇主要介绍下具体的实现方法：<br><a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html" target="_blank" rel="external">Behavior官网</a></p>
+<h2 id="1、CoordinatorLayout和Behavior简介"><a href="#1、CoordinatorLayout和Behavior简介" class="headerlink" title="1、CoordinatorLayout和Behavior简介"></a>1、CoordinatorLayout和Behavior简介</h2><p>Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了，推荐Loader大神的<a href="http://blog.csdn.net/qibin0506/article/details/50377592" target="_blank" rel="external">源码看CoordinatorLayout.Behavior原理</a>。</p>
+<p>这里简单介绍下,嵌套滑动时父View(需实现NestedScrollingParent接口)和子View(需实现NestedScrollingChild接口)之间的交互是由NestedScrolling两个接口控制,NestedScrollingParentHelper和NestedScrollingChildHelper两个辅助类分别处理了父布局和子View的大量逻辑。</p>
+<p>滑动嵌套的简单流程为：控制子View(如RecyclerView)的onInterceptTouchEvent和onTouchEvent的事件分发 -&gt; 调用NestedScrollingChildHelper不同的方法 -&gt; 处理与NestedScrollingParent交互的逻辑 -&gt; 父布局(如CoordinatorLayout)实现NestedScrollingParent处理具体的逻辑<br> (-&gt; 而Behavior的事件处理方法则主要由CoordinatorLayout的各种事件处理方法来调用,返回值控制了父布局的事件消费情况)。</p>
+<p>具体方法的调用大家可以再研读Loader大神的博客。下边简单介绍下自定义Behavior实现的具体方法<a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html" target="_blank" rel="external">Behavior官网</a>。</p>
 <h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>1.layoutDependsOn</p>
 <p>确定提供的子视图是否具有另一个特定的兄弟视图作为布局依赖关系。即用来确定依赖关系，如果某个控件需要依赖控件，则重写改方法<br>如AppBarLayout</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">layoutDependsOn</span><span class="params">(CoordinatorLayout parent, View child, View dependency)</span> </span>&#123;</div><div class="line">	<span class="comment">// We depend on any AppBarLayouts</span></div><div class="line">	<span class="keyword">return</span> dependency <span class="keyword">instanceof</span> AppBarLayout;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">layoutDependsOn</span><span class="params">(CoordinatorLayout parent, View child, View dependency)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> dependency <span class="keyword">instanceof</span> AppBarLayout;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>2.onDependentViewChanged<br>依赖视图的大小、位置发生变化时调用此方法，重写此方法可以处理child的响应。如常用的AppBarLayout，当其发生变化时，childView会根据重写的方法作出响应。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onDependentViewChanged</span><span class="params">(CoordinatorLayout parent, View child, View dependency)</span> </span>&#123;</div><div class="line">	offsetChildAsNeeded(parent, child, dependency);</div><div class="line">	<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>3.onStartNestedScroll<br>当CoordinatorLayout的子View开始嵌套滑动时（此处的滑动View必须实现NestedScrollingChild接口），触发此方法。添加Behavior的控件需要为CoordinatorLayout的直接子View，否则不会继续流程。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//判断是否垂直滑动</span></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onStartNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout, View child, View directTargetChild, View target, <span class="keyword">int</span> nestedScrollAxes)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> (nestedScrollAxes &amp; ViewCompat.SCROLL_AXIS_VERTICAL) != <span class="number">0</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>4.onNestedPreScroll<br>    触发滑动嵌套滚动之前调用的方法。可以在此处指定 consumed,指的是父布局要消费的滚动距离,consumed[0]为水平方向消耗的距离,consumed[1]为垂直方向消耗的距离,可控制此参数作出相应的调整。<br>    如垂直滑动时,若设置consumed[1]=dy,则代表子View全部消耗了滑动的距离,此时</p>
+<p>4.onNestedPreScroll<br>    此方法中consumed,指的是父布局要消费的滚动距离,consumed[0]为水平方向消耗的距离,consumed[1]为垂直方向消耗的距离,可控制此参数作出相应的调整。<br>    如垂直滑动时,若设置consumed[1]=dy,则代表父布局全部消耗了滑动的距离,类似AppBarLayout这种效果,当其由展开到折叠过渡时,通过consumed控制其中的嵌套滑动。</p>
 <pre><code>/**
- * 在嵌套滑动的子View未滑动之前告诉过来的准备滑动的情况
- * @param target 具体嵌套滑动的那个子类
- * @param dx 水平方向嵌套滑动的子View想要变化的距离
- * @param dy 垂直方向嵌套滑动的子View想要变化的距离
- * @param consumed 这个参数要我们在实现这个函数的时候指定，回头告诉子View当前父View消耗的距离 
- *                    consumed[0] 水平消耗的距离，consumed[1] 垂直消耗的距离 好让子view做出相应的调整
- */
-public void onNestedPreScroll
-</code></pre><p>5.onNestedScroll<br>    /**</p>
-<pre><code> * 嵌套滑动的子View在滑动之后报告过来的滑动情况
+ * 触发滑动嵌套滚动之前调用的方法
  *
- * @param target 具体嵌套滑动的那个子类
- * @param dxConsumed 水平方向嵌套滑动的子View滑动的距离(消耗的距离)
- * @param dyConsumed 垂直方向嵌套滑动的子View滑动的距离(消耗的距离)
- * @param dxUnconsumed 水平方向嵌套滑动的子View未滑动的距离(未消耗的距离)
- * @param dyUnconsumed 垂直方向嵌套滑动的子View未滑动的距离(未消耗的距离)
+ * @param coordinatorLayout coordinatorLayout父布局
+ * @param child             使用Behavior的子View
+ * @param target            触发滑动嵌套的View(实现NestedScrollingChild接口)
+ * @param dx                滑动的X轴距离
+ * @param dy                滑动的Y轴距离
+ * @param consumed          父布局消费的滑动距离，consumed[0]和consumed[1]代表X和Y方向父布局消费的距离，默认为0
  */
-public void onNestedScroll(View target, int dxConsumed, int dyConsumed,
-                           int dxUnconsumed, int dyUnconsumed);
-</code></pre><p>|onStartNestedScroll|<br>|onNestedPreScroll|<br>|onNestedScroll|</p>
-
+@Override
+public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dx, int dy, int[] consumed) {
+    super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed);
+}
+</code></pre><p>5.onNestedScroll<br>    此方法中dyConsumed代表TargetView消费的距离,如RecyclerView滑动的距离,可通过控制NestScrollingChild的滑动来指定一些动画,<br>    本篇博客实现的效果主要就是重写此方法,若根据onNestedPreScroll中dy来判断,则当RecyclerView条目很少时,也会触发逻辑代码,故选择了重写此方法。<br>    /**</p>
+<pre><code> * 滑动嵌套滚动时触发的方法
+ *
+ * @param coordinatorLayout coordinatorLayout父布局
+ * @param child             使用Behavior的子View
+ * @param target            触发滑动嵌套的View
+ * @param dxConsumed        TargetView消费的X轴距离
+ * @param dyConsumed        TargetView消费的Y轴距离
+ * @param dxUnconsumed      未被TargetView消费的X轴距离
+ * @param dyUnconsumed      未被TargetView消费的Y轴距离(如RecyclerView已经到达顶部或底部，而用户继续滑动，此时dyUnconsumed的值不为0，可处理一些越界事件)
+ */
+@Override
+public void onNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+    super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+}
+</code></pre><h2 id="2、自定义Behavior"><a href="#2、自定义Behavior" class="headerlink" title="2、自定义Behavior"></a>2、自定义Behavior</h2>
       
     </div>
 
@@ -623,7 +635,7 @@ public void onNestedScroll(View target, int dxConsumed, int dyConsumed,
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#先来一波效果图："><span class="nav-number">1.</span> <span class="nav-text">先来一波效果图：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果实现思路："><span class="nav-number">2.</span> <span class="nav-text">效果实现思路：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章目录："><span class="nav-number">3.</span> <span class="nav-text">文章目录：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、CoordinatorLayout和Behavior简介"><span class="nav-number">3.1.</span> <span class="nav-text">1、CoordinatorLayout和Behavior简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">3.2.</span> <span class="nav-text">方法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#先来一波效果图："><span class="nav-number">1.</span> <span class="nav-text">先来一波效果图：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果实现思路："><span class="nav-number">2.</span> <span class="nav-text">效果实现思路：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章目录："><span class="nav-number">3.</span> <span class="nav-text">文章目录：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1、CoordinatorLayout和Behavior简介"><span class="nav-number">4.</span> <span class="nav-text">1、CoordinatorLayout和Behavior简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">4.1.</span> <span class="nav-text">方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、自定义Behavior"><span class="nav-number">5.</span> <span class="nav-text">2、自定义Behavior</span></a></li></ol></div>
             
 
           </div>

@@ -14,7 +14,7 @@ tags:
 <!--more-->
 
 ## 先来一波效果图：
-<img src="http://i.imgur.com/93zTA4s.gif" width = "270" height = "450" alt="效果图1"/><img src="http://i.imgur.com/U02iHGv.gif" width = "270" height = "450" alt="效果图2"/>
+<img src="http://oop6dcmck.bkt.clouddn.com/%E5%B1%95%E7%A4%BA%E5%9B%BE1.gif" width = "270" height = "450" alt="效果图1"/><img src="http://oop6dcmck.bkt.clouddn.com/%E5%B1%95%E7%A4%BA%E5%9B%BE2.gif" width = "270" height = "450" alt="效果图2"/>
 
 ## 效果实现思路：
 

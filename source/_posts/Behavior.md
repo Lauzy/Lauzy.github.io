@@ -9,7 +9,7 @@ tags:
 
 
 > Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。
-本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了一款干货集中营的客户端，做的时候采用自定义Behavior实现了整个嵌套滑动，并抽离了出来作为一个lib方便使用。
+本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了一款[干货集中营的客户端](https://github.com/Lauzy/GankPro)，做的时候采用自定义Behavior实现了整个嵌套滑动，并抽离了出来作为一个lib方便使用。
 
 <!--more-->
 
@@ -378,4 +378,4 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 		
 ```
 
-最后，求大家不吝star，戳  [我的Github](https://github.com/Lauzy/LBehavior) 。
+最后，求大家不吝star，戳  [我的Github](https://github.com/Lauzy/LBehavior) ，顺便可以看看撸的[干货集中营客户端](https://github.com/Lauzy/GankPro)。

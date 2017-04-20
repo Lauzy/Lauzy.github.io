@@ -14,7 +14,7 @@ tags:
 <!--more-->
 
 ## 先来一波效果图：
-<img src="http://i.imgur.com/93zTA4s.gif" width = "270" height = "450" alt="效果图1" align=center /><img src="http://i.imgur.com/U02iHGv.gif" width = "270" height = "450" alt="效果图2" align=center />
+<img src="http://i.imgur.com/93zTA4s.gif" width = "270" height = "450" alt="效果图1"/><img src="http://i.imgur.com/U02iHGv.gif" width = "270" height = "450" alt="效果图2"/>
 
 ## 效果实现思路：
 
@@ -323,9 +323,11 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 我们再看看知乎，轻轻滑动一小段距离，发现他的顶部Toolbar遮挡的地方其实是空白，可以发现知乎其实也是有这个问题的，不过人家处理的很好，所以用户基本上不会发现。
 不过这个问题还是可以解决的，比如判断item为第一个时，可以加一个View填充，个人采用的自定义ItemDecoration，判断下若为第一个item，outRect.set(0, titleHeight, 0, 0)，设置titleHeight的大小即可。BottomView也是同理，解决方法也是有不少的。
 
-还有一个问题是写demo的时候发现的，我用LinearLayout作为BottomView，发现浮动按钮竟然是在LinearLayout上层执行各种动画，看起来不太和谐，后来发现FloatingActionButton的elevation若大于BottomView的elevation，则FloatingActionButton动画覆盖在BottomView上层，反之则在下层。之前确一直没有注意。
+还有一个问题是写demo的时候发现的，我用LinearLayout作为BottomView，发现浮动按钮竟然是在LinearLayout上层执行各种动画，看起来不太和谐，后来发现FloatingActionButton的elevation若大于BottomView的elevation，则FloatingActionButton动画覆盖在BottomView上层，反之则在下层。之前却一直没有注意。
 
 此外，当知乎的RecyclerView滑动到底部的时候，BottomView是会自动显示的，个人觉得可以在onStopNestedScroll 中，根据判断RecyclerView是否滑动到底部来处理，本文并没有具体实现，只是提供思路。
+
+所以说，我们在开发中还是要多方面考虑，各种细节都需要注意。
 
 
 整个流程就是这样，实现后再封装，然后呢，抽离出来提交到Github。

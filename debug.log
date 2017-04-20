@@ -1,0 +1,69 @@
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Hexo version: \u001b[35m3.2.2\u001b[39m","time":"2017-04-20T02:19:02.148Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Working directory: \u001b[35mE:\\Lauzy.github.io\\\u001b[39m","time":"2017-04-20T02:19:02.163Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Config loaded: \u001b[35mE:\\Lauzy.github.io\\_config.yml\u001b[39m","time":"2017-04-20T02:19:02.241Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-deployer-git\u001b[39m","time":"2017-04-20T02:19:02.257Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-category\u001b[39m","time":"2017-04-20T02:19:02.257Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-archive\u001b[39m","time":"2017-04-20T02:19:02.257Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-index\u001b[39m","time":"2017-04-20T02:19:02.257Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-tag\u001b[39m","time":"2017-04-20T02:19:02.272Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-ejs\u001b[39m","time":"2017-04-20T02:19:02.272Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-stylus\u001b[39m","time":"2017-04-20T02:19:02.272Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-marked\u001b[39m","time":"2017-04-20T02:19:02.272Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-server\u001b[39m","time":"2017-04-20T02:19:02.335Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\merge-configs.js\u001b[39m","time":"2017-04-20T02:19:02.351Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\button.js\u001b[39m","time":"2017-04-20T02:19:02.351Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\center-quote.js\u001b[39m","time":"2017-04-20T02:19:02.351Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\exturl.js\u001b[39m","time":"2017-04-20T02:19:02.351Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\group-pictures.js\u001b[39m","time":"2017-04-20T02:19:02.351Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\full-image.js\u001b[39m","time":"2017-04-20T02:19:02.351Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\note.js\u001b[39m","time":"2017-04-20T02:19:02.351Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\merge.js\u001b[39m","time":"2017-04-20T02:19:02.351Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":60,"msg":"Permission denied. You can't use port 80.","time":"2017-04-20T02:19:02.383Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":60,"err":{"message":"listen EACCES 0.0.0.0:80","name":"Error","stack":"Error: listen EACCES 0.0.0.0:80\n    at Object.exports._errnoException (util.js:1018:11)\n    at exports._exceptionWithHostPort (util.js:1041:20)\n    at Server._listen2 (net.js:1249:19)\n    at listen (net.js:1298:10)\n    at net.js:1408:9\n    at _combinedTickCallback (internal/process/next_tick.js:83:11)\n    at process._tickCallback (internal/process/next_tick.js:104:9)","code":"EACCES"},"msg":"Something's wrong. Maybe you can find the solution here: \u001b[4mhttp://hexo.io/docs/troubleshooting.html\u001b[24m","time":"2017-04-20T02:19:02.383Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":5912,"level":20,"msg":"Database saved","time":"2017-04-20T02:19:02.383Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Hexo version: \u001b[35m3.2.2\u001b[39m","time":"2017-04-20T02:20:54.151Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Working directory: \u001b[35mE:\\Lauzy.github.io\\\u001b[39m","time":"2017-04-20T02:20:54.151Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Config loaded: \u001b[35mE:\\Lauzy.github.io\\_config.yml\u001b[39m","time":"2017-04-20T02:20:54.260Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-deployer-git\u001b[39m","time":"2017-04-20T02:20:54.260Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-category\u001b[39m","time":"2017-04-20T02:20:54.276Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-archive\u001b[39m","time":"2017-04-20T02:20:54.276Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-index\u001b[39m","time":"2017-04-20T02:20:54.276Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-tag\u001b[39m","time":"2017-04-20T02:20:54.276Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-ejs\u001b[39m","time":"2017-04-20T02:20:54.276Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-marked\u001b[39m","time":"2017-04-20T02:20:54.276Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-server\u001b[39m","time":"2017-04-20T02:20:54.354Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-stylus\u001b[39m","time":"2017-04-20T02:20:54.354Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\merge-configs.js\u001b[39m","time":"2017-04-20T02:20:54.354Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\button.js\u001b[39m","time":"2017-04-20T02:20:54.354Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\merge.js\u001b[39m","time":"2017-04-20T02:20:54.354Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\exturl.js\u001b[39m","time":"2017-04-20T02:20:54.354Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\full-image.js\u001b[39m","time":"2017-04-20T02:20:54.354Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\group-pictures.js\u001b[39m","time":"2017-04-20T02:20:54.369Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\note.js\u001b[39m","time":"2017-04-20T02:20:54.369Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\center-quote.js\u001b[39m","time":"2017-04-20T02:20:54.369Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":60,"msg":"Permission denied. You can't use port 80.","time":"2017-04-20T02:20:54.369Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":60,"err":{"message":"listen EACCES 0.0.0.0:80","name":"Error","stack":"Error: listen EACCES 0.0.0.0:80\n    at Object.exports._errnoException (util.js:1018:11)\n    at exports._exceptionWithHostPort (util.js:1041:20)\n    at Server._listen2 (net.js:1249:19)\n    at listen (net.js:1298:10)\n    at net.js:1408:9\n    at _combinedTickCallback (internal/process/next_tick.js:83:11)\n    at process._tickCallback (internal/process/next_tick.js:104:9)","code":"EACCES"},"msg":"Something's wrong. Maybe you can find the solution here: \u001b[4mhttp://hexo.io/docs/troubleshooting.html\u001b[24m","time":"2017-04-20T02:20:54.369Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6212,"level":20,"msg":"Database saved","time":"2017-04-20T02:20:54.385Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Hexo version: \u001b[35m3.2.2\u001b[39m","time":"2017-04-20T02:23:52.562Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Working directory: \u001b[35mE:\\Lauzy.github.io\\\u001b[39m","time":"2017-04-20T02:23:52.562Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Config loaded: \u001b[35mE:\\Lauzy.github.io\\_config.yml\u001b[39m","time":"2017-04-20T02:23:52.656Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-deployer-git\u001b[39m","time":"2017-04-20T02:23:52.672Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-archive\u001b[39m","time":"2017-04-20T02:23:52.672Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-index\u001b[39m","time":"2017-04-20T02:23:52.672Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-category\u001b[39m","time":"2017-04-20T02:23:52.672Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-tag\u001b[39m","time":"2017-04-20T02:23:52.672Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-ejs\u001b[39m","time":"2017-04-20T02:23:52.672Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-marked\u001b[39m","time":"2017-04-20T02:23:52.687Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-server\u001b[39m","time":"2017-04-20T02:23:52.750Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-stylus\u001b[39m","time":"2017-04-20T02:23:52.750Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\merge-configs.js\u001b[39m","time":"2017-04-20T02:23:52.750Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\button.js\u001b[39m","time":"2017-04-20T02:23:52.750Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\center-quote.js\u001b[39m","time":"2017-04-20T02:23:52.750Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\merge.js\u001b[39m","time":"2017-04-20T02:23:52.750Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\exturl.js\u001b[39m","time":"2017-04-20T02:23:52.750Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\full-image.js\u001b[39m","time":"2017-04-20T02:23:52.750Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\group-pictures.js\u001b[39m","time":"2017-04-20T02:23:52.765Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Script loaded: \u001b[35mthemes\\next\\scripts\\tags\\note.js\u001b[39m","time":"2017-04-20T02:23:52.765Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":60,"msg":"Permission denied. You can't use port 80.","time":"2017-04-20T02:23:52.765Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":60,"err":{"message":"listen EACCES 0.0.0.0:80","name":"Error","stack":"Error: listen EACCES 0.0.0.0:80\n    at Object.exports._errnoException (util.js:1018:11)\n    at exports._exceptionWithHostPort (util.js:1041:20)\n    at Server._listen2 (net.js:1249:19)\n    at listen (net.js:1298:10)\n    at net.js:1408:9\n    at _combinedTickCallback (internal/process/next_tick.js:83:11)\n    at process._tickCallback (internal/process/next_tick.js:104:9)","code":"EACCES"},"msg":"Something's wrong. Maybe you can find the solution here: \u001b[4mhttp://hexo.io/docs/troubleshooting.html\u001b[24m","time":"2017-04-20T02:23:52.765Z","v":0}
+{"name":"hexo","hostname":"USER-20160826WC","pid":6524,"level":20,"msg":"Database saved","time":"2017-04-20T02:23:52.765Z","v":0}

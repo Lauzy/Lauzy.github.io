@@ -95,7 +95,7 @@
 <meta property="og:description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
 <meta property="og:image" content="http://oop6dcmck.bkt.clouddn.com/%E5%B1%95%E7%A4%BA%E5%9B%BE1.gif">
 <meta property="og:image" content="http://oop6dcmck.bkt.clouddn.com/%E5%B1%95%E7%A4%BA%E5%9B%BE2.gif">
-<meta property="og:updated_time" content="2017-04-20T07:39:15.047Z">
+<meta property="og:updated_time" content="2017-04-21T06:08:07.871Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LBehavior">
 <meta name="twitter:description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
@@ -442,8 +442,8 @@
 <p>动画已经实现，但是写代码的时候坑貌似永远是填不完的。</p>
 <p>当我使用写出来的动画时，就发现了一个问题，由于是CoordinatorLayout作为根布局，所以RecyclerView顶部的item被toolbar遮挡了，<br>我们再看看知乎，轻轻滑动一小段距离，发现他的顶部Toolbar遮挡的地方其实是空白，可以发现知乎其实也是有这个问题的，不过人家处理的很好，所以用户基本上不会发现。<br>不过这个问题还是可以解决的，比如判断item为第一个时，可以加一个View填充，个人采用的自定义ItemDecoration，判断下若为第一个item，outRect.set(0, titleHeight, 0, 0)，设置titleHeight的大小即可。BottomView也是同理，解决方法也是有不少的。</p>
 <p>还有一个问题是写demo的时候发现的，我用LinearLayout作为BottomView，发现浮动按钮竟然是在LinearLayout上层执行各种动画，看起来不太和谐，后来发现FloatingActionButton的elevation若大于BottomView的elevation，则FloatingActionButton动画覆盖在BottomView上层，反之则在下层。之前却一直没有注意。</p>
-<p>此外，当知乎的RecyclerView滑动到底部的时候，BottomView是会自动显示的，个人觉得可以在onStopNestedScroll 中，根据判断RecyclerView是否滑动到底部来处理，本文并没有具体实现，只是提供思路。</p>
-<p>所以说，我们在开发中还是要多方面考虑，各种细节都需要注意。</p>
+<p>此外，当知乎的RecyclerView滑动到底部的时候，BottomView是会自动显示的，个人觉得可以根据dyUnconsumed的值或者onStopNestedScroll来判断RecyclerView是否滑动到底部来处理，全部加载完毕后再处理最后一个item的ItemDecoration，本文并没有具体实现，只是提供思路。</p>
+<p>我们再来整理下解决问题的思路：首先想好做什么，然后研究原理，选择方案，再初步实现，继续优化细节，最后应用到项目。我想我们写程序的时候都应该这样，知其然知其所以然，做到举一反三。</p>
 <p>整个流程就是这样，实现后再封装，然后呢，抽离出来提交到Github。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">allprojects &#123;</div><div class="line">    repositories &#123;</div><div class="line">	    ...</div><div class="line">	    maven &#123; url <span class="string">'https://jitpack.io'</span> &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">   dependencies &#123;</div><div class="line">    compile <span class="string">'com.github.Lauzy:LBehavior:1.0.1'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>具体使用也很简单</p>
@@ -506,7 +506,7 @@
 </tbody>
 </table>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">CommonBehavior.from(mFloatingActionButton)</div><div class="line">	.setMinScrollY(<span class="number">20</span>)</div><div class="line">	.setScrollYDistance(<span class="number">100</span>)</div><div class="line">	.setDuration(<span class="number">1000</span>)</div><div class="line">	.setInterpolator(<span class="keyword">new</span> LinearOutSlowInInterpolator());</div></pre></td></tr></table></figure>
-<p>最后，求大家不吝star，戳  <a href="https://github.com/Lauzy/LBehavior" target="_blank" rel="external">我的Github</a> ，顺便可以看看撸的<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营客户端</a>。</p>
+<p>最后附上项目的地址，戳  <a href="https://github.com/Lauzy/LBehavior" target="_blank" rel="external">我的Github</a> ，顺便可以看看撸的<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营客户端</a>。</p>
 
       
     </div>

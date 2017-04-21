@@ -327,7 +327,7 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 
 此外，当知乎的RecyclerView滑动到底部的时候，BottomView是会自动显示的，个人觉得可以在onStopNestedScroll 中，根据判断RecyclerView是否滑动到底部来处理，本文并没有具体实现，只是提供思路。
 
-所以说，我们在开发中还是要多方面考虑，各种细节都需要注意。
+我们再来整理下解决问题的思路：首先想好做什么，然后研究原理，选择方案，再初步实现，继续优化细节，最后应用到项目。我想我们写程序的时候都应该这样，知其然知其所以然，做到举一反三。
 
 
 整个流程就是这样，实现后再封装，然后呢，抽离出来提交到Github。
@@ -378,4 +378,4 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 		
 ```
 
-最后，求大家不吝star，戳  [我的Github](https://github.com/Lauzy/LBehavior) ，顺便可以看看撸的[干货集中营客户端](https://github.com/Lauzy/GankPro)。
+最后附上项目的地址，戳  [我的Github](https://github.com/Lauzy/LBehavior) ，顺便可以看看撸的[干货集中营客户端](https://github.com/Lauzy/GankPro)。

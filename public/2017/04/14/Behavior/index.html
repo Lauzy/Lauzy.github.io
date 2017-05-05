@@ -1,0 +1,1005 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="自定义View," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LBehavior">
+<meta property="og:url" content="http://lauzy.github.io/2017/04/14/Behavior/index.html">
+<meta property="og:site_name" content="Lauzy">
+<meta property="og:description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
+<meta property="og:image" content="http://oop6dcmck.bkt.clouddn.com/20170420B01.gif">
+<meta property="og:image" content="http://oop6dcmck.bkt.clouddn.com/20170420B02.gif">
+<meta property="og:updated_time" content="2017-04-27T12:09:46.188Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LBehavior">
+<meta name="twitter:description" content="Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了">
+<meta name="twitter:image" content="http://oop6dcmck.bkt.clouddn.com/20170420B01.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lauzy.github.io/2017/04/14/Behavior/"/>
+
+
+
+
+
+  <title> LBehavior | Lauzy </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lauzy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">叶底藏花一度，梦里踏雪几回。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lauzy.github.io/2017/04/14/Behavior/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lauzy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/hexo_avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lauzy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                LBehavior
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-14T16:25:46+08:00">
+                2017-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/14/Behavior/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/04/14/Behavior/" class="leancloud_visitors" data-flag-title="LBehavior">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。<br>本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了一款<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营的客户端</a>，做的时候采用自定义Behavior实现了整个嵌套滑动，并抽离了出来作为一个lib方便使用。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="先来一波效果图："><a href="#先来一波效果图：" class="headerlink" title="先来一波效果图："></a>先来一波效果图：</h2><p><img src="http://oop6dcmck.bkt.clouddn.com/20170420B01.gif" width="270" height="450" alt="效果图1"><img src="http://oop6dcmck.bkt.clouddn.com/20170420B02.gif" width="270" height="450" alt="效果图2"></p>
+<h2 id="效果实现思路："><a href="#效果实现思路：" class="headerlink" title="效果实现思路："></a>效果实现思路：</h2><ol>
+<li><p>判断手势</p>
+</li>
+<li><p>计算距离</p>
+</li>
+<li><p>触发动画</p>
+</li>
+</ol>
+<h2 id="文章目录："><a href="#文章目录：" class="headerlink" title="文章目录："></a>文章目录：</h2><ol>
+<li>CoordinatorLayout及Behavior简介</li>
+<li>自定义Behavior</li>
+<li>仿知乎效果的动画实现及个性化</li>
+</ol>
+<h2 id="CoordinatorLayout和Behavior简介"><a href="#CoordinatorLayout和Behavior简介" class="headerlink" title="CoordinatorLayout和Behavior简介"></a>CoordinatorLayout和Behavior简介</h2><p>Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了，推荐Loader大神的<a href="http://blog.csdn.net/qibin0506/article/details/50377592" target="_blank" rel="external">源码看CoordinatorLayout.Behavior原理</a>。</p>
+<p>这里简单介绍下，嵌套滑动时父View(需实现NestedScrollingParent接口)和子View(需实现NestedScrollingChild接口)之间的交互是由NestedScrolling两个接口控制，NestedScrollingParentHelper和NestedScrollingChildHelper两个辅助类分别处理了父布局和子View的大量逻辑。</p>
+<p>滑动嵌套的简单流程为：控制子View(如RecyclerView)的onInterceptTouchEvent和onTouchEvent的事件分发 -&gt; 调用NestedScrollingChildHelper不同的方法 -&gt; 处理与NestedScrollingParent交互的逻辑 -&gt; 父布局(如CoordinatorLayout)实现NestedScrollingParent处理具体的逻辑<br> (-&gt; 而Behavior的事件处理方法则主要由CoordinatorLayout的各种事件处理方法来调用，返回值控制了父布局的事件消费情况)。</p>
+<p>具体方法的调用大家可以再研读Loader大神的博客。下边简单介绍下自定义Behavior实现的具体方法<a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html" target="_blank" rel="external">Behavior官网</a>。</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="1-layoutDependsOn"><a href="#1-layoutDependsOn" class="headerlink" title="1.layoutDependsOn"></a>1.layoutDependsOn</h4><p>确定提供的子视图是否具有另一个特定的兄弟视图作为布局依赖关系。即用来确定依赖关系，如果某个控件需要依赖控件，则重写该方法<br>如AppBarLayout</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">layoutDependsOn</span><span class="params">(CoordinatorLayout parent， View child， View dependency)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> dependency <span class="keyword">instanceof</span> AppBarLayout;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-onDependentViewChanged"><a href="#2-onDependentViewChanged" class="headerlink" title="2.onDependentViewChanged"></a>2.onDependentViewChanged</h4><p>依赖视图的大小、位置发生变化时调用此方法，重写此方法可以处理child的响应。如常用的AppBarLayout，当其发生变化时，childView会根据重写的方法作出响应。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onDependentViewChanged</span><span class="params">(CoordinatorLayout parent， View child， View dependency)</span> </span>&#123;</div><div class="line">	offsetChildAsNeeded(parent， child， dependency);</div><div class="line">	<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="3-onStartNestedScroll"><a href="#3-onStartNestedScroll" class="headerlink" title="3.onStartNestedScroll"></a>3.onStartNestedScroll</h4><p>当CoordinatorLayout的子View开始嵌套滑动时（此处的滑动View必须实现NestedScrollingChild接口），触发此方法。添加Behavior的控件需要为CoordinatorLayout的直接子View，否则不会继续流程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//判断是否垂直滑动</span></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onStartNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout， View child， View directTargetChild， View target， <span class="keyword">int</span> nestedScrollAxes)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> (nestedScrollAxes &amp; ViewCompat.SCROLL_AXIS_VERTICAL) != <span class="number">0</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h4 id="4-onNestedPreScroll"><a href="#4-onNestedPreScroll" class="headerlink" title="4.onNestedPreScroll"></a>4.onNestedPreScroll</h4><p>此方法中consumed，指的是父布局要消费的滚动距离，consumed[0]为水平方向消耗的距离，consumed[1]为垂直方向消耗的距离，可控制此参数作出相应的调整。<br>如垂直滑动时，若设置consumed[1]=dy，则代表父布局全部消耗了滑动的距离，类似AppBarLayout这种效果，当其由展开到折叠过渡时，通过consumed控制其中的嵌套滑动。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 触发滑动嵌套滚动之前调用的方法</div><div class="line">   *</div><div class="line">   * <span class="doctag">@param</span> coordinatorLayout coordinatorLayout父布局</div><div class="line">   * <span class="doctag">@param</span> child             使用Behavior的子View</div><div class="line">   * <span class="doctag">@param</span> target            触发滑动嵌套的View(实现NestedScrollingChild接口)</div><div class="line">   * <span class="doctag">@param</span> dx                滑动的X轴距离</div><div class="line">   * <span class="doctag">@param</span> dy                滑动的Y轴距离</div><div class="line">   * <span class="doctag">@param</span> consumed          父布局消费的滑动距离，consumed[0]和consumed[1]代表X和Y方向父布局消费的距离，默认为0</div><div class="line">   */</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNestedPreScroll</span><span class="params">(CoordinatorLayout coordinatorLayout， View child， View target， </span></span></div><div class="line"><span class="keyword">int</span> dx， <span class="keyword">int</span> dy， <span class="keyword">int</span>[] consumed) &#123;</div><div class="line">      <span class="keyword">super</span>.onNestedPreScroll(coordinatorLayout， child， target， dx， dy， consumed);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h4 id="5-onNestedScroll"><a href="#5-onNestedScroll" class="headerlink" title="5.onNestedScroll"></a>5.onNestedScroll</h4><p>此方法中dyConsumed代表TargetView消费的距离，如RecyclerView滑动的距离，可通过控制NestScrollingChild的滑动来指定一些动画，<br>本篇博客实现的效果主要就是重写此方法，若根据onNestedPreScroll中dy来判断，则当RecyclerView条目很少时，也会触发逻辑代码，故选择了重写此方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">    * 滑动嵌套滚动时触发的方法</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> coordinatorLayout coordinatorLayout父布局</div><div class="line">    * <span class="doctag">@param</span> child             使用Behavior的子View</div><div class="line">    * <span class="doctag">@param</span> target            触发滑动嵌套的View</div><div class="line">    * <span class="doctag">@param</span> dxConsumed        TargetView消费的X轴距离</div><div class="line">    * <span class="doctag">@param</span> dyConsumed        TargetView消费的Y轴距离</div><div class="line">    * <span class="doctag">@param</span> dxUnconsumed      未被TargetView消费的X轴距离</div><div class="line">    * <span class="doctag">@param</span> dyUnconsumed      未被TargetView消费的Y轴距离(如RecyclerView已经到达顶部或底部，</div><div class="line"> *				而用户继续滑动，此时dyUnconsumed的值不为0，可处理一些越界事件)</div><div class="line">    */</div><div class="line">   <span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout， View child， View target， </span></span></div><div class="line">	<span class="keyword">int</span> dxConsumed， <span class="keyword">int</span> dyConsumed， <span class="keyword">int</span> dxUnconsumed， <span class="keyword">int</span> dyUnconsumed) &#123;</div><div class="line">       <span class="keyword">super</span>.onNestedScroll(coordinatorLayout， child， target， </div><div class="line">		dxConsumed， dyConsumed， dxUnconsumed， dyUnconsumed);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h2 id="自定义Behavior"><a href="#自定义Behavior" class="headerlink" title="自定义Behavior"></a>自定义Behavior</h2><h3 id="自定义Behavior主要有两种实现方式："><a href="#自定义Behavior主要有两种实现方式：" class="headerlink" title="自定义Behavior主要有两种实现方式："></a>自定义Behavior主要有两种实现方式：</h3><p>第一种为layoutDependsOn和onDependentViewChanged，child需要依赖于dependency，当dependency View发生变化时，onDependentViewChanged会被调用，child可作出响应的响应。<br>第二种为onStartNestedScroll 等嵌套滑动的流程，首先在onStartNestedScroll方法中判断是否垂直滑动等，然后在onNestedPreScroll、onNestedScroll等方法中实现效果。<br>由于第一种方式会导致child必须依赖于某个特定的View，这样就导致灵活性不太强，所以本文采用第二种实现方式。</p>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>在嵌套滑动开始之前，可以判断是否垂直滑动，做一些初始化工作，比如获取childView的初始坐标。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//判断垂直滑动</span></div><div class="line">   <span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onStartNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout, View child, View directTargetChild, View target, <span class="keyword">int</span> nestedScrollAxes)</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (isInit) &#123;<span class="comment">// 设置标记，防止new Anim导致的parent和child坐标变化</span></div><div class="line">           mCommonAnim = <span class="keyword">new</span> LTitleBehaviorAnim(child);</div><div class="line">           isInit = <span class="keyword">false</span>;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> (nestedScrollAxes &amp; ViewCompat.SCROLL_AXIS_VERTICAL) != <span class="number">0</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>触发嵌套滑动之前，可以在此处判断一些滑动手势，以及父布局的消费情况。由于若根据此方法中dy来判断，则当RecyclerView条目很少时，也会触发逻辑代码，故本文只是在此方法中给动画做一些自定义操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNestedPreScroll</span><span class="params">(CoordinatorLayout coordinatorLayout, View child, View target, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy, <span class="keyword">int</span>[] consumed)</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (mCommonAnim != <span class="keyword">null</span>) &#123;</div><div class="line">           mCommonAnim.setDuration(mDuration);</div><div class="line">           mCommonAnim.setInterpolator(mInterpolator);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">super</span>.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>滑动嵌套滚动时触发的方法，以Title(Toolbar)为例，若向上滑动，则隐藏Toolbar，反之显示。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout, View child, View target, <span class="keyword">int</span> dxConsumed, <span class="keyword">int</span> dyConsumed, <span class="keyword">int</span> dxUnconsumed, <span class="keyword">int</span> dyUnconsumed)</span> </span>&#123;</div><div class="line">       <span class="keyword">super</span>.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);</div><div class="line">	<span class="keyword">if</span> (dyConsumed &lt; <span class="number">0</span>) &#123;</div><div class="line">           <span class="keyword">if</span> (isHide) &#123;</div><div class="line">               mCommonAnim.show();</div><div class="line">               isHide = <span class="keyword">false</span>;</div><div class="line">           &#125;</div><div class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dyConsumed &gt; <span class="number">0</span>) &#123;</div><div class="line">           <span class="keyword">if</span> (!isHide) &#123;</div><div class="line">               mCommonAnim.hide();</div><div class="line">               isHide = <span class="keyword">true</span>;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h2 id="仿知乎效果的动画实现及个性化"><a href="#仿知乎效果的动画实现及个性化" class="headerlink" title="仿知乎效果的动画实现及个性化"></a>仿知乎效果的动画实现及个性化</h2><p>大家都知道知乎客户端的各种动画非常优雅，网上仿写其动画的博客也是层出不穷，之前利用空闲时间撸了一款<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营客户端</a>，突然想到了采用知乎的首页效果，然后就拿起键盘，复制粘贴搞了起来。<br>开个玩笑，其实大致实现效果还是比较容易的，这里主要分享下实现的思路以及需要注意的细节。</p>
+<p>首先大致流程就如上边几个方法介绍，动画效果的实现也非常简单，这里以显示和隐藏BottomView为例，直接上代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">LBottomBehaviorAnim</span><span class="params">(View bottomView)</span> </span>&#123;</div><div class="line">       mBottomView = bottomView;</div><div class="line">       mOriginalY = mBottomView.getY();<span class="comment">//因为Y值随动画会发生变化，嵌套滑动开始之前先记录初始的坐标。</span></div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;<span class="comment">//显示</span></div><div class="line">       ValueAnimator animator = ValueAnimator.ofFloat(mBottomView.getY(), mOriginalY);</div><div class="line">       animator.setDuration(getDuration());</div><div class="line">       animator.setInterpolator(getInterpolator());</div><div class="line">       animator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator valueAnimator)</span> </span>&#123;</div><div class="line">               mBottomView.setY((Float) valueAnimator.getAnimatedValue());</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">       animator.start();</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hide</span><span class="params">()</span> </span>&#123;<span class="comment">//隐藏</span></div><div class="line">       ValueAnimator animator = ValueAnimator.ofFloat(mBottomView.getY(), mOriginalY + mBottomView.getHeight());</div><div class="line">       animator.setDuration(getDuration());</div><div class="line">       animator.setInterpolator(getInterpolator());</div><div class="line">       animator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator valueAnimator)</span> </span>&#123;</div><div class="line">               mBottomView.setY((Float) valueAnimator.getAnimatedValue());</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">       animator.start();</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>整个大致流程这样其实已经结束了，但是还达不到我们预期的效果。再次打开知乎客户端，以很缓慢的速度滑一滑，这时候你会发现竟然没有触发动画，OK，先记录下这个问题；再以很缓慢的速度向下滑，突然又触发动画了。整体来看，知乎的动画有种分层嵌套的效果。</p>
+<p>先来解决第一个问题，只用加一行代码，即dyConsumed距离大于一定值的时候才允许滑动。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span>(Math.abs(dyConsumed) &gt; minScrollY)&#123;</div><div class="line">	...<span class="comment">//onNestedScroll里边的逻辑代码</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于第二个问题，我一开始想，滑动一定的距离，难道要根据判断RecyclerView滑动的距离来判断是否触发动画？其实思路是正确的，但是我们不可能再去实现addOnScrollListener的一系列方法。这时候再想一想嵌套滑动，dyConsumed不就是recyclerView消费的距离吗，想到这里，那就很好实现了，只用将dyConsumed相加，相加的和大于一定值，就触发动画，代码也是很简单，结合第一个问题，知乎的效果就实现了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">mTotalScrollY += dyConsumed;<span class="comment">//累加消费的距离</span></div><div class="line">   <span class="keyword">if</span> (Math.abs(dyConsumed) &gt; minScrollY || Math.abs(mTotalScrollY) &gt; scrollYDistance) &#123;</div><div class="line">	...<span class="comment">//onNestedScroll里边的逻辑代码</span></div><div class="line">       mTotalScrollY = <span class="number">0</span>;<span class="comment">//动画执行完毕后重置</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>接下来我们可以自定义设置一些属性值。首先要获取这个Behavior对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> CommonBehavior <span class="title">from</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">       ViewGroup.LayoutParams params = view.getLayoutParams();</div><div class="line">       <span class="keyword">if</span> (!(params <span class="keyword">instanceof</span> CoordinatorLayout.LayoutParams)) &#123;</div><div class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"The view is not a child of CoordinatorLayout"</span>);</div><div class="line">       &#125;</div><div class="line">       CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) params).getBehavior();</div><div class="line">       <span class="keyword">if</span> (!(behavior <span class="keyword">instanceof</span> CommonBehavior)) &#123;</div><div class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"The view's behavior isn't an instance of CommonBehavior. Try to check the [app:layout_behavior]"</span>);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> (CommonBehavior) behavior;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>然后可以设置对象的属性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> CommonBehavior <span class="title">setDuration</span><span class="params">(<span class="keyword">int</span> duration)</span> </span>&#123;</div><div class="line">       mDuration = duration;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> CommonBehavior <span class="title">setInterpolator</span><span class="params">(Interpolator interpolator)</span> </span>&#123;</div><div class="line">       mInterpolator = interpolator;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> CommonBehavior <span class="title">setMinScrollY</span><span class="params">(<span class="keyword">int</span> minScrollY)</span> </span>&#123;</div><div class="line">       <span class="keyword">this</span>.minScrollY = minScrollY;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> CommonBehavior <span class="title">setScrollYDistance</span><span class="params">(<span class="keyword">int</span> scrollYDistance)</span> </span>&#123;</div><div class="line">       <span class="keyword">this</span>.scrollYDistance = scrollYDistance;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>至此，整个流程已经实现了，其他TitleView及悬浮按钮的动画也是类似的规则，我又给Behavior和动画设置了Common类剔除掉一些重复代码，这里就不贴出来了。具体可以参考<a href="https://github.com/Lauzy/LBehavior" target="_blank" rel="external">我的Github</a></p>
+<p>动画已经实现，但是写代码的时候坑貌似永远是填不完的。</p>
+<p>当我使用写出来的动画时，就发现了一个问题，由于是CoordinatorLayout作为根布局，所以RecyclerView顶部的item被toolbar遮挡了，<br>我们再看看知乎，轻轻滑动一小段距离，发现他的顶部Toolbar遮挡的地方其实是空白，可以发现知乎其实也是有这个问题的，不过人家处理的很好，所以用户基本上不会发现。<br>不过这个问题还是可以解决的，比如判断item为第一个时，可以加一个View填充，个人采用的自定义ItemDecoration，判断下若为第一个item，outRect.set(0, titleHeight, 0, 0)，设置titleHeight的大小即可。BottomView也是同理，解决方法也是有不少的。</p>
+<p>还有一个问题是写demo的时候发现的，我用LinearLayout作为BottomView，发现浮动按钮竟然是在LinearLayout上层执行各种动画，看起来不太和谐，后来发现FloatingActionButton的elevation若大于BottomView的elevation，则FloatingActionButton动画覆盖在BottomView上层，反之则在下层。之前却一直没有注意。</p>
+<p>此外，当知乎的RecyclerView滑动到底部的时候，BottomView是会自动显示的，个人觉得可以根据dyUnconsumed的值或者onStopNestedScroll来判断RecyclerView是否滑动到底部来处理，全部加载完毕后再处理最后一个item的ItemDecoration，本文并没有具体实现，只是提供思路。</p>
+<p>我们再来整理下解决问题的思路：首先想好做什么，然后研究原理，选择方案，再初步实现，继续优化细节，最后应用到项目。我想我们写程序的时候都应该这样，知其然知其所以然，做到举一反三。</p>
+<p>整个流程就是这样，实现后再封装，然后呢，抽离出来提交到Github。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">allprojects &#123;</div><div class="line">    repositories &#123;</div><div class="line">	    ...</div><div class="line">	    maven &#123; url <span class="string">'https://jitpack.io'</span> &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">   dependencies &#123;</div><div class="line">    compile <span class="string">'com.github.Lauzy:LBehavior:1.0.1'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>具体使用也很简单</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@string/title_view_behavior</td>
+<td>顶部标题栏</td>
+</tr>
+<tr>
+<td>@string/bottom_view_behavior</td>
+<td>底部导航栏</td>
+</tr>
+<tr>
+<td>@string/fab_scale_behavior</td>
+<td>浮动按钮（缩放）</td>
+</tr>
+<tr>
+<td>@string/fab_vertical_behavior</td>
+<td>浮动按钮（上下滑动）</td>
+</tr>
+</tbody>
+</table>
+<p>自定义(均设有默认值，可不使用)：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>setMinScrollY</td>
+<td>int y</td>
+<td>设置触发动画的最小滑动距离，如 setMinScrollY(10)为滑动10像素才可触发动画，默认为5.</td>
+</tr>
+<tr>
+<td>setScrollYDistance</td>
+<td>int y</td>
+<td>设置触发动画的滑动距离，防止用户缓慢滑动时单次滑动距离一直小于setMinScrollY的最小滑动距离导致无法触发动画.如设置此值为100，则用户即便缓慢滑动，当滑动距离达到100时也可触发动画.默认为40.</td>
+</tr>
+<tr>
+<td>setDuration</td>
+<td>int duration</td>
+<td>设置动画持续时间.默认为400ms.</td>
+</tr>
+<tr>
+<td>setInterpolator</td>
+<td>Interpolator interpolator</td>
+<td>设置动画插补器，修饰动画效果.默认模式为LinearOutSlowInInterpolator. <a href="https://developer.android.google.cn/reference/android/view/animation/Interpolator.html" target="_blank" rel="external">Interpolator官方文档</a></td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">CommonBehavior.from(mFloatingActionButton)</div><div class="line">	.setMinScrollY(<span class="number">20</span>)</div><div class="line">	.setScrollYDistance(<span class="number">100</span>)</div><div class="line">	.setDuration(<span class="number">1000</span>)</div><div class="line">	.setInterpolator(<span class="keyword">new</span> LinearOutSlowInInterpolator());</div></pre></td></tr></table></figure>
+<p>最后附上项目的地址，戳  <a href="https://github.com/Lauzy/LBehavior" target="_blank" rel="external">我的Github</a> ，顺便可以看看撸的<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营客户端</a>。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/自定义View/" rel="tag"># 自定义View</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/30/透明(沉浸)状态栏/" rel="next" title="沉浸、透明及白底黑字状态栏技巧">
+                <i class="fa fa-chevron-left"></i> 沉浸、透明及白底黑字状态栏技巧
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/05/拖拽图片/" rel="prev" title="拖拽图片">
+                拖拽图片 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hexo_avatar.png"
+               alt="Lauzy" />
+          <p class="site-author-name" itemprop="name">Lauzy</p>
+           
+              <p class="site-description motion-element" itemprop="description">Life is like a box of chocolates.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Lauzy" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/freedompal" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#先来一波效果图："><span class="nav-number">1.</span> <span class="nav-text">先来一波效果图：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果实现思路："><span class="nav-number">2.</span> <span class="nav-text">效果实现思路：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章目录："><span class="nav-number">3.</span> <span class="nav-text">文章目录：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CoordinatorLayout和Behavior简介"><span class="nav-number">4.</span> <span class="nav-text">CoordinatorLayout和Behavior简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">4.1.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-layoutDependsOn"><span class="nav-number">4.1.1.</span> <span class="nav-text">1.layoutDependsOn</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-onDependentViewChanged"><span class="nav-number">4.1.2.</span> <span class="nav-text">2.onDependentViewChanged</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-onStartNestedScroll"><span class="nav-number">4.1.3.</span> <span class="nav-text">3.onStartNestedScroll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-onNestedPreScroll"><span class="nav-number">4.1.4.</span> <span class="nav-text">4.onNestedPreScroll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-onNestedScroll"><span class="nav-number">4.1.5.</span> <span class="nav-text">5.onNestedScroll</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义Behavior"><span class="nav-number">5.</span> <span class="nav-text">自定义Behavior</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义Behavior主要有两种实现方式："><span class="nav-number">5.1.</span> <span class="nav-text">自定义Behavior主要有两种实现方式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体实现"><span class="nav-number">5.2.</span> <span class="nav-text">具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#仿知乎效果的动画实现及个性化"><span class="nav-number">6.</span> <span class="nav-text">仿知乎效果的动画实现及个性化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lauzy</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "5c9351f91ed84231802c3d549f8718c4",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Gu6aD2Ckt9fd5R6nBT5opkF8-gzGzoHsz", "hR21HPtjqcXDPVDntyowMkoJ");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

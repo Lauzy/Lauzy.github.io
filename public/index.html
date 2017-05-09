@@ -270,6 +270,159 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lauzy.github.io/2017/05/09/Java注解，安卓IOC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lauzy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/hexo_avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lauzy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/09/Java注解，安卓IOC/" itemprop="url">
+                  Java注解，安卓IOC
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-09T22:43:44+08:00">
+                2017-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/09/Java注解，安卓IOC/" class="leancloud_visitors" data-flag-title="Java注解，安卓IOC">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://lauzy.github.io/2017/05/05/拖拽图片/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -379,17 +532,16 @@
 
       
         
-          
-            <p>闲来无事，在<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营</a>里又撸了个效果。</p>
+          <p>闲来无事，在<a href="https://github.com/Lauzy/GankPro">干货集中营</a>里又撸了个效果。</p>
 <p>先来一波效果图：</p>
-<p><img src="http://oop6dcmck.bkt.clouddn.com/20170502Gank2.gif" width="270" height="450" alt="效果图"></p>
-<p>实现方法当然是手势交互，那自然想到OnTouchListener()，流程还是很简单的，继承OnTouchListener，然后重写onTouch方法，由于效果相对简单，这里直接上代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouch</span><span class="params">(View v, MotionEvent event)</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">//获取View的LayoutParams，注意此种方法仅适合FrameLayout，这里仅是一种简单的实现思路。</span></div><div class="line">       FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();</div><div class="line">       <span class="keyword">switch</span> (event.getActionMasked()) &#123;</div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_DOWN:</div><div class="line">			<span class="comment">//获取手指按下时X和Y轴的坐标</span></div><div class="line">               mOriginalY = (<span class="keyword">int</span>) event.getRawY();</div><div class="line">               mOriginalX = (<span class="keyword">int</span>) event.getRawX();</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_MOVE:</div><div class="line">			<span class="comment">//获取移动的距离</span></div><div class="line">               mMotionY = (<span class="keyword">int</span>) (event.getRawY() - mOriginalY);</div><div class="line">               mMotionX = (<span class="keyword">int</span>) (event.getRawX() - mOriginalX);</div><div class="line">			<span class="comment">//计算缩放比例</span></div><div class="line">               <span class="keyword">float</span> ratio = Math.abs(mMotionY) * <span class="number">1.0f</span> / v.getHeight();</div><div class="line">               <span class="keyword">float</span> ratioY = Math.abs(mMotionY) &lt;= v.getHeight() ? (ratio &lt;= <span class="number">0.5f</span> ? ratio : <span class="number">0.5f</span>) : <span class="number">0.5f</span>;</div><div class="line">               <span class="comment">//根据Y轴变化缩放比例</span></div><div class="line">               v.setScaleX(<span class="number">1</span> - ratioY);</div><div class="line">               v.setScaleY(<span class="number">1</span> - ratioY);</div><div class="line">			<span class="comment">//设置layoutParams变化</span></div><div class="line">               layoutParams.topMargin = mMotionY / <span class="number">2</span>;</div><div class="line">               layoutParams.leftMargin = mMotionX / <span class="number">2</span>;</div><div class="line">               layoutParams.bottomMargin = -mMotionY / <span class="number">2</span>;</div><div class="line">               layoutParams.rightMargin = -mMotionX / <span class="number">2</span>;</div><div class="line">               v.setLayoutParams(layoutParams);</div><div class="line">			<span class="comment">//调用requestLayout 重置布局</span></div><div class="line">               v.requestLayout();</div><div class="line">			<span class="comment">//设置透明度最低值</span></div><div class="line">               <span class="keyword">if</span> (Math.abs(mMotionY) &gt; <span class="number">500</span>) &#123;</div><div class="line">                   mContentLayout.getBackground().setAlpha(<span class="number">100</span>);</div><div class="line">                   mCurAlpha = <span class="number">100</span>;</div><div class="line">               &#125; <span class="keyword">else</span> &#123;</div><div class="line">				<span class="comment">//根据移动距离计算透明度</span></div><div class="line">                   <span class="keyword">float</span> ratioAlpha = (Math.abs(mMotionY) / <span class="number">500.0f</span>) * (<span class="number">255</span> - <span class="number">100</span>);</div><div class="line">                   mContentLayout.getBackground().setAlpha(<span class="number">255</span> - (<span class="keyword">int</span>) ratioAlpha);</div><div class="line">                   mCurAlpha = <span class="number">255</span> - (<span class="keyword">int</span>) ratioAlpha;</div><div class="line">               &#125;</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_CANCEL:</div><div class="line">			<span class="comment">//手势抬起或者取消时，若移动距离大于400，实现自定义的接口方法</span></div><div class="line">               <span class="keyword">if</span> (Math.abs(mMotionY) &gt; <span class="number">400</span>) &#123;</div><div class="line">                   mImageEventListener.onActionBack();</div><div class="line">               &#125; <span class="keyword">else</span> &#123;</div><div class="line">                   <span class="comment">//无动画返回原状</span></div><div class="line">                   <span class="comment">/*v.setScaleY(1);</span></div><div class="line">                   v.setScaleX(1);</div><div class="line">                   layoutParams.topMargin = 0;</div><div class="line">                   layoutParams.bottomMargin = 0;</div><div class="line">                   layoutParams.leftMargin = 0;</div><div class="line">                   layoutParams.rightMargin = 0;</div><div class="line">                   mContentLayout.getBackground().setAlpha(255);*/</div><div class="line">				<span class="comment">//通过一系列动画将View复原</span></div><div class="line">                   setScaleAnim(v);</div><div class="line">                   setMarginAnim(v, layoutParams, Direction.LEFT);</div><div class="line">                   setMarginAnim(v, layoutParams, Direction.RIGHT);</div><div class="line">                   setMarginAnim(v, layoutParams, Direction.TOP);</div><div class="line">                   setMarginAnim(v, layoutParams, Direction.BOTTOM);</div><div class="line">                   v.requestLayout();</div><div class="line">               &#125;</div><div class="line">               ValueAnimator animator = ValueAnimator.ofInt(mCurAlpha, <span class="number">255</span>);</div><div class="line">               animator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">                   <span class="meta">@Override</span></div><div class="line">                   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator animation)</span> </span>&#123;</div><div class="line">                       mContentLayout.getBackground().setAlpha((Integer) animation.getAnimatedValue());</div><div class="line">                   &#125;</div><div class="line">               &#125;);</div><div class="line">               animator.setDuration(<span class="number">300</span>).start();</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">       &#125;</div><div class="line">	<span class="comment">//消费事件</span></div><div class="line">       <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>然后在使用的地方直接调用即可：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">imageView.setOnTouchListener(<span class="keyword">new</span> DragImageOnTouchListener(frameLayout, <span class="keyword">new</span> DragImageOnTouchListener.ImageEventListener() &#123;</div><div class="line">          <span class="meta">@Override</span></div><div class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActionBack</span><span class="params">()</span> </span>&#123;</div><div class="line">              onBackPressed();</div><div class="line">		<span class="comment">//可处理具体的逻辑</span></div><div class="line">          &#125;</div><div class="line">      &#125;));</div></pre></td></tr></table></figure>
-<p>注意：此方法是根据LayoutParams重置布局实现，所以使用FrameLayout可达到图片所示效果。若使用其他布局，如RelativeLayout，则需要先初始化RelativeLayout.LayoutParams，使得视图不便控制。</p>
-
-          
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170502Gank2.gif" width = "270" height = "450" alt="效果图"/></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/05/拖拽图片/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -787,7 +939,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -809,7 +961,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

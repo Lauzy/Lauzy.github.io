@@ -1,7 +1,9 @@
 ---
 title: PaleRider
 date: 2017-03-30 11:22:00
-comments: false
+comment: false
+notag: true
+toc: false
 ---
 
 

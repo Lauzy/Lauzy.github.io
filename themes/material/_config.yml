@@ -1,0 +1,200 @@
+# ---------------------------------------------------------------
+# Site Information Settings
+# ---------------------------------------------------------------
+
+# Head info
+head:
+    favicon: "/images/favicon.ico"
+    high_res_favicon: "/images/favicon.ico"
+    apple_touch_icon: "/img/favicon.png"
+    keywords:
+
+# Jump Links Settings
+url:
+    rss: /atom.xml
+    daily_pic: "#"
+    logo: "https://github.com/Lauzy"
+
+
+# ---------------------------------------------------------------
+# Style Settings
+# ---------------------------------------------------------------
+
+# Schemes
+scheme: Paradox
+#scheme: Isolation
+
+# UI & UX: slogan, color, effect
+uiux:
+    slogan:  "Life is like a box of chocolates. "
+    theme_color: "#0097A7"
+    theme_sub_color: "#00838F"
+    hyperlink_color: "#00838F"
+    button_color: "#00838F"
+    android_chrome_color: "#0097A7"
+    nprogress_color: "#29d"
+    nprogress_buffer: "800"
+
+# JS Effect Switches
+js_effect:
+    fade: true
+    smoothscroll: false
+
+# Reading experience
+reading:
+    entry_excerpt: 80
+
+# Thumbnail Settings
+thumbnail:
+    purecolor:
+    random_amount: 19
+
+# Background Settings
+# bing available parameter:
+#     new | color= | type=
+#         color available value: black, blue, brown, green, multi, orange, pink, purple, red, white, yellow
+#         type available value: A (animal), C (culture), N (nature), S (space), T (travel)
+background:
+    purecolor: "#F5F5F5"
+    #bgimg: "/img/bg.png
+    bing:
+        enable: false
+        parameter:
+
+# Images Settings
+img:
+    logo: "/img/hexo_avatar.png"
+    avatar: "/img/hexo_avatar.png"
+    daily_pic: "/img/daily_pic.png"
+    sidebar_header: "/img/sidebar_header.png"
+    footerico: "/img/footer/footer_ico-"
+    random_thumbnail: "/img/random/material-"
+    footer_image: 
+        #hexo_logo:
+            #link: "https://avatars0.githubusercontent.com/u/12727600?v=3&u=5f20c95e891a0df2d4f79f6fa338741de1504676&s=64"
+            #src: "/img/avatar_64.png"
+
+# Custom Fonts
+fonts: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif
+
+# Card Elevation Level
+card_elevation: 2
+
+
+# ---------------------------------------------------------------
+# Menu Settings
+# ---------------------------------------------------------------
+
+# SNS Menu
+sns:
+    email: freedompaladin@email.com
+    #facebook: "https://www.facebook.com/facebook"
+    #twitter: "https://twitter.com/twitter"
+    #googleplus: "https://www.google.com/"
+    weibo: http://www.weibo.com/freedompal
+    instagram:
+    tumblr:
+    github: https://github.com/Lauzy
+    linkedin:
+    zhihu:
+    bilibili:
+    telegram:
+
+# SNS Share Switch
+sns_share:
+    twitter: false
+    facebook: false
+    googleplus: false
+    weibo: true
+    linkedin: false
+    qq: true
+    telegram: false
+
+# Sidebar Customize
+sidebar:
+    dropdown:
+        Email Me:
+            link: "mailto:freedompaladin@email.com"
+            icon: email
+    homepage:
+        use: true
+        icon: home
+        divider: false
+    archives:
+        use: true
+        icon: inbox
+        divider: false
+    categories:
+        use: true
+        icon: chrome_reader_mode
+        divider: true
+    pages:
+        标签:
+            link: "/tags"
+            divider: false
+	
+        关于:
+            link: "/about"
+            divider: false
+
+    article_num:
+        use: true
+        divider: false
+    footer:
+        divider: true
+        theme: true
+        support: false
+        feedback: false
+        material: false
+
+# Qrcode for redirect at other device
+qrcode: true
+
+# ---------------------------------------------------------------
+# Integrated Services
+# ---------------------------------------------------------------
+
+# MaterialCDN
+# When you set 'use' as true, the needed css, js, font file will have a new src.
+# The new src will have the base domain you configured in 'base'.
+materialcdn: 
+    use: true
+    base: http://lauzy.me/
+
+# Comment Systems
+# Available value of "use":
+#     duoshuo | disqus | disqus_click | changyan
+comment:
+    use: disqus_click
+    shortname: lauzy
+    duoshuo_thread_key_type: path
+    duoshuo_embed_js_url: "https://static.duoshuo.com/embed.js"
+    changyan_appid:
+    changyan_conf:
+    changyan_thread_key_type: path
+# Search Systems
+# Available value:
+#     swiftype | google | local
+search:
+    use: local
+    swiftype_key:
+	
+
+# Analytics Systems
+analytics:
+    baidu_id:
+    google_id:
+
+# Leancloud Views
+leancloud:
+    enable: false
+    app_id: #你的 app_id
+    app_key: #你的 app_key
+    av_core_mini: "https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"
+
+# Busuanzi 不蒜子 Views
+busuanzi:
+    enable: false
+    all_site_uv: false
+    post_pv: false
+    busuanzi_pure_mini_js: "https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"

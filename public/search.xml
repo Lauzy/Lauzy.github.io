@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title><![CDATA[Java注解，安卓IOC]]></title>
+      <url>/2017/05/09/Java%E6%B3%A8%E8%A7%A3%EF%BC%8C%E5%AE%89%E5%8D%93IOC/</url>
+      <content type="html"><![CDATA[<h2 id="Java注解-Annotation"><a href="#Java注解-Annotation" class="headerlink" title="Java注解(Annotation)"></a>Java注解(Annotation)</h2>]]></content>
+      
+        <categories>
+            
+            <category> Android </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Android 框架 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[拖拽图片]]></title>
+      <url>/2017/05/05/%E6%8B%96%E6%8B%BD%E5%9B%BE%E7%89%87/</url>
+      <content type="html"><![CDATA[<p>闲来无事，在<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营</a>里又撸了个效果。</p>
+<p>先来一波效果图：</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170502Gank2.gif" width="270" height="450" alt="效果图"></p>
+<a id="more"></a>
+<p>实现方法当然是手势交互，那自然想到OnTouchListener()，流程还是很简单的，继承OnTouchListener，然后重写onTouch方法，由于效果相对简单，这里直接上代码：</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onTouch</span><span class="token punctuation">(</span>View v<span class="token punctuation">,</span> MotionEvent event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token comment" spellcheck="true">//获取View的LayoutParams，注意此种方法仅适合FrameLayout，这里仅是一种简单的实现思路。</span>
+        FrameLayout<span class="token punctuation">.</span>LayoutParams layoutParams <span class="token operator">=</span> <span class="token punctuation">(</span>FrameLayout<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">)</span> v<span class="token punctuation">.</span><span class="token function">getLayoutParams</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span><span class="token function">getActionMasked</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> MotionEvent<span class="token punctuation">.</span>ACTION_DOWN<span class="token operator">:</span>
+            <span class="token comment" spellcheck="true">//获取手指按下时X和Y轴的坐标</span>
+                mOriginalY <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> event<span class="token punctuation">.</span><span class="token function">getRawY</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                mOriginalX <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> event<span class="token punctuation">.</span><span class="token function">getRawX</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> MotionEvent<span class="token punctuation">.</span>ACTION_MOVE<span class="token operator">:</span>
+            <span class="token comment" spellcheck="true">//获取移动的距离</span>
+                mMotionY <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span><span class="token function">getRawY</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> mOriginalY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                mMotionX <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span><span class="token function">getRawX</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> mOriginalX<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//计算缩放比例</span>
+                <span class="token keyword">float</span> ratio <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mMotionY<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">1.0f</span> <span class="token operator">/</span> v<span class="token punctuation">.</span><span class="token function">getHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">float</span> ratioY <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mMotionY<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> v<span class="token punctuation">.</span><span class="token function">getHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token punctuation">(</span>ratio <span class="token operator">&lt;=</span> <span class="token number">0.5f</span> <span class="token operator">?</span> ratio <span class="token operator">:</span> <span class="token number">0.5f</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token number">0.5f</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//根据Y轴变化缩放比例</span>
+                v<span class="token punctuation">.</span><span class="token function">setScaleX</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">-</span> ratioY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                v<span class="token punctuation">.</span><span class="token function">setScaleY</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">-</span> ratioY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//设置layoutParams变化</span>
+                layoutParams<span class="token punctuation">.</span>topMargin <span class="token operator">=</span> mMotionY <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+                layoutParams<span class="token punctuation">.</span>leftMargin <span class="token operator">=</span> mMotionX <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+                layoutParams<span class="token punctuation">.</span>bottomMargin <span class="token operator">=</span> <span class="token operator">-</span>mMotionY <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+                layoutParams<span class="token punctuation">.</span>rightMargin <span class="token operator">=</span> <span class="token operator">-</span>mMotionX <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+                v<span class="token punctuation">.</span><span class="token function">setLayoutParams</span><span class="token punctuation">(</span>layoutParams<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//调用requestLayout 重置布局</span>
+                v<span class="token punctuation">.</span><span class="token function">requestLayout</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//设置透明度最低值</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mMotionY<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">500</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    mContentLayout<span class="token punctuation">.</span><span class="token function">getBackground</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAlpha</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    mCurAlpha <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">//根据移动距离计算透明度</span>
+                    <span class="token keyword">float</span> ratioAlpha <span class="token operator">=</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mMotionY<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">500.0f</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">255</span> <span class="token operator">-</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    mContentLayout<span class="token punctuation">.</span><span class="token function">getBackground</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAlpha</span><span class="token punctuation">(</span><span class="token number">255</span> <span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> ratioAlpha<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    mCurAlpha <span class="token operator">=</span> <span class="token number">255</span> <span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> ratioAlpha<span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> MotionEvent<span class="token punctuation">.</span>ACTION_UP<span class="token operator">:</span>
+            <span class="token keyword">case</span> MotionEvent<span class="token punctuation">.</span>ACTION_CANCEL<span class="token operator">:</span>
+            <span class="token comment" spellcheck="true">//手势抬起或者取消时，若移动距离大于400，实现自定义的接口方法</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mMotionY<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">400</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    mImageEventListener<span class="token punctuation">.</span><span class="token function">onActionBack</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">//无动画返回原状</span>
+                    <span class="token comment" spellcheck="true">/*v.setScaleY(1);
+                    v.setScaleX(1);
+                    layoutParams.topMargin = 0;
+                    layoutParams.bottomMargin = 0;
+                    layoutParams.leftMargin = 0;
+                    layoutParams.rightMargin = 0;
+                    mContentLayout.getBackground().setAlpha(255);*/</span>
+                <span class="token comment" spellcheck="true">//通过一系列动画将View复原</span>
+                    <span class="token function">setScaleAnim</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token function">setMarginAnim</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> layoutParams<span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>LEFT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token function">setMarginAnim</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> layoutParams<span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>RIGHT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token function">setMarginAnim</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> layoutParams<span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>TOP<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token function">setMarginAnim</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> layoutParams<span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>BOTTOM<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    v<span class="token punctuation">.</span><span class="token function">requestLayout</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                ValueAnimator animator <span class="token operator">=</span> ValueAnimator<span class="token punctuation">.</span><span class="token function">ofInt</span><span class="token punctuation">(</span>mCurAlpha<span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                animator<span class="token punctuation">.</span><span class="token function">addUpdateListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ValueAnimator<span class="token punctuation">.</span>AnimatorUpdateListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token annotation punctuation">@Override</span>
+                    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onAnimationUpdate</span><span class="token punctuation">(</span>ValueAnimator animation<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        mContentLayout<span class="token punctuation">.</span><span class="token function">getBackground</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAlpha</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Integer<span class="token punctuation">)</span> animation<span class="token punctuation">.</span><span class="token function">getAnimatedValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                animator<span class="token punctuation">.</span><span class="token function">setDuration</span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">//消费事件</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后在使用的地方直接调用即可：</p>
+<pre class="line-numbers language-java"><code class="language-java">        imageView<span class="token punctuation">.</span><span class="token function">setOnTouchListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">DragImageOnTouchListener</span><span class="token punctuation">(</span>frameLayout<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">DragImageOnTouchListener<span class="token punctuation">.</span>ImageEventListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onActionBack</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">onBackPressed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment" spellcheck="true">//可处理具体的逻辑</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意：此方法是根据LayoutParams重置布局实现，所以使用FrameLayout可达到图片所示效果。若使用其他布局，如RelativeLayout，则需要先初始化RelativeLayout.LayoutParams，使得视图不便控制。<br>具体代码可参考  <a href="https://github.com/Lauzy/LauzyCode" target="_blank" rel="external">我的Github</a> 的<a href="https://github.com/Lauzy/LauzyCode/tree/master/app/src/main/java/com/lauzy/freedom/lauzycode/DragImage" target="_blank" rel="external">DragImage包下</a>,<br>在我的<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营</a> 中也有具体的使用。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Android </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Android 交互 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[LBehavior]]></title>
+      <url>/2017/04/14/Behavior/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。<br>本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了一款<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营的客户端</a>，做的时候采用自定义Behavior实现了整个嵌套滑动，并抽离了出来作为一个lib方便使用。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="先来一波效果图："><a href="#先来一波效果图：" class="headerlink" title="先来一波效果图："></a>先来一波效果图：</h2><p><img src="http://oop6dcmck.bkt.clouddn.com/20170420B01.gif" width="270" height="450" alt="效果图1"><img src="http://oop6dcmck.bkt.clouddn.com/20170420B02.gif" width="270" height="450" alt="效果图2"></p>
+<h2 id="效果实现思路："><a href="#效果实现思路：" class="headerlink" title="效果实现思路："></a>效果实现思路：</h2><ol>
+<li><p>判断手势</p>
+</li>
+<li><p>计算距离</p>
+</li>
+<li><p>触发动画</p>
+</li>
+</ol>
+<h2 id="文章目录："><a href="#文章目录：" class="headerlink" title="文章目录："></a>文章目录：</h2><ol>
+<li>CoordinatorLayout及Behavior简介</li>
+<li>自定义Behavior</li>
+<li>仿知乎效果的动画实现及个性化</li>
+</ol>
+<h2 id="CoordinatorLayout和Behavior简介"><a href="#CoordinatorLayout和Behavior简介" class="headerlink" title="CoordinatorLayout和Behavior简介"></a>CoordinatorLayout和Behavior简介</h2><p>Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了，推荐Loader大神的<a href="http://blog.csdn.net/qibin0506/article/details/50377592" target="_blank" rel="external">源码看CoordinatorLayout.Behavior原理</a>。</p>
+<p>这里简单介绍下，嵌套滑动时父View(需实现NestedScrollingParent接口)和子View(需实现NestedScrollingChild接口)之间的交互是由NestedScrolling两个接口控制，NestedScrollingParentHelper和NestedScrollingChildHelper两个辅助类分别处理了父布局和子View的大量逻辑。</p>
+<p>滑动嵌套的简单流程为：控制子View(如RecyclerView)的onInterceptTouchEvent和onTouchEvent的事件分发 -&gt; 调用NestedScrollingChildHelper不同的方法 -&gt; 处理与NestedScrollingParent交互的逻辑 -&gt; 父布局(如CoordinatorLayout)实现NestedScrollingParent处理具体的逻辑<br> (-&gt; 而Behavior的事件处理方法则主要由CoordinatorLayout的各种事件处理方法来调用，返回值控制了父布局的事件消费情况)。</p>
+<p>具体方法的调用大家可以再研读Loader大神的博客。下边简单介绍下自定义Behavior实现的具体方法<a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html" target="_blank" rel="external">Behavior官网</a>。</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="1-layoutDependsOn"><a href="#1-layoutDependsOn" class="headerlink" title="1.layoutDependsOn"></a>1.layoutDependsOn</h4><p>确定提供的子视图是否具有另一个特定的兄弟视图作为布局依赖关系。即用来确定依赖关系，如果某个控件需要依赖控件，则重写该方法<br>如AppBarLayout</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">layoutDependsOn</span><span class="token punctuation">(</span>CoordinatorLayout parent， View child， View dependency<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> dependency <span class="token keyword">instanceof</span> <span class="token class-name">AppBarLayout</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-onDependentViewChanged"><a href="#2-onDependentViewChanged" class="headerlink" title="2.onDependentViewChanged"></a>2.onDependentViewChanged</h4><p>依赖视图的大小、位置发生变化时调用此方法，重写此方法可以处理child的响应。如常用的AppBarLayout，当其发生变化时，childView会根据重写的方法作出响应。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onDependentViewChanged</span><span class="token punctuation">(</span>CoordinatorLayout parent， View child， View dependency<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">offsetChildAsNeeded</span><span class="token punctuation">(</span>parent， child， dependency<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-onStartNestedScroll"><a href="#3-onStartNestedScroll" class="headerlink" title="3.onStartNestedScroll"></a>3.onStartNestedScroll</h4><p>当CoordinatorLayout的子View开始嵌套滑动时（此处的滑动View必须实现NestedScrollingChild接口），触发此方法。添加Behavior的控件需要为CoordinatorLayout的直接子View，否则不会继续流程。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token comment" spellcheck="true">//判断是否垂直滑动</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onStartNestedScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout， View child， View directTargetChild， View target， <span class="token keyword">int</span> nestedScrollAxes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>nestedScrollAxes <span class="token operator">&amp;</span> ViewCompat<span class="token punctuation">.</span>SCROLL_AXIS_VERTICAL<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-onNestedPreScroll"><a href="#4-onNestedPreScroll" class="headerlink" title="4.onNestedPreScroll"></a>4.onNestedPreScroll</h4><p>此方法中consumed，指的是父布局要消费的滚动距离，consumed[0]为水平方向消耗的距离，consumed[1]为垂直方向消耗的距离，可控制此参数作出相应的调整。<br>如垂直滑动时，若设置consumed[1]=dy，则代表父布局全部消耗了滑动的距离，类似AppBarLayout这种效果，当其由展开到折叠过渡时，通过consumed控制其中的嵌套滑动。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token comment" spellcheck="true">/**
+     * 触发滑动嵌套滚动之前调用的方法
+     *
+     * @param coordinatorLayout coordinatorLayout父布局
+     * @param child             使用Behavior的子View
+     * @param target            触发滑动嵌套的View(实现NestedScrollingChild接口)
+     * @param dx                滑动的X轴距离
+     * @param dy                滑动的Y轴距离
+     * @param consumed          父布局消费的滑动距离，consumed[0]和consumed[1]代表X和Y方向父布局消费的距离，默认为0
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNestedPreScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout， View child， View target， 
+        <span class="token keyword">int</span> dx， <span class="token keyword">int</span> dy， <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> consumed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onNestedPreScroll</span><span class="token punctuation">(</span>coordinatorLayout， child， target， dx， dy， consumed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="5-onNestedScroll"><a href="#5-onNestedScroll" class="headerlink" title="5.onNestedScroll"></a>5.onNestedScroll</h4><p>此方法中dyConsumed代表TargetView消费的距离，如RecyclerView滑动的距离，可通过控制NestScrollingChild的滑动来指定一些动画，<br>本篇博客实现的效果主要就是重写此方法，若根据onNestedPreScroll中dy来判断，则当RecyclerView条目很少时，也会触发逻辑代码，故选择了重写此方法。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token comment" spellcheck="true">/**
+     * 滑动嵌套滚动时触发的方法
+     *
+     * @param coordinatorLayout coordinatorLayout父布局
+     * @param child             使用Behavior的子View
+     * @param target            触发滑动嵌套的View
+     * @param dxConsumed        TargetView消费的X轴距离
+     * @param dyConsumed        TargetView消费的Y轴距离
+     * @param dxUnconsumed      未被TargetView消费的X轴距离
+     * @param dyUnconsumed      未被TargetView消费的Y轴距离(如RecyclerView已经到达顶部或底部，
+     *                而用户继续滑动，此时dyUnconsumed的值不为0，可处理一些越界事件)
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNestedScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout， View child， View target， 
+        <span class="token keyword">int</span> dxConsumed， <span class="token keyword">int</span> dyConsumed， <span class="token keyword">int</span> dxUnconsumed， <span class="token keyword">int</span> dyUnconsumed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onNestedScroll</span><span class="token punctuation">(</span>coordinatorLayout， child， target， 
+            dxConsumed， dyConsumed， dxUnconsumed， dyUnconsumed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="自定义Behavior"><a href="#自定义Behavior" class="headerlink" title="自定义Behavior"></a>自定义Behavior</h2><h3 id="自定义Behavior主要有两种实现方式："><a href="#自定义Behavior主要有两种实现方式：" class="headerlink" title="自定义Behavior主要有两种实现方式："></a>自定义Behavior主要有两种实现方式：</h3><p>第一种为layoutDependsOn和onDependentViewChanged，child需要依赖于dependency，当dependency View发生变化时，onDependentViewChanged会被调用，child可作出响应的响应。<br>第二种为onStartNestedScroll 等嵌套滑动的流程，首先在onStartNestedScroll方法中判断是否垂直滑动等，然后在onNestedPreScroll、onNestedScroll等方法中实现效果。<br>由于第一种方式会导致child必须依赖于某个特定的View，这样就导致灵活性不太强，所以本文采用第二种实现方式。</p>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>在嵌套滑动开始之前，可以判断是否垂直滑动，做一些初始化工作，比如获取childView的初始坐标。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token comment" spellcheck="true">//判断垂直滑动</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onStartNestedScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout<span class="token punctuation">,</span> View child<span class="token punctuation">,</span> View directTargetChild<span class="token punctuation">,</span> View target<span class="token punctuation">,</span> <span class="token keyword">int</span> nestedScrollAxes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>isInit<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">// 设置标记，防止new Anim导致的parent和child坐标变化</span>
+            mCommonAnim <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LTitleBehaviorAnim</span><span class="token punctuation">(</span>child<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            isInit <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>nestedScrollAxes <span class="token operator">&amp;</span> ViewCompat<span class="token punctuation">.</span>SCROLL_AXIS_VERTICAL<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>触发嵌套滑动之前，可以在此处判断一些滑动手势，以及父布局的消费情况。由于若根据此方法中dy来判断，则当RecyclerView条目很少时，也会触发逻辑代码，故本文只是在此方法中给动画做一些自定义操作。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNestedPreScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout<span class="token punctuation">,</span> View child<span class="token punctuation">,</span> View target<span class="token punctuation">,</span> <span class="token keyword">int</span> dx<span class="token punctuation">,</span> <span class="token keyword">int</span> dy<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> consumed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>mCommonAnim <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            mCommonAnim<span class="token punctuation">.</span><span class="token function">setDuration</span><span class="token punctuation">(</span>mDuration<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            mCommonAnim<span class="token punctuation">.</span><span class="token function">setInterpolator</span><span class="token punctuation">(</span>mInterpolator<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onNestedPreScroll</span><span class="token punctuation">(</span>coordinatorLayout<span class="token punctuation">,</span> child<span class="token punctuation">,</span> target<span class="token punctuation">,</span> dx<span class="token punctuation">,</span> dy<span class="token punctuation">,</span> consumed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>滑动嵌套滚动时触发的方法，以Title(Toolbar)为例，若向上滑动，则隐藏Toolbar，反之显示。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNestedScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout<span class="token punctuation">,</span> View child<span class="token punctuation">,</span> View target<span class="token punctuation">,</span> <span class="token keyword">int</span> dxConsumed<span class="token punctuation">,</span> <span class="token keyword">int</span> dyConsumed<span class="token punctuation">,</span> <span class="token keyword">int</span> dxUnconsumed<span class="token punctuation">,</span> <span class="token keyword">int</span> dyUnconsumed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onNestedScroll</span><span class="token punctuation">(</span>coordinatorLayout<span class="token punctuation">,</span> child<span class="token punctuation">,</span> target<span class="token punctuation">,</span> dxConsumed<span class="token punctuation">,</span> dyConsumed<span class="token punctuation">,</span> dxUnconsumed<span class="token punctuation">,</span> dyUnconsumed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>dyConsumed <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>isHide<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                mCommonAnim<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                isHide <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>dyConsumed <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isHide<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                mCommonAnim<span class="token punctuation">.</span><span class="token function">hide</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                isHide <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="仿知乎效果的动画实现及个性化"><a href="#仿知乎效果的动画实现及个性化" class="headerlink" title="仿知乎效果的动画实现及个性化"></a>仿知乎效果的动画实现及个性化</h2><p>大家都知道知乎客户端的各种动画非常优雅，网上仿写其动画的博客也是层出不穷，之前利用空闲时间撸了一款<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营客户端</a>，突然想到了采用知乎的首页效果，然后就拿起键盘，复制粘贴搞了起来。<br>开个玩笑，其实大致实现效果还是比较容易的，这里主要分享下实现的思路以及需要注意的细节。</p>
+<p>首先大致流程就如上边几个方法介绍，动画效果的实现也非常简单，这里以显示和隐藏BottomView为例，直接上代码。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token keyword">public</span> <span class="token function">LBottomBehaviorAnim</span><span class="token punctuation">(</span>View bottomView<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        mBottomView <span class="token operator">=</span> bottomView<span class="token punctuation">;</span>
+        mOriginalY <span class="token operator">=</span> mBottomView<span class="token punctuation">.</span><span class="token function">getY</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//因为Y值随动画会发生变化，嵌套滑动开始之前先记录初始的坐标。</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//显示</span>
+        ValueAnimator animator <span class="token operator">=</span> ValueAnimator<span class="token punctuation">.</span><span class="token function">ofFloat</span><span class="token punctuation">(</span>mBottomView<span class="token punctuation">.</span><span class="token function">getY</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> mOriginalY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        animator<span class="token punctuation">.</span><span class="token function">setDuration</span><span class="token punctuation">(</span><span class="token function">getDuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        animator<span class="token punctuation">.</span><span class="token function">setInterpolator</span><span class="token punctuation">(</span><span class="token function">getInterpolator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        animator<span class="token punctuation">.</span><span class="token function">addUpdateListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ValueAnimator<span class="token punctuation">.</span>AnimatorUpdateListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onAnimationUpdate</span><span class="token punctuation">(</span>ValueAnimator valueAnimator<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                mBottomView<span class="token punctuation">.</span><span class="token function">setY</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Float<span class="token punctuation">)</span> valueAnimator<span class="token punctuation">.</span><span class="token function">getAnimatedValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        animator<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">hide</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//隐藏</span>
+        ValueAnimator animator <span class="token operator">=</span> ValueAnimator<span class="token punctuation">.</span><span class="token function">ofFloat</span><span class="token punctuation">(</span>mBottomView<span class="token punctuation">.</span><span class="token function">getY</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> mOriginalY <span class="token operator">+</span> mBottomView<span class="token punctuation">.</span><span class="token function">getHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        animator<span class="token punctuation">.</span><span class="token function">setDuration</span><span class="token punctuation">(</span><span class="token function">getDuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        animator<span class="token punctuation">.</span><span class="token function">setInterpolator</span><span class="token punctuation">(</span><span class="token function">getInterpolator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        animator<span class="token punctuation">.</span><span class="token function">addUpdateListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ValueAnimator<span class="token punctuation">.</span>AnimatorUpdateListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onAnimationUpdate</span><span class="token punctuation">(</span>ValueAnimator valueAnimator<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                mBottomView<span class="token punctuation">.</span><span class="token function">setY</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Float<span class="token punctuation">)</span> valueAnimator<span class="token punctuation">.</span><span class="token function">getAnimatedValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        animator<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>整个大致流程这样其实已经结束了，但是还达不到我们预期的效果。再次打开知乎客户端，以很缓慢的速度滑一滑，这时候你会发现竟然没有触发动画，OK，先记录下这个问题；再以很缓慢的速度向下滑，突然又触发动画了。整体来看，知乎的动画有种分层嵌套的效果。</p>
+<p>先来解决第一个问题，只用加一行代码，即dyConsumed距离大于一定值的时候才允许滑动。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token keyword">if</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>dyConsumed<span class="token punctuation">)</span> <span class="token operator">></span> minScrollY<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment" spellcheck="true">//onNestedScroll里边的逻辑代码</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于第二个问题，我一开始想，滑动一定的距离，难道要根据判断RecyclerView滑动的距离来判断是否触发动画？其实思路是正确的，但是我们不可能再去实现addOnScrollListener的一系列方法。这时候再想一想嵌套滑动，dyConsumed不就是recyclerView消费的距离吗，想到这里，那就很好实现了，只用将dyConsumed相加，相加的和大于一定值，就触发动画，代码也是很简单，结合第一个问题，知乎的效果就实现了。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    mTotalScrollY <span class="token operator">+=</span> dyConsumed<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//累加消费的距离</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>dyConsumed<span class="token punctuation">)</span> <span class="token operator">></span> minScrollY <span class="token operator">||</span> Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mTotalScrollY<span class="token punctuation">)</span> <span class="token operator">></span> scrollYDistance<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment" spellcheck="true">//onNestedScroll里边的逻辑代码</span>
+        mTotalScrollY <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//动画执行完毕后重置</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接下来我们可以自定义设置一些属性值。首先要获取这个Behavior对象。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token keyword">public</span> <span class="token keyword">static</span> CommonBehavior <span class="token function">from</span><span class="token punctuation">(</span>View view<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ViewGroup<span class="token punctuation">.</span>LayoutParams params <span class="token operator">=</span> view<span class="token punctuation">.</span><span class="token function">getLayoutParams</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>params <span class="token keyword">instanceof</span> <span class="token class-name">CoordinatorLayout<span class="token punctuation">.</span>LayoutParams</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"The view is not a child of CoordinatorLayout"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        CoordinatorLayout<span class="token punctuation">.</span>Behavior behavior <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>CoordinatorLayout<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">)</span> params<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getBehavior</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>behavior <span class="token keyword">instanceof</span> <span class="token class-name">CommonBehavior</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"The view's behavior isn't an instance of CommonBehavior. Try to check the [app:layout_behavior]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>CommonBehavior<span class="token punctuation">)</span> behavior<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后可以设置对象的属性：</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    <span class="token keyword">public</span> CommonBehavior <span class="token function">setDuration</span><span class="token punctuation">(</span><span class="token keyword">int</span> duration<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        mDuration <span class="token operator">=</span> duration<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> CommonBehavior <span class="token function">setInterpolator</span><span class="token punctuation">(</span>Interpolator interpolator<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        mInterpolator <span class="token operator">=</span> interpolator<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> CommonBehavior <span class="token function">setMinScrollY</span><span class="token punctuation">(</span><span class="token keyword">int</span> minScrollY<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>minScrollY <span class="token operator">=</span> minScrollY<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> CommonBehavior <span class="token function">setScrollYDistance</span><span class="token punctuation">(</span><span class="token keyword">int</span> scrollYDistance<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>scrollYDistance <span class="token operator">=</span> scrollYDistance<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>至此，整个流程已经实现了，其他TitleView及悬浮按钮的动画也是类似的规则，我又给Behavior和动画设置了Common类剔除掉一些重复代码，这里就不贴出来了。具体可以参考<a href="https://github.com/Lauzy/LBehavior" target="_blank" rel="external">我的Github</a></p>
+<p>动画已经实现，但是写代码的时候坑貌似永远是填不完的。</p>
+<p>当我使用写出来的动画时，就发现了一个问题，由于是CoordinatorLayout作为根布局，所以RecyclerView顶部的item被toolbar遮挡了，<br>我们再看看知乎，轻轻滑动一小段距离，发现他的顶部Toolbar遮挡的地方其实是空白，可以发现知乎其实也是有这个问题的，不过人家处理的很好，所以用户基本上不会发现。<br>不过这个问题还是可以解决的，比如判断item为第一个时，可以加一个View填充，个人采用的自定义ItemDecoration，判断下若为第一个item，outRect.set(0, titleHeight, 0, 0)，设置titleHeight的大小即可。BottomView也是同理，解决方法也是有不少的。</p>
+<p>还有一个问题是写demo的时候发现的，我用LinearLayout作为BottomView，发现浮动按钮竟然是在LinearLayout上层执行各种动画，看起来不太和谐，后来发现FloatingActionButton的elevation若大于BottomView的elevation，则FloatingActionButton动画覆盖在BottomView上层，反之则在下层。之前却一直没有注意。</p>
+<p>此外，当知乎的RecyclerView滑动到底部的时候，BottomView是会自动显示的，个人觉得可以根据dyUnconsumed的值或者onStopNestedScroll来判断RecyclerView是否滑动到底部来处理，全部加载完毕后再处理最后一个item的ItemDecoration，本文并没有具体实现，只是提供思路。</p>
+<p>我们再来整理下解决问题的思路：首先想好做什么，然后研究原理，选择方案，再初步实现，继续优化细节，最后应用到项目。我想我们写程序的时候都应该这样，知其然知其所以然，做到举一反三。</p>
+<p>整个流程就是这样，实现后再封装，然后呢，抽离出来提交到Github。</p>
+<pre class="line-numbers language-java"><code class="language-java">
+    allprojects <span class="token punctuation">{</span>
+        repositories <span class="token punctuation">{</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+            maven <span class="token punctuation">{</span> url <span class="token string">'https://jitpack.io'</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    dependencies <span class="token punctuation">{</span>
+        compile <span class="token string">'com.github.Lauzy:LBehavior:1.0.1'</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>具体使用也很简单</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@string/title_view_behavior</td>
+<td>顶部标题栏</td>
+</tr>
+<tr>
+<td>@string/bottom_view_behavior</td>
+<td>底部导航栏</td>
+</tr>
+<tr>
+<td>@string/fab_scale_behavior</td>
+<td>浮动按钮（缩放）</td>
+</tr>
+<tr>
+<td>@string/fab_vertical_behavior</td>
+<td>浮动按钮（上下滑动）</td>
+</tr>
+</tbody>
+</table>
+<p>自定义(均设有默认值，可不使用)：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>setMinScrollY</td>
+<td>int y</td>
+<td>设置触发动画的最小滑动距离，如 setMinScrollY(10)为滑动10像素才可触发动画，默认为5.</td>
+</tr>
+<tr>
+<td>setScrollYDistance</td>
+<td>int y</td>
+<td>设置触发动画的滑动距离，防止用户缓慢滑动时单次滑动距离一直小于setMinScrollY的最小滑动距离导致无法触发动画.如设置此值为100，则用户即便缓慢滑动，当滑动距离达到100时也可触发动画.默认为40.</td>
+</tr>
+<tr>
+<td>setDuration</td>
+<td>int duration</td>
+<td>设置动画持续时间.默认为400ms.</td>
+</tr>
+<tr>
+<td>setInterpolator</td>
+<td>Interpolator interpolator</td>
+<td>设置动画插补器，修饰动画效果.默认模式为LinearOutSlowInInterpolator. <a href="https://developer.android.google.cn/reference/android/view/animation/Interpolator.html" target="_blank" rel="external">Interpolator官方文档</a></td>
+</tr>
+</tbody>
+</table>
+<pre class="line-numbers language-java"><code class="language-java">
+    CommonBehavior<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>mFloatingActionButton<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">setMinScrollY</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">setScrollYDistance</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">setDuration</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">setInterpolator</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">LinearOutSlowInInterpolator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最后附上项目的地址，戳  <a href="https://github.com/Lauzy/LBehavior" target="_blank" rel="external">我的Github</a> ，顺便可以看看撸的<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营客户端</a>。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Android </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 自定义View </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[沉浸、透明及白底黑字状态栏技巧]]></title>
+      <url>/2017/03/30/%E9%80%8F%E6%98%8E(%E6%B2%89%E6%B5%B8)%E7%8A%B6%E6%80%81%E6%A0%8F/</url>
+      <content type="html"><![CDATA[<p>我们知道，Android5.0以上已经可以通过设置colorPrimaryDark来改变状态栏的颜色。但是，大多数Android开发者都会遇到让系统状态栏透明或者半透明的需求，如下图所示:</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C.png" alt="透明"></p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E5%8D%8A%E9%80%8F%E6%98%8E.png" alt="半透明"></p>
+<a id="more"></a>
+<p>读这篇文章之前建议研读郭神的<a href="http://blog.csdn.net/guolin_blog/article/details/51763825" target="_blank" rel="external">Android状态栏微技巧，带你真正理解沉浸式模式</a>。这里我们坚决不考虑4.4以下的系统，那么基本上可以分为几种情况，4.4、 5.0以上6.0以下、 6.0+。</p>
+<p>本篇文章目录：<br>1.透明与半透明状态栏<br>2.结合Toolbar使用技巧<br>3.白底黑字状态栏<br>4.其他注意事项</p>
+<h2 id="透明与半透明状态栏"><a href="#透明与半透明状态栏" class="headerlink" title="透明与半透明状态栏"></a>透明与半透明状态栏</h2><p>首先我们实现上边两图的效果，注意下版本的判断，直接上代码：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>LOLLIPOP<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    View decorView <span class="token operator">=</span> <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDecorView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> option <span class="token operator">=</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_STABLE<span class="token punctuation">;</span>
+    decorView<span class="token punctuation">.</span><span class="token function">setSystemUiVisibility</span><span class="token punctuation">(</span>option<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setStatusBarColor</span><span class="token punctuation">(</span>Color<span class="token punctuation">.</span>TRANSPARENT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//getWindow().setStatusBarColor(Color.parseColor("#40000000"));  //此种效果为类似QQ的半透明状态栏</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>KITKAT<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setFlags</span><span class="token punctuation">(</span>WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>FLAG_TRANSLUCENT_STATUS<span class="token punctuation">,</span> WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>FLAG_TRANSLUCENT_STATUS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>版本号为21以上时，效果便如上边两图所示，4.4系统则如下图所示：</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E9%80%8F%E6%98%8E4.4%E6%95%88%E6%9E%9C.png" alt="4.4效果"></p>
+<h2 id="结合标题栏使用的技巧"><a href="#结合标题栏使用的技巧" class="headerlink" title="结合标题栏使用的技巧"></a>结合标题栏使用的技巧</h2><p>上述方法基本上已经实现了透明状态栏的效果，但是我们添加一个Toolbar，设置各种属性后，各种元素都上移了，如下图所示：</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E4%B8%8D%E8%AE%BE%E7%BD%AEPadding%E6%95%88%E6%9E%9C.png" alt="上移效果"></p>
+<p>部分开发者用android:fitsSystemWindows = “true”，然后给状态栏添加一个View来解决，经本人各种实验后，发现这种方法不太适合自己。<br>这里采用一个比较直接的方式，设置透明后相当于toolbar已经被拉长，所以为其设置一个padding值来解决问题，代码如下，ScreenUtils为获取屏幕属性的一个工具类：</p>
+<pre class="line-numbers language-java"><code class="language-java">mToolbar <span class="token operator">=</span> <span class="token punctuation">(</span>Toolbar<span class="token punctuation">)</span> <span class="token function">findViewById</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>toolbar_common<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>mToolbar <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    mToolbar<span class="token punctuation">.</span><span class="token function">getLayoutParams</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>height <span class="token operator">+=</span> ScreenUtils<span class="token punctuation">.</span><span class="token function">getStatusHeight</span><span class="token punctuation">(</span><span class="token function">getApplicationContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mToolbar<span class="token punctuation">.</span><span class="token function">setPadding</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> ScreenUtils<span class="token punctuation">.</span><span class="token function">getStatusHeight</span><span class="token punctuation">(</span><span class="token function">getApplicationContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">setSupportActionBar</span><span class="token punctuation">(</span>mToolbar<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ActionBar supportActionBar <span class="token operator">=</span> <span class="token function">getSupportActionBar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>supportActionBar <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        supportActionBar<span class="token punctuation">.</span><span class="token function">setDisplayShowTitleEnabled</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//此处是为了不显示默认的标题</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>设置之后，就达到我们想要的效果了。</p>
+<h2 id="白底黑字状态栏"><a href="#白底黑字状态栏" class="headerlink" title="白底黑字状态栏"></a>白底黑字状态栏</h2><p>有时候我们的toolbar背景为浅色甚至是白色，如果不加修饰的话，状态栏的文字由于默认白色，导致很难分辨。6.0以上系统直接提供了方法，但是考虑到其他版本，需要具体判断:</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">//设置状态栏文字为暗色</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>M<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//6.0以上可以通过直接设置SYSTEM_UI_FLAG_LIGHT_STATUS_BAR属性即可。</span>
+    <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDecorView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setSystemUiVisibility</span><span class="token punctuation">(</span>View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LIGHT_STATUS_BAR<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>LOLLIPOP<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setStatusBarColor</span><span class="token punctuation">(</span>Color<span class="token punctuation">.</span>GRAY<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//21以上不支持6.0直接设置的方法，可用灰色代替，具体可自己设置</span>
+    <span class="token comment" spellcheck="true">//getWindow().setStatusBarColor(Color.parseColor("#40000000"));</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span>  <span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>JELLY_BEAN<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDecorView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setSystemUiVisibility</span><span class="token punctuation">(</span>View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//4.4版本本身就含有暗色阴影，不作其他处理即可</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>效果图如下：<br>6.0效果：<img src="http://oop6dcmck.bkt.clouddn.com/20170421%E7%99%BD%E8%89%B26.0%E6%95%88%E6%9E%9C.png" alt="6.0白色"><br>5.0以上6.0以下： <img src="http://oop6dcmck.bkt.clouddn.com/201704215.0%E4%BB%A5%E4%B8%8A6.0%E4%BB%A5%E4%B8%8B%E7%99%BD%E8%89%B2.png" alt="5.0以上6.0以下"><br>4.4效果： <img src="http://oop6dcmck.bkt.clouddn.com/20170421%E7%99%BD%E8%89%B24.4%E6%95%88%E6%9E%9C.png" alt="4.4效果"></p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>上述方法基本上已经可以满足大部分需求了，效果都可以称为(半)透明状态栏。下边看看真正的沉浸式状态栏，状态栏文字和导航栏都被隐藏：</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E6%B2%89%E6%B5%B8.png" alt="沉浸"></p>
+<p>代码如下：</p>
+<pre class="line-numbers language-java"><code class="language-java">
+<span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onWindowFocusChanged</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> hasFocus<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onWindowFocusChanged</span><span class="token punctuation">(</span>hasFocus<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>hasFocus <span class="token operator">&amp;&amp;</span> Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>KITKAT<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        View decorView <span class="token operator">=</span> <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDecorView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        decorView<span class="token punctuation">.</span><span class="token function">setSystemUiVisibility</span><span class="token punctuation">(</span>
+        View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_STABLE
+        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_FULLSCREEN
+        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_IMMERSIVE_STICKY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>实际开发中，我们当然不可能每个Activity中都写一大堆重复的代码，所以建议讲透明状态栏的代码封装在BaseActivity中，然后Toolbar设置相同的id，或者使用<include>标签公用，自定义的一个布局或者其他View也是同理。<br>Demo中做了一些简单的封装，可以参考下，具体实现还是需要看具体的需求。</include></p>
+<p>本文所有代码的地址,戳 <a href="https://github.com/Lauzy/LauzyCode" target="_blank" rel="external">我的Github</a> ，在StatusBar包中。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Android </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Android Tips </tag>
+            
+        </tags>
+        
+    </entry>
+    
+  
+  
+</search>

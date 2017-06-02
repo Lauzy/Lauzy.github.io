@@ -90,5 +90,5 @@ theme: material
 # https://github.com/Lauzy/Lauzy.github.io.git
 deploy:
   type:  git
-  repository:  https://github.com/Lauzy/Lauzy.github.io.git
+  repository:  ssh://git@github.com:Lauzy/Lauzy.github.io.git
   branch:  master

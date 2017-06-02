@@ -86,7 +86,9 @@ theme: material
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
+# git@github.com:Lauzy/Lauzy.github.io.git
+# https://github.com/Lauzy/Lauzy.github.io.git
 deploy:
-  type: git
-  repository: git@github.com:Lauzy/Lauzy.github.io.git
-  branch: master
+  type:  git
+  repository:  https://github.com/Lauzy/Lauzy.github.io.git
+  branch:  master

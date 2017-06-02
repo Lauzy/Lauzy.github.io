@@ -46,7 +46,7 @@ reading:
 
 # Thumbnail Settings
 thumbnail:
-    purecolor:
+    #purecolor:
     random_amount: 19
 
 # Background Settings
@@ -56,7 +56,7 @@ thumbnail:
 #         type available value: A (animal), C (culture), N (nature), S (space), T (travel)
 background:
     purecolor: "#F5F5F5"
-    #bgimg: "/img/bg.png
+    bgimg: "/img/md_bg.jpg"
     bing:
         enable: false
         parameter:

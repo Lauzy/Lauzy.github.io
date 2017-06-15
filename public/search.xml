@@ -5,7 +5,50 @@
     <entry>
       <title><![CDATA[Java注解，安卓IOC]]></title>
       <url>/2017/05/09/Java%E6%B3%A8%E8%A7%A3%EF%BC%8C%E5%AE%89%E5%8D%93IOC/</url>
-      <content type="html"><![CDATA[<h2 id="Java注解-Annotation"><a href="#Java注解-Annotation" class="headerlink" title="Java注解(Annotation)"></a>Java注解(Annotation)</h2>]]></content>
+      <content type="html"><![CDATA[<h2 id="Java注解-Annotation"><a href="#Java注解-Annotation" class="headerlink" title="Java注解(Annotation)"></a>Java注解(Annotation)</h2><p>Java注解，指的是代码里边的特殊标记，可以在编译、运行时被读取，并执行相应的处理。Annotation可用于修饰包、类、构造器、方法、变量等。</p>
+<h3 id="Annotation-类型"><a href="#Annotation-类型" class="headerlink" title="Annotation 类型"></a>Annotation 类型</h3><h4 id="基本Annotation"><a href="#基本Annotation" class="headerlink" title="基本Annotation"></a>基本Annotation</h4><p>Java中5个基本的注解分别为：</p>
+<ul>
+<li>@Override  ————  用来限定子类重写父类的方法。</li>
+<li>@Deprecated  ————  标记已经过时的方法。</li>
+<li>@SuppressWarnings  ————  抑制编译器的警告。</li>
+<li>@SafeVarargs  ————  Java7 抑制“堆污染”警告，可变参数与泛型类一起使用会出现类型安全警告，若开发人员确信不会出现问题，可用此注解进行声明。</li>
+<li>@FunctionalInterface  ————  Java8 函数式接口，检测指定某个接口中只有一个抽象方法。</li>
+</ul>
+<h4 id="元Annotation"><a href="#元Annotation" class="headerlink" title="元Annotation"></a>元Annotation</h4><p>元Annotation是用来修饰其他注解定义，即注解其他注解。<br>Java中有6种元注解，其中@Native注解一般用于给IDE工具做提示用。下边具体介绍其他几种注解。</p>
+<p>1、@Retention：指定本修饰的注解可以保留多长时间。包含了一个RetentionPolicy类的value值，所以需指定该value的值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Documented</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>ANNOTATION_TYPE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Retention</span> <span class="token punctuation">{</span>
+    RetentionPolicy <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>RetentionPolicy.CLASS  ————  默认值，编译器将注解记录在字节码文件中，程序运行时，JVM不保留注解信息。</li>
+<li>RetentionPolicy.RUNTIME  ————  编译器将注解记录在字节码文件中，程序运行时，JVM可以获得注解信息，可通过反射获取该注解的信息。</li>
+<li>RetentionPolicy.SOURCE  ————  注解只保留在源代码中，编译器直接丢弃。</li>
+</ul>
+<p>2、@Target：指定被修饰的注解能用于哪些程序元素。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Documented</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>ANNOTATION_TYPE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Target</span> <span class="token punctuation">{</span>
+    ElementType<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>ElementType.ANNOTATION_TYPE: 修饰Annotation。</li>
+<li>ElementType.TYPE: 修饰类、接口（包括注解类型）、枚举。</li>
+<li>ElementType.FIELD: 修饰成员变量。</li>
+<li>ElementType.METHOD: 修饰方法定义。</li>
+<li>ElementType.PARAMETER: 修饰参数定义。</li>
+<li>ElementType.CONSTRUCTOR: 修饰构造方法。</li>
+<li>ElementType.LOCAL_VARIABLE: 修饰局部变量。</li>
+<li>ElementType.PACKAGE: 修饰包定义。</li>
+</ul>
+<p>3、@Documented：被该注解修饰的注解会被javadoc工具提取成文档。如果一个注解由@Documented修饰，则使用该注解的程序api文档中会包含该注解的说明。</p>
+<p>4、@Inherited: 此注解修饰的注解具有继承性。若@XXX被@Inherited修饰，则使用@XXX注解的类具有继承性，其子类自动被@XXX修饰。</p>
+]]></content>
       
         <categories>
             

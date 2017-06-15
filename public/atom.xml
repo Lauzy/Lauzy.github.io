@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lauzy.github.io/"/>
-  <updated>2017-05-27T08:49:44.404Z</updated>
+  <updated>2017-06-15T15:12:41.004Z</updated>
   <id>http://lauzy.github.io/</id>
   
   <author>
@@ -20,13 +20,56 @@
     <link href="http://lauzy.github.io/2017/05/09/Java%E6%B3%A8%E8%A7%A3%EF%BC%8C%E5%AE%89%E5%8D%93IOC/"/>
     <id>http://lauzy.github.io/2017/05/09/Java注解，安卓IOC/</id>
     <published>2017-05-09T14:43:44.000Z</published>
-    <updated>2017-05-27T08:49:44.404Z</updated>
+    <updated>2017-06-15T15:12:41.004Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="Java注解-Annotation"><a href="#Java注解-Annotation" class="headerlink" title="Java注解(Annotation)"></a>Java注解(Annotation)</h2>]]></content>
+    <content type="html"><![CDATA[<h2 id="Java注解-Annotation"><a href="#Java注解-Annotation" class="headerlink" title="Java注解(Annotation)"></a>Java注解(Annotation)</h2><p>Java注解，指的是代码里边的特殊标记，可以在编译、运行时被读取，并执行相应的处理。Annotation可用于修饰包、类、构造器、方法、变量等。</p>
+<h3 id="Annotation-类型"><a href="#Annotation-类型" class="headerlink" title="Annotation 类型"></a>Annotation 类型</h3><h4 id="基本Annotation"><a href="#基本Annotation" class="headerlink" title="基本Annotation"></a>基本Annotation</h4><p>Java中5个基本的注解分别为：</p>
+<ul>
+<li>@Override  ————  用来限定子类重写父类的方法。</li>
+<li>@Deprecated  ————  标记已经过时的方法。</li>
+<li>@SuppressWarnings  ————  抑制编译器的警告。</li>
+<li>@SafeVarargs  ————  Java7 抑制“堆污染”警告，可变参数与泛型类一起使用会出现类型安全警告，若开发人员确信不会出现问题，可用此注解进行声明。</li>
+<li>@FunctionalInterface  ————  Java8 函数式接口，检测指定某个接口中只有一个抽象方法。</li>
+</ul>
+<h4 id="元Annotation"><a href="#元Annotation" class="headerlink" title="元Annotation"></a>元Annotation</h4><p>元Annotation是用来修饰其他注解定义，即注解其他注解。<br>Java中有6种元注解，其中@Native注解一般用于给IDE工具做提示用。下边具体介绍其他几种注解。</p>
+<p>1、@Retention：指定本修饰的注解可以保留多长时间。包含了一个RetentionPolicy类的value值，所以需指定该value的值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Documented</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>ANNOTATION_TYPE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Retention</span> <span class="token punctuation">{</span>
+    RetentionPolicy <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>RetentionPolicy.CLASS  ————  默认值，编译器将注解记录在字节码文件中，程序运行时，JVM不保留注解信息。</li>
+<li>RetentionPolicy.RUNTIME  ————  编译器将注解记录在字节码文件中，程序运行时，JVM可以获得注解信息，可通过反射获取该注解的信息。</li>
+<li>RetentionPolicy.SOURCE  ————  注解只保留在源代码中，编译器直接丢弃。</li>
+</ul>
+<p>2、@Target：指定被修饰的注解能用于哪些程序元素。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Documented</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>ANNOTATION_TYPE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Target</span> <span class="token punctuation">{</span>
+    ElementType<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>ElementType.ANNOTATION_TYPE: 修饰Annotation。</li>
+<li>ElementType.TYPE: 修饰类、接口（包括注解类型）、枚举。</li>
+<li>ElementType.FIELD: 修饰成员变量。</li>
+<li>ElementType.METHOD: 修饰方法定义。</li>
+<li>ElementType.PARAMETER: 修饰参数定义。</li>
+<li>ElementType.CONSTRUCTOR: 修饰构造方法。</li>
+<li>ElementType.LOCAL_VARIABLE: 修饰局部变量。</li>
+<li>ElementType.PACKAGE: 修饰包定义。</li>
+</ul>
+<p>3、@Documented：被该注解修饰的注解会被javadoc工具提取成文档。如果一个注解由@Documented修饰，则使用该注解的程序api文档中会包含该注解的说明。</p>
+<p>4、@Inherited: 此注解修饰的注解具有继承性。若@XXX被@Inherited修饰，则使用@XXX注解的类具有继承性，其子类自动被@XXX修饰。</p>
+]]></content>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;Java注解-Annotation&quot;&gt;&lt;a href=&quot;#Java注解-Annotation&quot; class=&quot;headerlink&quot; title=&quot;Java注解(Annotation)&quot;&gt;&lt;/a&gt;Java注解(Annotation)&lt;/h2&gt;
+      &lt;h2 id=&quot;Java注解-Annotation&quot;&gt;&lt;a href=&quot;#Java注解-Annotation&quot; class=&quot;headerlink&quot; title=&quot;Java注解(Annotation)&quot;&gt;&lt;/a&gt;Java注解(Annotation)&lt;/h2&gt;&lt;p&gt;Java注解，指
     
     </summary>
     
@@ -42,7 +85,7 @@
     <link href="http://lauzy.github.io/2017/05/05/%E6%8B%96%E6%8B%BD%E5%9B%BE%E7%89%87/"/>
     <id>http://lauzy.github.io/2017/05/05/拖拽图片/</id>
     <published>2017-05-05T07:34:59.000Z</published>
-    <updated>2017-05-27T08:49:29.466Z</updated>
+    <updated>2017-06-15T13:04:17.815Z</updated>
     
     <content type="html"><![CDATA[<p>闲来无事，在<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营</a>里又撸了个效果。</p>
 <p>先来一波效果图：</p>
@@ -157,7 +200,7 @@
     <link href="http://lauzy.github.io/2017/04/14/Behavior/"/>
     <id>http://lauzy.github.io/2017/04/14/Behavior/</id>
     <published>2017-04-14T08:25:46.000Z</published>
-    <updated>2017-05-27T08:49:14.066Z</updated>
+    <updated>2017-05-09T14:42:07.720Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。<br>本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了一款<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营的客户端</a>，做的时候采用自定义Behavior实现了整个嵌套滑动，并抽离了出来作为一个lib方便使用。</p>
@@ -480,7 +523,7 @@
     <link href="http://lauzy.github.io/2017/03/30/%E9%80%8F%E6%98%8E(%E6%B2%89%E6%B5%B8)%E7%8A%B6%E6%80%81%E6%A0%8F/"/>
     <id>http://lauzy.github.io/2017/03/30/透明(沉浸)状态栏/</id>
     <published>2017-03-30T01:25:46.000Z</published>
-    <updated>2017-04-21T09:21:33.734Z</updated>
+    <updated>2017-05-09T14:42:07.728Z</updated>
     
     <content type="html"><![CDATA[<p>我们知道，Android5.0以上已经可以通过设置colorPrimaryDark来改变状态栏的颜色。但是，大多数Android开发者都会遇到让系统状态栏透明或者半透明的需求，如下图所示:</p>
 <p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C.png" alt="透明"></p>

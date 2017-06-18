@@ -61,6 +61,87 @@ public @interface Target {
 - ElementType.LOCAL_VARIABLE: 修饰局部变量。
 - ElementType.PACKAGE: 修饰包定义。
 
+在Java8中新增了两个ElementType参数，用来限定哪些类型可以标注
+- ElementType.TYPE_PARAMETER:  类型变量
+- ElementType.TYPE_USE:  使用类型的任何语句
+
+TYPE_PARAMETER举例，若要对泛型进行标注，则定义注解时需设定Target为TYPE_PARAMETER：
+
+```java
+@Target(ElementType.TYPE_PARAMETER)
+public @interface Animal{}
+
+public class Zoo<@Animal T>{
+	...
+}
+```
+
+TYPE_USE可用于标注各种使用到类型的地方，举例如下(上述例子可以将TYPE_PARAMETER改为TYPE_USE)：
+
+```java
+
+定义：
+@Target(ElementType.TYPE_USE)
+public interface UseTest{}
+
+使用：
+@UseTest String content; 修饰类型，
+此种写法相当于java.lang.@UseTest String content; 
+若@UseTest java.lang.String content; 此为定义局部变量，写法不合法，UseTest需指定Target为LOCAL_VARIABLE。
+
+String content = (@UseTest String) obj; //类型转换
+List<@UseTest String> infos = new ArrayList<>();  //泛型
+implements @UseTest XXXX;  //实现接口
+throws @UseTest NullPointException;  //声明抛出异常
+
+```
+
 3、@Documented：被该注解修饰的注解会被javadoc工具提取成文档。如果一个注解由@Documented修饰，则使用该注解的程序api文档中会包含该注解的说明。
 
 4、@Inherited: 此注解修饰的注解具有继承性。若@XXX被@Inherited修饰，则使用@XXX注解的类具有继承性，其子类自动被@XXX修饰。
+
+5、@Repeatable：重复注解，Java8的新特性。
+
+在Java8之前，重复注解的解决方案代码如下：
+
+```java 
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Student{
+	String name();
+}
+
+定义一个容器注解：
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Students{
+	Student[] value();
+}
+
+使用：
+@Students({@Student(name = "Jack"), @Student(name = "Will")})
+public class StudentTest{
+	......
+}
+
+```
+
+在Java8中的方案则如下：
+
+```java
+
+定义如上的容器注解Students，添加Repeatable注解，如下所示
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Repeatable(Students.class)
+public @interface Student{
+	String name();
+}
+
+使用：
+@Student(name = "Jack")
+@Student(name = "Will")
+public class StudentTest{
+	......
+}

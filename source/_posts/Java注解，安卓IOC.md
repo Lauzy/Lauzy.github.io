@@ -129,9 +129,7 @@ public class StudentTest{
 在Java8中的方案则如下：
 
 ```java
-
-定义如上的容器注解Students，添加Repeatable注解，如下所示
-
+//定义如上的容器注解Students，添加Repeatable注解，如下所示
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Repeatable(Students.class)
@@ -145,5 +143,4 @@ public @interface Student{
 public class StudentTest{
 	......
 }
-
 ```

@@ -99,10 +99,23 @@ List<span class="token operator">&lt;</span><span class="token annotation punctu
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在Java8中的方案则如下：</p>
-<p>```java</p>
-<p>定义如上的容器注解Students，添加Repeatable注解，如下所示</p>
-<p>@Retention(RetentionPolicy.RUNTIME)<br>@Target(ElementType.TYPE)<br>@Repeatable(Students.class)<br>public @interface Student{<br>    String name();<br>}</p>
-<p>使用：<br>@Student(name = “Jack”)<br>@Student(name = “Will”)<br>public class StudentTest{<br>    ……<br>}</p>
+<pre class="line-numbers language-java"><code class="language-java">
+定义如上的容器注解Students，添加Repeatable注解，如下所示
+
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Repeatable</span><span class="token punctuation">(</span>Students<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Student</span><span class="token punctuation">{</span>
+    String <span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+使用：
+<span class="token annotation punctuation">@Student</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"Jack"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Student</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"Will"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StudentTest</span><span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 ]]></content>
       
         <categories>

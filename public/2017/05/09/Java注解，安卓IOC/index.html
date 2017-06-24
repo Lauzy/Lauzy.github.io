@@ -448,9 +448,7 @@ List<span class="token operator">&lt;</span><span class="token annotation punctu
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在Java8中的方案则如下：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-定义如上的容器注解Students，添加Repeatable注解，如下所示
-
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">//定义如上的容器注解Students，添加Repeatable注解，如下所示</span>
 <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Repeatable</span><span class="token punctuation">(</span>Students<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
@@ -464,7 +462,7 @@ List<span class="token operator">&lt;</span><span class="token annotation punctu
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StudentTest</span><span class="token punctuation">{</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
     
 

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lauzy.github.io/"/>
-  <updated>2017-06-18T16:02:35.621Z</updated>
+  <updated>2017-06-18T16:05:25.263Z</updated>
   <id>http://lauzy.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://lauzy.github.io/2017/05/09/Java%E6%B3%A8%E8%A7%A3%EF%BC%8C%E5%AE%89%E5%8D%93IOC/"/>
     <id>http://lauzy.github.io/2017/05/09/Java注解，安卓IOC/</id>
     <published>2017-05-09T14:43:44.000Z</published>
-    <updated>2017-06-18T16:02:35.621Z</updated>
+    <updated>2017-06-18T16:05:25.263Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Java注解-Annotation"><a href="#Java注解-Annotation" class="headerlink" title="Java注解(Annotation)"></a>Java注解(Annotation)</h2><p>Java注解，指的是代码里边的特殊标记，可以在编译、运行时被读取，并执行相应的处理。Annotation可用于修饰包、类、构造器、方法、变量等。</p>
 <h3 id="Annotation-类型"><a href="#Annotation-类型" class="headerlink" title="Annotation 类型"></a>Annotation 类型</h3><h4 id="基本Annotation"><a href="#基本Annotation" class="headerlink" title="基本Annotation"></a>基本Annotation</h4><p>Java中5个基本的注解分别为：</p>
@@ -116,9 +116,7 @@ List<span class="token operator">&lt;</span><span class="token annotation punctu
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在Java8中的方案则如下：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-定义如上的容器注解Students，添加Repeatable注解，如下所示
-
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">//定义如上的容器注解Students，添加Repeatable注解，如下所示</span>
 <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Repeatable</span><span class="token punctuation">(</span>Students<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
@@ -132,7 +130,7 @@ List<span class="token operator">&lt;</span><span class="token annotation punctu
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StudentTest</span><span class="token punctuation">{</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 ]]></content>
     
     <summary type="html">

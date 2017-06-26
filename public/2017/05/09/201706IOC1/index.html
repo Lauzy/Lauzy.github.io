@@ -10,7 +10,7 @@
     
     <title>
         
-            Java注解，安卓IOC | 
+            Java注解、反射，安卓IOC（一） | 
         
         Lauzy
     </title>
@@ -60,7 +60,7 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://lauzy.github.io">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Java注解，安卓IOC | Lauzy">
+    <meta property="og:title" content="Java注解、反射，安卓IOC（一） | Lauzy">
     <meta property="og:description" content="Life is like a box of chocolates.">
     <meta property="og:article:tag" content="Android 框架"> 
 
@@ -221,6 +221,41 @@
 
                     <!-- Post TOC -->
 
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java-注解-Annotation"><span class="post-toc-number">1.</span> <span class="post-toc-text">Java 注解 (Annotation)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Annotation-类型"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Annotation 类型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基本-Annotation"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">基本 Annotation</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#元-Annotation"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">元 Annotation</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java-反射简介"><span class="post-toc-number">2.</span> <span class="post-toc-text">Java 反射简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自定义注解、反射获取属性"><span class="post-toc-number">3.</span> <span class="post-toc-text">自定义注解、反射获取属性</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
 
 <!-- Layouts -->
 
@@ -247,7 +282,7 @@
         
     
             <p class="article-headline-p">
-                Java注解，安卓IOC
+                Java注解、反射，安卓IOC（一）
             </p>
         </div>
 
@@ -287,7 +322,7 @@
         </button>
         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
             <li class="mdl-menu__item">在其它设备中阅读本文章</li>
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACaklEQVR42u3aS47CUAwEQO5/6ZkDjIBuv48YVFkhFJJUFrax/fj56uOBh4eHh4eHh4f3YbxHfLS/Ss7/e86GZ8PDw8O7wnsTal8+Sn7jZ4/++sr1s+Hh4eFd5D17uOSWr3+VINuXiIeHh/cdvKSATkpnPDw8vO/jJaVzW3Z/UGLAw8PD29qMmAX6pDGRf3+w14KHh4cX8/Ih0/3PV+d7eHh4eAGvXmkatXSTBm6SBuqlKzw8PLwDvNkSwGxklbyODUsJeHh4eFd4M0CbTtpXNjwHDw8P7zAvD81teZ0XyrNWcvGPAQ8PD+8ALwm7s4DeFtl52f30TDw8PLzDvBywa8yfNB3y1vBwpwwPDw9vgTcrc9uWa9uMaBdn8fDw8O7z2pu1ZXGbTpK2SPGPAQ8PD+8Yr12WatsZKy2GImnh4eHhHea1A/u8aZu/vnZ5q+614OHh4W3lzUrY2ZBs9uj1CA0PDw/vCq8Nyvka1qwEnw3h8PDw8O7wknDcBvE8lLepKGqX4OHh4V3hzVYBZq9p1swtroaHh4d3nZdfKG9S7B13vbkLHh4e3hVeXkzPGg3r4T5fIMDDw8O7yWsv3a4RzFYQtiUGPDw8vCu8WTNi1sjIj22JAQ8PD2/EWylk81DeNo5XlhLw8PDwTvPacNzi81WAlSIbDw8P7z5vlgzyoL9SrG9IDHh4eHjHeO1Sad5sfdM+GDUy8PDw8P4X73WgTxYR2sHY1cSAh4eHdzgxFKOphbFZMbTDw8PDu8hLmhEraaAtu9vXh4eHh3eTt94CaMvlJCXMkHh4eHined934OHh4eHh4eHhfcDxC6d4zkrYG95MAAAAAElFTkSuQmCC">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACaUlEQVR42u3aQXLbMBAEQP3/08k1hwieWZAQ5WqeXC6KQvOAXQ329edXXy88PDw8PDw8PLyH8V7x9e/968+un/+fBS3/n68NDw8P7yTvh6225K2f+e4J6+9KnoaHh4d3npcXg3YTn2HateHh4eE9k/duoftbf9u+4+Hh4X0Lb719r19B/uLw8PDwvoVX/OCPy0YbTFywNjw8PLwjvJ0DsLv//vD5Hh4eHt5FQ1ftYEHSaufFoBi6wsPDw7uBlzTEeRCQvI7ZnUkwgYeHh3eSl2zo+ZFV+4LagdcfAg48PDy8I7ykUW6HCfJF52Hxjed7eHh4eDEv2dDboCEPZ9tmOipdeHh4eDfzdg749+OJnfACDw8P71O82VfWx/llODtbIR4eHt4Z3jqu3YlWd9rrJJ7Aw8PDew6vjVZnUULSRrcjs3h4eHhneG0A0UYVSbGZjRTUvxjw8PDwLuLlbXEbtrat9iw+LsZV8fDw8C7l5aFtsunvNN9tacHDw8N7Aq8Fz5Y7a7jx8PDwnsDLBwXqg6ggdMgb9Lwdx8PDw7ub145JXfWpaKFxUcHDw8M7z9s5/m+b8iJWGI234uHh4Z3k7WzHOWZ9Zxvg4uHh4X2Kd+2w1FaUEDPerhYPDw/vZl57XRs3tE+uwwg8PDy8G3iv+JqVjSSGSMpM0aDj4eHhHeFdGyskmHxMAQ8PD+/JvHyLz4+m8lGq2TgsHh4e3rfw9ql5Y528CDw8PLwn82bFYOcIrS4YeHh4eAd5SRgxG8BKNv2dYoOHh4d3njdreWfjWclnZ0MDeHh4eGd4v+/Cw8PDw8PDw8N7wPUXgxnEcHtuYhgAAAAASUVORK5CYII=">
         </ul>
     
 
@@ -315,7 +350,7 @@
 
     <!-- Share Weibo -->
     
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Java注解，安卓IOC&url=http://lauzy.github.io//2017/05/09/201706IOC/index.html&pic=&searchPic=false&style=simple" target="_blank">
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Java注解、反射，安卓IOC（一）&url=http://lauzy.github.io//2017/05/09/201706IOC1/index.html&pic=&searchPic=false&style=simple" target="_blank">
             <li class="mdl-menu__item">
                 分享到微博
             </li>
@@ -336,7 +371,7 @@
 
     <!-- Share QQ -->
     
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Lauzy&title=Java注解，安卓IOC&summary=Life is like a box of chocolates.&pics=http://lauzy.github.io/images/favicon.ico&url=http://lauzy.github.io/2017/05/09/201706IOC/index.html" target="_blank">
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Lauzy&title=Java注解、反射，安卓IOC（一）&summary=Life is like a box of chocolates.&pics=http://lauzy.github.io/images/favicon.ico&url=http://lauzy.github.io/2017/05/09/201706IOC1/index.html" target="_blank">
             <li class="mdl-menu__item">
                 分享到 QQ
             </li>
@@ -354,8 +389,12 @@
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <h2 id="Java注解-Annotation"><a href="#Java注解-Annotation" class="headerlink" title="Java注解(Annotation)"></a>Java注解(Annotation)</h2><p>Java注解，指的是代码里边的特殊标记，可以在编译、运行时被读取，并执行相应的处理。Annotation可用于修饰包、类、构造器、方法、变量等。</p>
-<h3 id="Annotation-类型"><a href="#Annotation-类型" class="headerlink" title="Annotation 类型"></a>Annotation 类型</h3><h4 id="基本Annotation"><a href="#基本Annotation" class="headerlink" title="基本Annotation"></a>基本Annotation</h4><p>Java中5个基本的注解分别为：</p>
+        <h2 id="Java-注解-Annotation"><a href="#Java-注解-Annotation" class="headerlink" title="Java 注解 (Annotation)"></a>Java 注解 (Annotation)</h2><p>Java 注解，指的是代码里边的特殊标记，可以在编译、运行时被读取，并执行相应的处理。Annotation 可用于修饰包、类、构造器、方法、变量等。</p>
+<a id="more"></a>
+<h3 id="Annotation-类型"><a href="#Annotation-类型" class="headerlink" title="Annotation 类型"></a>Annotation 类型</h3><p>此处来一张网上的图 (可在新标签页中放大查看)</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170626Java%E6%B3%A8%E8%A7%A3.jpg" width="710" height="670" alt="注解大全"></p>
+<p>转自<a href="http://www.cnblogs.com/peida/archive/2013/04/26/3038503.html" target="_blank" rel="external">深入理解Java：注解(Annotation)</a></p>
+<h4 id="基本-Annotation"><a href="#基本-Annotation" class="headerlink" title="基本 Annotation"></a>基本 Annotation</h4><p>Java中5个基本的注解分别为：</p>
 <ul>
 <li>@Override  ————  用来限定子类重写父类的方法。</li>
 <li>@Deprecated  ————  标记已经过时的方法。</li>
@@ -363,7 +402,7 @@
 <li>@SafeVarargs  ————  Java7 抑制“堆污染”警告，可变参数与泛型类一起使用会出现类型安全警告，若开发人员确信不会出现问题，可用此注解进行声明。</li>
 <li>@FunctionalInterface  ————  Java8 函数式接口，检测指定某个接口中只有一个抽象方法。</li>
 </ul>
-<h4 id="元Annotation"><a href="#元Annotation" class="headerlink" title="元Annotation"></a>元Annotation</h4><p>元Annotation是用来修饰其他注解定义，即注解其他注解。<br>Java中有6种元注解，其中@Native注解一般用于给IDE工具做提示用。下边具体介绍其他几种注解。</p>
+<h4 id="元-Annotation"><a href="#元-Annotation" class="headerlink" title="元 Annotation"></a>元 Annotation</h4><p>元Annotation是用来修饰其他注解定义，即注解其他注解。<br>Java中有6种元注解，其中@Native注解一般用于给IDE工具做提示用。下边具体介绍其他几种注解。</p>
 <p>1、@Retention：指定本修饰的注解可以保留多长时间。包含了一个RetentionPolicy类的value值，所以需指定该value的值。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Documented</span>
 <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
@@ -463,16 +502,117 @@ List<span class="token operator">&lt;</span><span class="token annotation punctu
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h3><p>分别定义Name、Gender和SaveMoney注解：</p>
+<h2 id="Java-反射简介"><a href="#Java-反射简介" class="headerlink" title="Java 反射简介"></a>Java 反射简介</h2><p>通过Java反射可以获取对象的属性、方法等。</p>
+<p>1、获取类</p>
+<pre class="line-numbers language-java"><code class="language-java">
+<span class="token comment" spellcheck="true">//第一种方式</span>
+Class <span class="token class-name">stuClazz1</span> <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"com.lauzy.freedom.ReflectDemo.Student"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//第二种方式</span>
+Class <span class="token class-name">stuClazz2</span> <span class="token operator">=</span> Student<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//第三种方式</span>
+Student stu3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Class <span class="token class-name">stuClazz3</span> <span class="token operator">=</span> stu3<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>2、创建对象</p>
+<pre class="line-numbers language-java"><code class="language-java">
+Class <span class="token class-name">stuClazz2</span> <span class="token operator">=</span> Student<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+Object stu <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>3、获取属性例子</p>
+<pre class="line-numbers language-java"><code class="language-java">
+Object stu <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//获取实例</span>
+Field age <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//获取特定属性</span>
+age<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//打破封装性</span>
+age<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>stu<span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//设置属性</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>4、方法总结</p>
+<ul>
+<li>getDeclaredFields(): 获取所有属性。</li>
+<li>getDeclaredField(“<em>*</em>“): 获取特定的属性。</li>
+<li>getModifiers(): 获取属性或方法的修饰符。</li>
+<li>getType(): 获取属性或方法的类型名。</li>
+<li>getDeclaredMethods()：获取所有方法。</li>
+<li>getReturnType()：获取方法的返回类型。</li>
+<li>getParameterTypes()：获取方法的参数类型。</li>
+<li>getDeclaredMethod(“<em>*</em>“,参数类型.class,……): 获取特定的方法。</li>
+<li>getDeclaredConstructors(): 获取所有的构造方法。</li>
+<li>getDeclaredConstructor(参数类型.class,……): 获取特定的构造方法。</li>
+<li>getSuperclass()：获取继承的父类。</li>
+<li>getInterfaces()：获取实现的所有接口。</li>
+<li>field.set(Object object, Object value);//设置object对象的value属性</li>
+<li>method.invoke(Object object, Object… values); //调用方法，values为方法的参数</li>
+</ul>
+<p>5、代码实例</p>
+<pre class="line-numbers language-java"><code class="language-java">
+<span class="token keyword">try</span> <span class="token punctuation">{</span>
+    Class <span class="token class-name">stuClazz1</span> <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"com.lauzy.freedom.ReflectDemo.Student"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Class <span class="token class-name">stuClazz2</span> <span class="token operator">=</span> Student<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+    Student stu3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Class <span class="token class-name">stuClazz3</span> <span class="token operator">=</span> stu3<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Field field <span class="token operator">:</span> stuClazz1<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Modifier<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>field<span class="token punctuation">.</span><span class="token function">getModifiers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true">//获取属性修饰符</span>
+                <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> field<span class="token punctuation">.</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span>     <span class="token comment" spellcheck="true">//获取属性类型名</span>
+                <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> field<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//获取属性名</span>
+    <span class="token punctuation">}</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Method method <span class="token operator">:</span> stuClazz2<span class="token punctuation">.</span><span class="token function">getDeclaredMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Modifier<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>method<span class="token punctuation">.</span><span class="token function">getModifiers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true">//获取方法修饰符</span>
+                <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> method<span class="token punctuation">.</span><span class="token function">getReturnType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>   <span class="token comment" spellcheck="true">//方法返回类型名</span>
+                <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> method<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//方法名</span>
+    <span class="token punctuation">}</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>stuClazz2<span class="token punctuation">.</span><span class="token function">getDeclaredConstructor</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>stuClazz2<span class="token punctuation">.</span><span class="token function">getSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Class <span class="token class-name">aClass</span> <span class="token operator">:</span> stuClazz2<span class="token punctuation">.</span><span class="token function">getInterfaces</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>aClass<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Object stu <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//获取实例</span>
+    Field name <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//获取特定属性</span>
+    name<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//打破封装性</span>
+    name<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>stu<span class="token punctuation">,</span> <span class="token string">"Jack"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//设置属性</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>name<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>stu<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Method profile <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">getDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"getProfile"</span><span class="token punctuation">,</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//特定方法</span>
+    profile<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    profile<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>stu<span class="token punctuation">,</span> <span class="token string">"male"</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//调用方法</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>输出结果：</p>
+<pre class="line-numbers language-java"><code class="language-java">
+<span class="token keyword">private</span><span class="token operator">-</span>String<span class="token operator">-</span>name
+<span class="token keyword">public</span><span class="token operator">-</span>String<span class="token operator">-</span>gender
+<span class="token keyword">private</span><span class="token operator">-</span><span class="token keyword">int</span><span class="token operator">-</span>age
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
+<span class="token keyword">public</span><span class="token operator">-</span><span class="token keyword">class</span> <span class="token class-name">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>String</span><span class="token operator">-</span>getName
+<span class="token keyword">public</span><span class="token operator">-</span><span class="token keyword">void</span><span class="token operator">-</span>setName
+<span class="token keyword">private</span><span class="token operator">-</span><span class="token keyword">void</span><span class="token operator">-</span>getProfile
+<span class="token keyword">public</span><span class="token operator">-</span><span class="token keyword">int</span><span class="token operator">-</span>getAge
+<span class="token keyword">public</span><span class="token operator">-</span><span class="token keyword">void</span><span class="token operator">-</span>setAge
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
+<span class="token keyword">public</span> com<span class="token punctuation">.</span>lauzy<span class="token punctuation">.</span>freedom<span class="token punctuation">.</span>ReflectDemo<span class="token punctuation">.</span><span class="token function">Student</span><span class="token punctuation">(</span>java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>String<span class="token punctuation">,</span>java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>String<span class="token punctuation">,</span><span class="token keyword">int</span><span class="token punctuation">)</span>
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
+com<span class="token punctuation">.</span>lauzy<span class="token punctuation">.</span>freedom<span class="token punctuation">.</span>AnnotationDemo<span class="token punctuation">.</span>Person
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
+java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>Serializable
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
+Jack
+Name <span class="token operator">:</span> Jack <span class="token punctuation">;</span> Gender <span class="token operator">:</span> male <span class="token punctuation">;</span> Age <span class="token operator">:</span> <span class="token number">30</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="自定义注解、反射获取属性"><a href="#自定义注解、反射获取属性" class="headerlink" title="自定义注解、反射获取属性"></a>自定义注解、反射获取属性</h2><p>分别定义Name、Gender和SaveMoney注解：</p>
 <pre class="line-numbers language-java"><code class="language-java">
 <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">)</span>
 @<span class="token keyword">interface</span> <span class="token class-name">Name</span> <span class="token punctuation">{</span>
     String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">"Will"</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-
-`
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <pre class="line-numbers language-java"><code class="language-java">
 <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">)</span>
@@ -537,13 +677,12 @@ List<span class="token operator">&lt;</span><span class="token annotation punctu
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>执行 </p>
-<pre class="line-numbers language-java"><code class="language-java">
-AnnUtils<span class="token punctuation">.</span><span class="token function">test</span><span class="token punctuation">(</span>Person<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java"><code class="language-java">AnnUtils<span class="token punctuation">.</span><span class="token function">test</span><span class="token punctuation">(</span>Person<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>此时的输出结果为：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-A man named Jack deposited 20000RMB to ChinaBank <span class="token keyword">for</span> <span class="token number">5</span> months<span class="token punctuation">,</span> and then he spent <span class="token number">1000</span> on clothes<span class="token punctuation">.</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java"><code class="language-java">A man named Jack deposited 20000RMB to ChinaBank <span class="token keyword">for</span> <span class="token number">5</span> months<span class="token punctuation">,</span> and then he spent <span class="token number">1000</span> on clothes<span class="token punctuation">.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>此篇博客为基础用法及实例，下一篇<a href="http://lauzy.me/2017/05/09/201706IOC2/" target="_blank" rel="external">Java注解、反射，安卓IOC（二）</a>会介绍注解和反射在Android中的使用，运行时注解及butterknife的简单实现。</p>
 
     
 
@@ -629,8 +768,8 @@ A man named Jack deposited 20000RMB to ChinaBank <span class="token keyword">for
 
 <script>
     var disqus_config = function () {
-        this.page.url = 'http://lauzy.github.io/2017/05/09/201706IOC/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = 'http://lauzy.github.io/2017/05/09/201706IOC/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = 'http://lauzy.github.io/2017/05/09/201706IOC1/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://lauzy.github.io/2017/05/09/201706IOC1/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
     $('.btn_click_load').click(function() {  //click to load comments
         (function() { // DON'T EDIT BELOW THIS LINE
@@ -660,6 +799,14 @@ A man named Jack deposited 20000RMB to ChinaBank <span class="token keyword">for
             <!-- Post Prev & Next Nav -->
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
+    
+        <a href="/2017/05/10/201706IOC2/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
     
 
     <!-- Section Spacer -->
@@ -759,7 +906,7 @@ A man named Jack deposited 20000RMB to ChinaBank <span class="token keyword">for
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="/archives/2017/05/">五月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">1</span></a>
+                <a class="sidebar_archives-link" href="/archives/2017/05/">五月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">1</span></a>
             </ul>
         </li>
         
@@ -777,7 +924,7 @@ A man named Jack deposited 20000RMB to ChinaBank <span class="token keyword">for
             </a>
             <ul class="dropdown-menu">
                 <li>
-                <a class="sidebar_archives-link" href="/categories/Android/">Android<span class="sidebar_archives-count">4</span></a>
+                <a class="sidebar_archives-link" href="/categories/Android/">Android<span class="sidebar_archives-count">5</span></a>
             </ul>
         </li>
         
@@ -809,7 +956,7 @@ A man named Jack deposited 20000RMB to ChinaBank <span class="token keyword">for
         <li>
             <a href="/archives">
                 文章总数
-                <span class="sidebar-badge">4</span>
+                <span class="sidebar-badge">5</span>
             </a>
         </li>
         

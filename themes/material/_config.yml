@@ -159,7 +159,7 @@ qrcode: true
 # The new src will have the base domain you configured in 'base'.
 materialcdn: 
     use: true
-    base: http://lauzy.me/
+    base: http://blog.lauzy.me/
 
 # Comment Systems
 # Available value of "use":

@@ -206,7 +206,7 @@ canvas.rotate(rotation, mWidth / 2f, mHeight / 2f);
 <img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog05.png">
 
 
-如上，计算出来 x 的值为 √2*r/8， 即 radius * Math.sqrt(2) / 8f 。
+如上，计算出来 x 的值为 √2 x r/8， 即 radius x Math.sqrt(2) / 8f 。
 
 然后在画布位移一下即可：
 

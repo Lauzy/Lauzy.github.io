@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lauzy.github.io/"/>
-  <updated>2017-08-13T13:37:25.489Z</updated>
+  <updated>2017-08-13T13:41:03.930Z</updated>
   <id>http://lauzy.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://lauzy.github.io/2017/08/12/201708PlayPauseView/"/>
     <id>http://lauzy.github.io/2017/08/12/201708PlayPauseView/</id>
     <published>2017-08-12T11:42:27.000Z</published>
-    <updated>2017-08-13T13:37:25.489Z</updated>
+    <updated>2017-08-13T13:41:03.930Z</updated>
     
     <content type="html"><![CDATA[<p>最近想写个音乐播放器，偶然看到轻听这款播放器的播放和暂停按钮，在切换过程中的动画很是吸引我。本着造轮子（其实是 github 上边没找到）的想法，就花了点时间撸出来了这个效果。</p>
 <p>效果就是下边这个样子：</p>
@@ -146,7 +146,7 @@ canvas<span class="token punctuation">.</span><span class="token function">rotat
 <p><img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog04.png" alt="计算过程3"></p>
 <p>如图所示，旋转过后 A 和 C 本来是紧靠着圆周的，而 B 距离圆周还有一定的距离。所以需要将其位移 x 的距离，这时候需要 CE 的长度等于 BD 的长度。这时候就需要做个数学题了，利用勾股定理即可。电脑上打数学符号太麻烦，所以就手写了这个公式：</p>
 <p><img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog05.png"></p>
-<p>如上，计算出来 x 的值为 √2<em>r/8， 即 radius </em> Math.sqrt(2) / 8f 。</p>
+<p>如上，计算出来 x 的值为 √2 x r/8， 即 radius x Math.sqrt(2) / 8f 。</p>
 <p>然后在画布位移一下即可：</p>
 <pre class="line-numbers language-java"><code class="language-java">
 canvas<span class="token punctuation">.</span><span class="token function">translate</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>mRectHeight <span class="token operator">*</span> Math<span class="token punctuation">.</span><span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">8f</span> <span class="token operator">*</span> mProgress<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>

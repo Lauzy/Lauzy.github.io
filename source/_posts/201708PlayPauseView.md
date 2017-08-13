@@ -99,11 +99,10 @@ bottom 的话直接加上矩形的高度即可。
 
 2、在一开始写的时候就写了这么多计算的方法，但是这时候矩形的边角会超出 View 的范围，所以后来计算了一波位置：
 
-<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog01.png"  alt = "计算过程1">
+<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog02.png"  alt = "计算过程2">
+
 
 如上图所示，这样就需要再更改一些参数：
-
-<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog02.png"  alt = "计算过程2">
 
 
 首先定义出来这个矩形，计算下宽高：
@@ -148,9 +147,14 @@ bottom 的话直接加上矩形的高度即可。
 
 ```
 
+如下图这样：
+
+<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog01.png"  alt = "计算过程1">
+
+
 ## 动画实现
 
-画完暂停按钮后，怎么让他动画变成三角形呢？一开始我想根据一些宽高的属性来指定动画的变化值，然后更新过程中再画出来，但是计算过程中发现涉及动画的矩形宽度都是从原始的大小到0过渡的，那统一的使用一个参数确定会不会更好点呢？当然会了。
+画完暂停按钮后，怎么让他动画变成三角形呢？一开始我想根据一些宽高的属性来指定动画的变化值，然后更新过程中再画出来，但是计算过程中发现涉及动画的矩形宽度都是从原始的大小到0过渡的，那统一的使用一个参数确定会不会更好点呢？当然会了，从1倍到0变化即可。
 
 <img src="http://oop6dcmck.bkt.clouddn.com/FACE002.jpg">
 
@@ -158,7 +162,7 @@ bottom 的话直接加上矩形的高度即可。
 
 ```java
 
-		ValueAnimator valueAnimator = ValueAnimator.ofFloat(0 : 1);
+		ValueAnimator valueAnimator = ValueAnimator.ofFloat(0 , 1);
         valueAnimator.setDuration(200);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -201,9 +205,9 @@ canvas.rotate(rotation, mWidth / 2f, mHeight / 2f);
 
 <img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog04.png"  alt = "计算过程3">
 
-如图所示，旋转过后 A 和 C 本来是紧靠着圆周的，而 B 距离圆周还有一定的距离。所以需要将其位移 x 的距离，这时候需要 CE 的长度等于 BD 的长度。这时候就需要做个数学题了，利用勾股定理即可。电脑上打数学符号太麻烦，所以就手写了这个公式：
+如图所示，旋转过后 A 和 C 本来是紧靠着圆周的，而 B 距离圆周还有一定的距离。所以需要将其位移 x 的距离，让 CE 的长度等于 BD 的长度。这时候就需要我们用利用勾股定理做个数学题。电脑上打数学符号太麻烦，所以就手写了这个公式：
 
-<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog05.png">
+<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog06.png">
 
 
 如上，计算出来 x 的值为 √2 x r/8， 即 radius x Math.sqrt(2) / 8f 。

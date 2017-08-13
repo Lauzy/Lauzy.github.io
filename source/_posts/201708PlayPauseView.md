@@ -54,7 +54,7 @@ tags: Android 自定义View
 1、初始化完毕后，怎么实现两个竖条到一个三角形的过渡呢？这里首先想到的就是自定义 View 常用的 drawPath 方法，抛开动画不谈，整个 View 变化过程其实就是两个矩形变成两个直角三角形的过程。
 
 
-<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog001.png"  width = "100" height = "200" alt = "实现">
+<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog001.png" alt = "实现">
 
 就是这个样子。知道大体的思路，怎么搞呢，当然是开车了。
 
@@ -99,11 +99,11 @@ bottom 的话直接加上矩形的高度即可。
 
 2、在一开始写的时候就写了这么多计算的方法，但是这时候矩形的边角会超出 View 的范围，所以后来计算了一波位置：
 
-<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog01.png"  width = "100" height = "100" alt = "计算过程1">
+<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog01.png"  alt = "计算过程1">
 
 如上图所示，这样就需要再更改一些参数：
 
-<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog02.png"  width = "100" height = "100" alt = "计算过程2">
+<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog02.png"  alt = "计算过程2">
 
 
 首先定义出来这个矩形，计算下宽高：
@@ -186,7 +186,7 @@ bottom 的话直接加上矩形的高度即可。
 
 这样便可以实现两个矩形到三角形的过渡了，执行动画结束后便是这个样子：
 
-<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog03.png"  width = "100" height = "100" alt = "计算过程3">
+<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog03.png"  alt = "计算过程3">
 
 两个矩形变成三角形之后，只需要画布旋转一下，两个暂停按钮到播放按钮的动画已经可以执行了：
 
@@ -199,7 +199,7 @@ canvas.rotate(rotation, mWidth / 2f, mHeight / 2f);
 到这里基本上已经结束了，但是写完使用的时候总觉得位置有点不对劲，后来发现确实有问题：
 
 
-<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog04.png"  width = "100" height = "100" alt = "计算过程3">
+<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog04.png"  alt = "计算过程3">
 
 如图所示，旋转过后 A 和 C 本来是紧靠着圆周的，而 B 距离圆周还有一定的距离。所以需要将其位移 x 的距离，这时候需要 CE 的长度等于 BD 的长度。这时候就需要做个数学题了，利用勾股定理即可。电脑上打数学符号太麻烦，所以就手写了这个公式：
 

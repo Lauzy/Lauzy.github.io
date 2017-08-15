@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lauzy.github.io/"/>
-  <updated>2017-08-15T05:29:32.124Z</updated>
+  <updated>2017-08-15T07:15:50.830Z</updated>
   <id>http://lauzy.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://lauzy.github.io/2017/08/12/201708PlayPauseView/"/>
     <id>http://lauzy.github.io/2017/08/12/201708PlayPauseView/</id>
     <published>2017-08-12T11:42:27.000Z</published>
-    <updated>2017-08-15T05:29:32.124Z</updated>
+    <updated>2017-08-15T07:15:50.830Z</updated>
     
     <content type="html"><![CDATA[<p>最近想写个音乐播放器，偶然看到轻听这款播放器的播放和暂停按钮，在切换过程中的动画很是吸引我。本着造轮子（其实是 github 上边没找到）的想法，就花了点时间撸出来了这个效果。</p>
 <p>效果就是下边这个样子：</p>
@@ -95,7 +95,7 @@
     <link href="http://lauzy.github.io/2017/05/10/201706IOC2/"/>
     <id>http://lauzy.github.io/2017/05/10/201706IOC2/</id>
     <published>2017-05-09T16:00:00.000Z</published>
-    <updated>2017-08-15T05:28:21.764Z</updated>
+    <updated>2017-08-15T07:15:50.827Z</updated>
     
     <content type="html"><![CDATA[<p>在项目开发中，大部分 Android 开发者都使用过 ButterKnife 这个通过注解简化代码的框架。部分 Android 开发者也使用过 xUtils 这种快速开发的框架。<br>两者均使用到了注解。在上一篇 <a href="http://lauzy.me/2017/05/09/201706IOC1/" target="_blank" rel="external">Java注解、反射，安卓IOC（一）</a> 中我们知道了注解及反射的用法。本篇会分别介绍下其实现机制。</p>
 <h2 id="运行时注解"><a href="#运行时注解" class="headerlink" title="运行时注解"></a>运行时注解</h2><p>首先我们自己简单实现类似 xUtils 这种运行时注解框架。</p>
@@ -165,7 +165,7 @@
     <link href="http://lauzy.github.io/2017/05/09/201706IOC1/"/>
     <id>http://lauzy.github.io/2017/05/09/201706IOC1/</id>
     <published>2017-05-09T14:43:44.000Z</published>
-    <updated>2017-08-15T05:28:13.790Z</updated>
+    <updated>2017-08-15T07:15:50.824Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Java-注解-Annotation"><a href="#Java-注解-Annotation" class="headerlink" title="Java 注解 (Annotation)"></a>Java 注解 (Annotation)</h2><p>Java 注解，指的是代码里边的特殊标记，可以在编译、运行时被读取，并执行相应的处理。Annotation 可用于修饰包、类、构造器、方法、变量等。</p>
 <a id="more"></a>
@@ -275,7 +275,7 @@
     <link href="http://lauzy.github.io/2017/04/14/201705Behavior/"/>
     <id>http://lauzy.github.io/2017/04/14/201705Behavior/</id>
     <published>2017-04-14T08:25:46.000Z</published>
-    <updated>2017-08-15T05:30:17.775Z</updated>
+    <updated>2017-08-15T07:15:50.818Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>Android Design包下的CoordinatorLayout是相当重要的一个控件，它让许多动画的实现变为可能，而且更加简便。按照官方解释CoordinatorLayout是用来协调子View交互动作的父view，Behavior可以看做CoordinatorLayout的子view实现交互的组件。<br>本篇博客主要用来实现仿知乎的Android客户端首页的滑动嵌套动画，前段时间利用空闲时间撸了一款<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营的客户端</a>，做的时候采用自定义Behavior实现了整个嵌套滑动，并抽离了出来作为一个lib方便使用。</p>
@@ -417,7 +417,7 @@
     <link href="http://lauzy.github.io/2017/03/30/201705StatusBar/"/>
     <id>http://lauzy.github.io/2017/03/30/201705StatusBar/</id>
     <published>2017-03-30T01:25:46.000Z</published>
-    <updated>2017-08-15T03:27:43.270Z</updated>
+    <updated>2017-08-15T07:15:50.820Z</updated>
     
     <content type="html"><![CDATA[<p>我们知道，Android5.0以上已经可以通过设置colorPrimaryDark来改变状态栏的颜色。但是，大多数Android开发者都会遇到让系统状态栏透明或者半透明的需求，如下图所示:</p>
 <p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C.png" alt="透明"></p>

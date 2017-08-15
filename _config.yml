@@ -133,5 +133,5 @@ theme: huxblog
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type:  git
-  repo: https://github.com/Lauzy/Lauzy.github.io.git
-  branch: gh-pages
+  repo:  https://github.com/Lauzy/Lauzy.github.io.git
+  branch:  master

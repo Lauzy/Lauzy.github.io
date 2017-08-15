@@ -1,9 +1,8 @@
 ---
 title: LBehavior
 date: 2017-04-14 16:25:46
-category: Android
 tags: 
-	- 自定义View
+	- Android 手势交互
 ---
 
 

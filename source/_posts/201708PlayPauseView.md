@@ -1,9 +1,8 @@
 ---
 title: Android自定义View：让播放、暂停按钮优雅的过渡
 date: 2017-08-12 19:42:27
-category: Android
-toc: false
-tags: Android 自定义View
+tags: 
+	- Android 自定义View
 ---
 
 最近想写个音乐播放器，偶然看到轻听这款播放器的播放和暂停按钮，在切换过程中的动画很是吸引我。本着造轮子（其实是 github 上边没找到）的想法，就花了点时间撸出来了这个效果。

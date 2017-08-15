@@ -1,7 +1,6 @@
 ---
 title: 沉浸、透明及白底黑字状态栏技巧
 date: 2017-03-30 09:25:46
-category: Android
 tags: 
 	- Android Tips
 ---

@@ -12,28 +12,28 @@ timezone:
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://lauzy.github.io/
-root: /
+root: /Lauzy.github.io/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
 #Custom Setting Start
 
 # Site settings
-SEOTitle: Lauzy的博客 | Lauzy's Blog
+SEOTitle: Lauzy | Lauzy's Blog
 header-img: img/home-bg.jpg
 email: freedompaladin@gmail.com
-description: ""
+description: "Lauzy"
 keyword: ""
 
 
 # SNS settings
-# RSS: false
-weibo_username:     PaleRider
+# RSS: true
+weibo_username:     freedompal
 github_username:    Lauzy
 
 
 # Build settings
-anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
+anchorjs: false                          # if you want to customize anchor. check out line:181 of `post.html`
 
 
 # Disqus settings
@@ -42,7 +42,7 @@ disqus_username: Lauzy
 # Duoshuo settings
 # duoshuo_username: kaijun
 # Share component is depend on Comment so we can NOT use share only.
-duoshuo_share: true                     # set to false if you want to use Comment without Sharing
+duoshuo_share: false                     # set to false if you want to use Comment without Sharing
 
 
 # Analytics settings
@@ -55,37 +55,26 @@ duoshuo_share: true                     # set to false if you want to use Commen
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "叶底藏花"
-sidebar-avatar: /images/avatar.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-about-description: "叶底藏花一度，梦里踏雪几回。"
+sidebar-avatar: /img/avatar.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 # Featured Tags
 featured-tags: true                     # whether or not using Feature-Tags
-featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
+featured-condition-size: 0             # A tag will be featured if the size of it is more than this condition value
 
 
 # Friends
-#friends: [
- #   {
-  #      title: "Kaijun's Blog",
-   #     href: "http://blog.kaijun.rocks"
-    #},{
-     #   title: "Hux Blog",
-      #  href: "http://huangxuan.me"
-    #},{
-     #   title: "Foo",
-      #  href: "#"
-    #},{
-     #   title: "Bar",
-      #  href: "#"
-    #},{
-     #   title: "Example Friends",
-      #  href: "#"
-    #},{
-     #   title: "It helps SEO",
-      #  href: "#"
-    #}
-#]
+friends: [
+    {
+        title: "我的简书",
+        href: "http://www.jianshu.com/u/e76853f863a9"
+    },
+    {
+        title: "IAzUr",
+        href: "https://importx.xyz/"
+    }
+]
 
 
 #Custom Setting End
@@ -116,7 +105,7 @@ highlight:
   enable: true
   line_number: true
   auto_detect: true
-  tab_replace:
+  tab_replace: true
 
 # Category & Tag
 default_category: uncategorized

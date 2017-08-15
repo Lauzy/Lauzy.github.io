@@ -1,7 +1,6 @@
 ---
-title: 标签
-date: 2017-03-30 11:15:04
-type: tags
-layout: tags
-comment: false
+layout: "tags"
+title: "Tags"
+description: "Find the tag you need."
+header-img: "img/tag-bg.jpg"
 ---

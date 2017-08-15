@@ -203,14 +203,26 @@ canvas.rotate(rotation, mWidth / 2f, mHeight / 2f);
 到这里基本上已经结束了，但是写完使用的时候总觉得位置有点不对劲，后来发现确实有问题：
 
 
-<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog04.png"  alt = "计算过程3">
+<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog07.png"  alt = "计算过程3">
 
-如图所示，旋转过后 A 和 C 本来是紧靠着圆周的，而 B 距离圆周还有一定的距离。所以需要将其位移 x 的距离，让 CE 的长度等于 BD 的长度。这时候就需要我们用利用勾股定理做个数学题。电脑上打数学符号太麻烦，所以就手写了这个公式：
+如图所示，旋转过后 A 和 C 本来是紧靠着圆周的，而 B 距离圆周还有一定的距离。所以需要将其位移 x 的距离，让 OC 的长度等于 BO 的长度。此时圆心O也是三角形的外心。那么此时可以计算出OF的距离，公式如下：
 
-<img src="http://oop6dcmck.bkt.clouddn.com/20170813PlayPauseViewBlog06.png">
+√（( r / √2 ) ^ 2 + OF ^ 2） = √2 * r - OF
 
+得出 OF 的长度为： 3 * √2 * r / 8
 
-如上，计算出来 x 的值为 √2 x r/8， 即 radius x Math.sqrt(2) / 8f 。
+那么原矩形宽度的一半减去 OF 的值即为右移的距离，计算可得，右移的距离为 √2 * r / 8 用 Java 表示即
+```java
+radius * Math.sqrt(2) / 8f 
+
+```
+换算为矩形的高度即
+
+```java
+
+mRectHeight / 8f
+
+```
 
 然后在画布位移一下即可：
 

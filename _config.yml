@@ -82,7 +82,9 @@ prism_plugin:
   line_number: true
   
 ## Themes: https://hexo.io/themes/
-theme: material
+## theme: material
+
+   theme: huxblog
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

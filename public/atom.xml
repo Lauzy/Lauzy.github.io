@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Lauzy&#39;s Blog</title>
   <subtitle>Life is like a box of chocolates.</subtitle>
-  <link href="/Lauzy.github.io/atom.xml" rel="self"/>
+  <link href="/atom.xml" rel="self"/>
   
   <link href="http://lauzy.github.io/"/>
   <updated>2017-08-15T05:29:32.124Z</updated>

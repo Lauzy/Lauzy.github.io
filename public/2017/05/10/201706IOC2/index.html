@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Life is like a box of chocolates.">
-    <meta name="keyword"  content="undefined">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
         
-          Java注解、反射，安卓IOC（二） - undefined
+          Java注解、反射，安卓IOC（二） - Lauzy的博客 | Lauzy&#39;s Blog
         
     </title>
 
@@ -50,8 +50,7 @@
 
     <!-- ga & ba script hoook -->
     <script></script>
-<link rel="stylesheet" href="/css/prism-solarizedlight.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 
 <!-- hack iOS CSS :active style -->
@@ -68,7 +67,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Lauzy</a>
+            <a class="navbar-brand" href="/">Lauzy&#39;s Blog</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -153,7 +152,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('/undefined')
+        background-image: url('/img/home-bg.jpg')
     }
 </style>
 <header class="intro-header" >
@@ -192,123 +191,17 @@
                 <p>在项目开发中，大部分 Android 开发者都使用过 ButterKnife 这个通过注解简化代码的框架。部分 Android 开发者也使用过 xUtils 这种快速开发的框架。<br>两者均使用到了注解。在上一篇 <a href="http://lauzy.me/2017/05/09/201706IOC1/" target="_blank" rel="external">Java注解、反射，安卓IOC（一）</a> 中我们知道了注解及反射的用法。本篇会分别介绍下其实现机制。</p>
 <h2 id="运行时注解"><a href="#运行时注解" class="headerlink" title="运行时注解"></a>运行时注解</h2><p>首先我们自己简单实现类似 xUtils 这种运行时注解框架。</p>
 <h3 id="绑定-View-控件"><a href="#绑定-View-控件" class="headerlink" title="绑定 View 控件"></a>绑定 View 控件</h3><p>创建注解：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span><span class="token comment" spellcheck="true">//运行时注解</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">)</span><span class="token comment" spellcheck="true">//Target为属性</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">FindView</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)<span class="comment">//运行时注解</span></div><div class="line"><span class="meta">@Target</span>(ElementType.FIELD)<span class="comment">//Target为属性</span></div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> FindView &#123;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> -1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>View解析代码：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ViewInject</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">bind</span><span class="token punctuation">(</span>Activity activity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token function">inject</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ViewFinder</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">,</span> activity<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">bind</span><span class="token punctuation">(</span>View view<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token function">inject</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ViewFinder</span><span class="token punctuation">(</span>view<span class="token punctuation">)</span><span class="token punctuation">,</span> view<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">bind</span><span class="token punctuation">(</span>View view<span class="token punctuation">,</span> Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token function">inject</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ViewFinder</span><span class="token punctuation">(</span>view<span class="token punctuation">)</span><span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">inject</span><span class="token punctuation">(</span>ViewFinder finder<span class="token punctuation">,</span> Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token function">injectFields</span><span class="token punctuation">(</span>finder<span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token function">injectMethods</span><span class="token punctuation">(</span>finder<span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">injectFields</span><span class="token punctuation">(</span>ViewFinder finder<span class="token punctuation">,</span> Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> clazz <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Field<span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//获取所有变量</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>Field field <span class="token operator">:</span> fields<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>field<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>FindView<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                FindView findView <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>FindView<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//获取注解</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>findView<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"The id can't be -1."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                    View view <span class="token operator">=</span> finder<span class="token punctuation">.</span><span class="token function">findViewById</span><span class="token punctuation">(</span>findView<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-                        field<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//破坏封装</span>
-                        field<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> view<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//设置属性</span>
-                    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IllegalAccessException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                        e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token punctuation">}</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewInject</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(Activity activity)</span> </span>&#123;</div><div class="line">        inject(<span class="keyword">new</span> ViewFinder(activity), activity);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">        inject(<span class="keyword">new</span> ViewFinder(view), view);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(View view, Object obj)</span> </span>&#123;</div><div class="line">        inject(<span class="keyword">new</span> ViewFinder(view), obj);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">inject</span><span class="params">(ViewFinder finder, Object obj)</span> </span>&#123;</div><div class="line">        injectFields(finder, obj);</div><div class="line">        injectMethods(finder, obj);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">injectFields</span><span class="params">(ViewFinder finder, Object obj)</span> </span>&#123;</div><div class="line">        Class&lt;?&gt; clazz = obj.getClass();</div><div class="line">        Field[] fields = clazz.getDeclaredFields();<span class="comment">//获取所有变量</span></div><div class="line">        <span class="keyword">for</span> (Field field : fields) &#123;</div><div class="line">            <span class="keyword">if</span> (field.isAnnotationPresent(FindView.class)) &#123;</div><div class="line">                FindView findView = field.getAnnotation(FindView.class);<span class="comment">//获取注解</span></div><div class="line">                <span class="keyword">if</span> (findView.value() &lt; <span class="number">0</span>) &#123;</div><div class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"The id can't be -1."</span>);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    View view = finder.findViewById(findView.value());</div><div class="line">                    <span class="keyword">try</span> &#123;</div><div class="line">                        field.setAccessible(<span class="keyword">true</span>);<span class="comment">//破坏封装</span></div><div class="line">                        field.set(obj, view); <span class="comment">//设置属性</span></div><div class="line">                    &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">                        e.printStackTrace();</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>主要流程为通过反射获取并遍历所有变量，若变量被注解修饰，则将注解的 ID 赋值给指定方法并调用。</p>
 <h3 id="绑定-OnClick-事件"><a href="#绑定-OnClick-事件" class="headerlink" title="绑定 OnClick 事件"></a>绑定 OnClick 事件</h3><p>创建注解：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//Target为方法</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">OnClick</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(ElementType.METHOD) <span class="comment">//Target为方法</span></div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> OnClick &#123;</div><div class="line">    <span class="keyword">int</span>[] id();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>OnClick 事件注入：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">injectMethods</span><span class="token punctuation">(</span>ViewFinder finder<span class="token punctuation">,</span> <span class="token keyword">final</span> Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Method<span class="token punctuation">[</span><span class="token punctuation">]</span> methods <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDeclaredMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">final</span> Method method <span class="token operator">:</span> methods<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>method<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>OnClick<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            OnClick onClick <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>OnClick<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>onClick<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">:</span> onClick<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    View view <span class="token operator">=</span> finder<span class="token punctuation">.</span><span class="token function">findViewById</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    method<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    view<span class="token punctuation">.</span><span class="token function">setOnClickListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">View<span class="token punctuation">.</span>OnClickListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                        <span class="token annotation punctuation">@Override</span>
-                        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onClick</span><span class="token punctuation">(</span>View v<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                            <span class="token keyword">try</span> <span class="token punctuation">{</span>
-                                method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> v<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IllegalAccessException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InvocationTargetException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                            <span class="token punctuation">}</span>
-                        <span class="token punctuation">}</span>
-                    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">injectMethods</span><span class="params">(ViewFinder finder, <span class="keyword">final</span> Object obj)</span> </span>&#123;</div><div class="line">    Method[] methods = obj.getClass().getDeclaredMethods();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">final</span> Method method : methods) &#123;</div><div class="line">        <span class="keyword">if</span> (method.isAnnotationPresent(OnClick.class)) &#123;</div><div class="line">            OnClick onClick = method.getAnnotation(OnClick.class);</div><div class="line">            <span class="keyword">if</span> (onClick.id().length != <span class="number">0</span>) &#123;</div><div class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i : onClick.id()) &#123;</div><div class="line">                    View view = finder.findViewById(i);</div><div class="line">                    method.setAccessible(<span class="keyword">true</span>);</div><div class="line">                    view.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">                        <span class="meta">@Override</span></div><div class="line">                        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">                            <span class="keyword">try</span> &#123;</div><div class="line">                                method.invoke(obj, v);</div><div class="line">                            &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">                                e.printStackTrace();</div><div class="line">                            &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</div><div class="line">                                e.printStackTrace();</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125;);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>主要流程为通过反射获取并遍历所有方法，若方法被注解修饰，遍历所有的 ID ，将注解的 ID 赋值给 findViewById 方法，然后在 setOnClickListener 调用 method 方法。</p>
 <p>在 Activity 中的使用：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">IocActivity</span> <span class="token keyword">extends</span> <span class="token class-name">AppCompatActivity</span> <span class="token punctuation">{</span>
-
-    <span class="token annotation punctuation">@FindView</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>txt_ioc_test<span class="token punctuation">)</span>
-    <span class="token keyword">private</span> TextView mTxtTest<span class="token punctuation">;</span>
-
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span>Bundle savedInstanceState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token function">setContentView</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>layout<span class="token punctuation">.</span>activity_ioc<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        ViewInject<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        mTxtTest<span class="token punctuation">.</span><span class="token function">setText</span><span class="token punctuation">(</span><span class="token string">"测试"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token annotation punctuation">@OnClick</span><span class="token punctuation">(</span>id <span class="token operator">=</span> <span class="token punctuation">{</span>R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>btn_ioc_test<span class="token punctuation">,</span> R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>btn_ioc_test2<span class="token punctuation">}</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onClick</span><span class="token punctuation">(</span>View view<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">switch</span> <span class="token punctuation">(</span>view<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">case</span> R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>btn_ioc_test<span class="token operator">:</span>
-                Toast<span class="token punctuation">.</span><span class="token function">makeText</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token string">"Click1"</span><span class="token punctuation">,</span> Toast<span class="token punctuation">.</span>LENGTH_SHORT<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token keyword">case</span> R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>btn_ioc_test2<span class="token operator">:</span>
-                Toast<span class="token punctuation">.</span><span class="token function">makeText</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token string">"Click2"</span><span class="token punctuation">,</span> Toast<span class="token punctuation">.</span>LENGTH_SHORT<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IocActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@FindView</span>(R.id.txt_ioc_test)</div><div class="line">    <span class="keyword">private</span> TextView mTxtTest;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_ioc);</div><div class="line">        ViewInject.bind(<span class="keyword">this</span>);</div><div class="line">        mTxtTest.setText(<span class="string">"测试"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@OnClick</span>(id = &#123;R.id.btn_ioc_test, R.id.btn_ioc_test2&#125;)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (view.getId()) &#123;</div><div class="line">            <span class="keyword">case</span> R.id.btn_ioc_test:</div><div class="line">                Toast.makeText(<span class="keyword">this</span>, <span class="string">"Click1"</span>, Toast.LENGTH_SHORT).show();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> R.id.btn_ioc_test2:</div><div class="line">                Toast.makeText(<span class="keyword">this</span>, <span class="string">"Click2"</span>, Toast.LENGTH_SHORT).show();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>以上为运行时注解的简单实现，即 xUtils 使用的注解方法。但是这种方法因为通过一系列反射获取属性、方法等，对性能会有所影响，所以不建议在实际项目中使用，下边介绍下轻量级的编译时注解。</p>
 <h2 id="编译时注解"><a href="#编译时注解" class="headerlink" title="编译时注解"></a>编译时注解</h2><p>ButterKnife 源码解析网上已经有很多不错的文章了，例如这篇 <a href="http://www.jianshu.com/p/0f3f4f7ca505" target="_blank" rel="external">ButterKnife源码分析</a> 讲的就很好。这里主要介绍下自己的大致实现以及编译时注解在 Android Studio 中的使用。</p>
 <p>首先介绍下大概的项目结构，如下图所示：</p>
@@ -321,160 +214,22 @@
 </ul>
 <p>本篇文章主要为介绍及学习，所以此处仅实现 setContentView 的编译时注解。</p>
 <p>1、声明注解</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>CLASS<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//编译时注解</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//修饰类</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">ContentView</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.CLASS) <span class="comment">//编译时注解</span></div><div class="line"><span class="meta">@Target</span>(ElementType.TYPE) <span class="comment">//修饰类</span></div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ContentView &#123;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">value</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>2、声明外界接口及方法</p>
-<p>声明接口：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ContentInjector</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
-    <span class="token keyword">void</span> <span class="token function">injectContent</span><span class="token punctuation">(</span>T obj<span class="token punctuation">,</span> Activity activity<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//此处仅用 Activity 参数即可实现文章的 demo</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>声明接口：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ContentInjector</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">injectContent</span><span class="params">(T obj, Activity activity)</span></span>; <span class="comment">//此处仅用 Activity 参数即可实现文章的 demo</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>提供方法：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ContentViewInject</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">bind</span><span class="token punctuation">(</span>Activity activity<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//绑定</span>
-        <span class="token function">injectContentView</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">injectContentView</span><span class="token punctuation">(</span>Activity activity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Class<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Activity</span><span class="token operator">></span> clazz <span class="token operator">=</span> activity<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            ContentInjector injector <span class="token operator">=</span> <span class="token punctuation">(</span>ContentInjector<span class="token punctuation">)</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span>clazz<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                    <span class="token operator">+</span> <span class="token string">"$$ViewBinder"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            injector<span class="token punctuation">.</span><span class="token function">injectContent</span><span class="token punctuation">(</span>activity<span class="token punctuation">,</span> activity<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InstantiationException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IllegalAccessException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ClassNotFoundException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContentViewInject</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(Activity activity)</span> </span>&#123;<span class="comment">//绑定</span></div><div class="line">        injectContentView(activity);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">injectContentView</span><span class="params">(Activity activity)</span> </span>&#123;</div><div class="line">        Class&lt;? extends Activity&gt; clazz = activity.getClass();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            ContentInjector injector = (ContentInjector) Class.forName(clazz.getName()</div><div class="line">                    + <span class="string">"$$ViewBinder"</span>).newInstance();</div><div class="line">            injector.injectContent(activity, activity);</div><div class="line">        &#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>以上代码为简单使用，butterknife 中的 UnBinder 解绑，使用 Map 缓存等暂不考虑。<br>此处的 Class.forName(“”) 以及 class.newInstance() 会对性能略有影响，butterknife 在此进行了 map 缓存优化。</p>
 <p>3、自定义 AbstractProcessor，此处需将 module 设置为 Java library 才可继承 AbstractProcessor。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token annotation punctuation">@AutoService</span><span class="token punctuation">(</span>Processor<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@SupportedSourceVersion</span><span class="token punctuation">(</span>value <span class="token operator">=</span> SourceVersion<span class="token punctuation">.</span>RELEASE_7<span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ContentViewInjectProcessor</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractProcessor</span> <span class="token punctuation">{</span>
-
-
-    <span class="token comment" spellcheck="true">//可用 @SupportedAnnotationTypes("com.lauzy.ContentView") 注解 ContentViewInjectProcessor 代替</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> Set<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">getSupportedAnnotationTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Set<span class="token operator">&lt;</span>String<span class="token operator">></span> supportTypes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedHashSet</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        supportTypes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>ContentView<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getCanonicalName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> supportTypes<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">process</span><span class="token punctuation">(</span>Set<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">TypeElement</span><span class="token operator">></span> set<span class="token punctuation">,</span> RoundEnvironment roundEnvironment<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        String packageName<span class="token punctuation">;</span>
-        String className<span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">//遍历每个被 ContentView 修饰的 class 文件</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>Element element <span class="token operator">:</span> roundEnvironment<span class="token punctuation">.</span><span class="token function">getElementsAnnotatedWith</span><span class="token punctuation">(</span>ContentView<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>element<span class="token punctuation">.</span><span class="token function">getKind</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> ElementKind<span class="token punctuation">.</span>CLASS<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                TypeElement typeElement <span class="token operator">=</span> <span class="token punctuation">(</span>TypeElement<span class="token punctuation">)</span> element<span class="token punctuation">;</span>
-                PackageElement packageEle <span class="token operator">=</span> <span class="token punctuation">(</span>PackageElement<span class="token punctuation">)</span> element<span class="token punctuation">.</span><span class="token function">getEnclosingElement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                packageName <span class="token operator">=</span> packageEle<span class="token punctuation">.</span><span class="token function">getQualifiedName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//获取包名</span>
-                <span class="token comment" spellcheck="true">//因为是 ElementKind.CLASS 类型，所以可以直接强制转换，获取类名</span>
-                className <span class="token operator">=</span> typeElement<span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-                <span class="token keyword">int</span> layoutId <span class="token operator">=</span> typeElement<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>ContentView<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//获取注解的 id</span>
-
-                <span class="token comment" spellcheck="true">//拼接 Jav a类的字符串</span>
-                StringBuilder builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"package "</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>packageName<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">";\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"import android.view.View;\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"import android.app.Activity;\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"import com.freedom.lauzy.inject.ContentInjector;\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"public class "</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>className <span class="token operator">+</span> <span class="token string">"$$ViewBinder"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"&lt;T extends "</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>className<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">">"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">" implements ContentInjector&lt;T>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">" {\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"@Override\n"</span><span class="token punctuation">)</span>
-                        <span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"public void injectContent(final T source, Activity activity) {\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"    ((Activity) source).setContentView("</span> <span class="token operator">+</span> layoutId<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">");\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"}\n\n}\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-
-                <span class="token comment" spellcheck="true">//写入 Java 文件</span>
-                <span class="token keyword">try</span> <span class="token punctuation">{</span>
-                    JavaFileObject fileObject <span class="token operator">=</span> processingEnv<span class="token punctuation">.</span><span class="token function">getFiler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createSourceFile</span><span class="token punctuation">(</span>
-                            packageName <span class="token operator">+</span> <span class="token string">"."</span> <span class="token operator">+</span> className <span class="token operator">+</span> <span class="token string">"$$ViewBinder"</span><span class="token punctuation">,</span>
-                            typeElement<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    Writer writer <span class="token operator">=</span> fileObject<span class="token punctuation">.</span><span class="token function">openWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    writer<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>builder<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    writer<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    writer<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@AutoService</span>(Processor.class)</div><div class="line"><span class="meta">@SupportedSourceVersion</span>(value = SourceVersion.RELEASE_7)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContentViewInjectProcessor</span> <span class="keyword">extends</span> <span class="title">AbstractProcessor</span> </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line">	<span class="comment">//可用 @SupportedAnnotationTypes("com.lauzy.ContentView") 注解 ContentViewInjectProcessor 代替</span></div><div class="line">	<span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span> </span>&#123;</div><div class="line">        Set&lt;String&gt; supportTypes = <span class="keyword">new</span> LinkedHashSet&lt;&gt;();</div><div class="line">        supportTypes.add(ContentView.class.getCanonicalName());</div><div class="line">        <span class="keyword">return</span> supportTypes;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; set, RoundEnvironment roundEnvironment)</span> </span>&#123;</div><div class="line">        String packageName;</div><div class="line">        String className;</div><div class="line">        <span class="comment">//遍历每个被 ContentView 修饰的 class 文件</span></div><div class="line">        <span class="keyword">for</span> (Element element : roundEnvironment.getElementsAnnotatedWith(ContentView.class)) &#123;</div><div class="line">            <span class="keyword">if</span> (element.getKind() == ElementKind.CLASS) &#123;</div><div class="line">                TypeElement typeElement = (TypeElement) element;</div><div class="line">                PackageElement packageEle = (PackageElement) element.getEnclosingElement();</div><div class="line">                packageName = packageEle.getQualifiedName().toString();<span class="comment">//获取包名</span></div><div class="line">                <span class="comment">//因为是 ElementKind.CLASS 类型，所以可以直接强制转换，获取类名</span></div><div class="line">                className = typeElement.getSimpleName().toString();</div><div class="line"></div><div class="line">                <span class="keyword">int</span> layoutId = typeElement.getAnnotation(ContentView.class).value();<span class="comment">//获取注解的 id</span></div><div class="line">				</div><div class="line">				<span class="comment">//拼接 Jav a类的字符串</span></div><div class="line">                StringBuilder builder = <span class="keyword">new</span> StringBuilder();</div><div class="line">                builder.append(<span class="string">"package "</span>).append(packageName).append(<span class="string">";\n"</span>);</div><div class="line">                builder.append(<span class="string">"import android.view.View;\n"</span>);</div><div class="line">                builder.append(<span class="string">"import android.app.Activity;\n"</span>);</div><div class="line">                builder.append(<span class="string">"import com.freedom.lauzy.inject.ContentInjector;\n"</span>);</div><div class="line">                builder.append(<span class="string">'\n'</span>);</div><div class="line"></div><div class="line">                builder.append(<span class="string">"public class "</span>).append(className + <span class="string">"$$ViewBinder"</span>);</div><div class="line">                builder.append(<span class="string">"&lt;T extends "</span>).append(className).append(<span class="string">"&gt;"</span>);</div><div class="line">                builder.append(<span class="string">" implements ContentInjector&lt;T&gt;"</span>);</div><div class="line">                builder.append(<span class="string">" &#123;\n"</span>);</div><div class="line">                builder.append(<span class="string">"@Override\n"</span>)</div><div class="line">                        .append(<span class="string">"public void injectContent(final T source, Activity activity) &#123;\n"</span>);</div><div class="line">                builder.append(<span class="string">"    ((Activity) source).setContentView("</span> + layoutId);</div><div class="line">                builder.append(<span class="string">");\n"</span>);</div><div class="line">                builder.append(<span class="string">"&#125;\n\n&#125;\n"</span>);</div><div class="line"></div><div class="line"></div><div class="line">				<span class="comment">//写入 Java 文件</span></div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(</div><div class="line">                            packageName + <span class="string">"."</span> + className + <span class="string">"$$ViewBinder"</span>,</div><div class="line">                            typeElement);</div><div class="line">                    Writer writer = fileObject.openWriter();</div><div class="line">                    writer.write(builder.toString());</div><div class="line">                    writer.flush();</div><div class="line">                    writer.close();</div><div class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                    System.out.println(<span class="string">"error"</span>);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>butterknife 中使用了 <a href="https://github.com/square/javapoet" target="_blank" rel="external">javapoet</a> 生成 Java 代码文件</p>
-<p>此 module 的 gradle 配置如下：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-apply plugin<span class="token operator">:</span> <span class="token string">'java'</span>
-
-dependencies <span class="token punctuation">{</span>
-    compile <span class="token function">fileTree</span><span class="token punctuation">(</span>include<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'*.jar'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> dir<span class="token operator">:</span> <span class="token string">'libs'</span><span class="token punctuation">)</span>
-    compile <span class="token string">'com.google.auto.service:auto-service:1.0-rc2'</span> <span class="token comment" spellcheck="true">// google 的生成源代码库</span>
-    compile <span class="token function">project</span><span class="token punctuation">(</span><span class="token string">':annotation'</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-sourceCompatibility <span class="token operator">=</span> <span class="token string">"1.7"</span>
-targetCompatibility <span class="token operator">=</span> <span class="token string">"1.7"</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>此 module 的 gradle 配置如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">apply plugin: <span class="string">'java'</span></div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(include: [<span class="string">'*.jar'</span>], dir: <span class="string">'libs'</span>)</span></span></div><div class="line">    compile 'com.google.auto.service:auto-service:1.0-rc2' <span class="comment">// google 的生成源代码库</span></div><div class="line">    compile <span class="title">project</span><span class="params">(<span class="string">':annotation'</span>)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">sourceCompatibility = <span class="string">"1.7"</span></div><div class="line">targetCompatibility = <span class="string">"1.7"</span></div></pre></td></tr></table></figure></p>
 <p>4、app 使用</p>
-<p>app 的 gradle 配置如下：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-dependencies <span class="token punctuation">{</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-    annotationProcessor <span class="token function">project</span><span class="token punctuation">(</span><span class="token string">':compiler'</span><span class="token punctuation">)</span>
-    compile <span class="token function">project</span><span class="token punctuation">(</span><span class="token string">':annotation'</span><span class="token punctuation">)</span>
-    compile <span class="token function">project</span><span class="token punctuation">(</span><span class="token string">':inject'</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>app 的 gradle 配置如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">	...</div><div class="line">    <span class="function">annotationProcessor <span class="title">project</span><span class="params">(<span class="string">':compiler'</span>)</span></span></div><div class="line">    compile <span class="title">project</span><span class="params">(<span class="string">':annotation'</span>)</span></div><div class="line">    compile <span class="title">project</span><span class="params">(<span class="string">':inject'</span>)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>activity 中使用：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token annotation punctuation">@ContentView</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>layout<span class="token punctuation">.</span>activity_ioc<span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">IocActivity</span> <span class="token keyword">extends</span> <span class="token class-name">AppCompatActivity</span> <span class="token punctuation">{</span>
-
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span>Bundle savedInstanceState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        ContentViewInject<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@ContentView</span>(R.layout.activity_ioc)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IocActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        ContentViewInject.bind(<span class="keyword">this</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这样，整个流程就结束了。此时 build 整个项目则会在 app/build/generated/source/apt/debug/com.lauzy.freedom.lauzycode/IOC 文件夹下生成一个<br>IocActivity$$ViewBinder 的 Java 文件，代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">package</span> com<span class="token punctuation">.</span>lauzy<span class="token punctuation">.</span>freedom<span class="token punctuation">.</span>lauzycode<span class="token punctuation">.</span>IOC<span class="token punctuation">;</span>
-<span class="token keyword">import</span> android<span class="token punctuation">.</span>app<span class="token punctuation">.</span>Activity<span class="token punctuation">;</span>
-<span class="token keyword">import</span> com<span class="token punctuation">.</span>freedom<span class="token punctuation">.</span>lauzy<span class="token punctuation">.</span>inject<span class="token punctuation">.</span>ContentInjector<span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">IocActivity</span>$$ViewBinder<span class="token operator">&lt;</span>T <span class="token keyword">extends</span> <span class="token class-name">IocActivity</span><span class="token operator">></span> <span class="token keyword">implements</span> <span class="token class-name">ContentInjector</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
-<span class="token annotation punctuation">@Override</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">injectContent</span><span class="token punctuation">(</span><span class="token keyword">final</span> T source<span class="token punctuation">,</span> Activity activity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token punctuation">(</span><span class="token punctuation">(</span>Activity<span class="token punctuation">)</span> source<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setContentView</span><span class="token punctuation">(</span><span class="token number">2130968606</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> com.lauzy.freedom.lauzycode.IOC;</div><div class="line"><span class="keyword">import</span> android.app.Activity;</div><div class="line"><span class="keyword">import</span> com.freedom.lauzy.inject.ContentInjector;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IocActivity</span>$$<span class="title">ViewBinder</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">IocActivity</span>&gt; <span class="keyword">implements</span> <span class="title">ContentInjector</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">injectContent</span><span class="params">(<span class="keyword">final</span> T source, Activity activity)</span> </span>&#123;</div><div class="line">    ((Activity) source).setContentView(<span class="number">2130968606</span>);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>可以看到，其实是在编译时生成了一个 Java 文件，并在 activity 的 onCreate 方法中调用了 setContentView 方法。</p>
 <p>注意事项：</p>
 <p>1、若不使用 com.google.auto.service:auto-service:1.0-rc2 这个 google 的生成源代码库，则需要手动创建一个 META_INF 文件来指定注解。<br>需要在 compiler 中创建 compiler/src/main/resources/META-INF/services 目录(注意 META-INF 中间不是下划线，减号即可)，并新建 text 文件 javax.annotation.processing.Processor，<br>文件中写入自定义 AbstractProcessor 的全名称，如： com.lauzy.ContentViewInjectProcessor 。多个的话换行写入。</p>
@@ -505,6 +260,12 @@ dependencies <span class="token punctuation">{</span>
                 
 
                 
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
 
             </div>
     <!-- Side Catalog Container -->
@@ -519,6 +280,16 @@ dependencies <span class="token punctuation">{</span>
 
                 <!-- Featured Tags -->
                 
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Android 框架" title="Android 框架">Android 框架</a>
+                        
+                    </div>
+                </section>
+                
 
                 <!-- Friends Blog -->
                 
@@ -531,8 +302,57 @@ dependencies <span class="token punctuation">{</span>
 
 
 
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Lauzy";
+    var disqus_identifier = "http://lauzy.github.io/2017/05/10/201706IOC2/";
+    var disqus_url = "http://lauzy.github.io/2017/05/10/201706IOC2/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
 
 
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
 
 
 
@@ -548,16 +368,34 @@ dependencies <span class="token punctuation">{</span>
                 
 
                 
+                    <li>
+                        <a target="_blank" href="http://weibo.com/PaleRider">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
 
                 
 
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Lauzy">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
                 
 
                 
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lauzy 2017 
+                    Copyright &copy; Lauzy&#39;s Blog 2017 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">

@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Life is like a box of chocolates.">
-    <meta name="keyword"  content="undefined">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
         
-          Java注解、反射，安卓IOC（一） - undefined
+          Java注解、反射，安卓IOC（一） - Lauzy的博客 | Lauzy&#39;s Blog
         
     </title>
 
@@ -50,8 +50,7 @@
 
     <!-- ga & ba script hoook -->
     <script></script>
-<link rel="stylesheet" href="/css/prism-solarizedlight.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 
 <!-- hack iOS CSS :active style -->
@@ -68,7 +67,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Lauzy</a>
+            <a class="navbar-brand" href="/">Lauzy&#39;s Blog</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -153,7 +152,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('/undefined')
+        background-image: url('/img/home-bg.jpg')
     }
 </style>
 <header class="intro-header" >
@@ -204,26 +203,14 @@
 </ul>
 <h4 id="元-Annotation"><a href="#元-Annotation" class="headerlink" title="元 Annotation"></a>元 Annotation</h4><p>元Annotation是用来修饰其他注解定义，即注解其他注解。<br>Java中有6种元注解，其中@Native注解一般用于给IDE工具做提示用。下边具体介绍其他几种注解。</p>
 <p>1、@Retention：指定本修饰的注解可以保留多长时间。包含了一个RetentionPolicy类的value值，所以需指定该value的值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Documented</span>
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>ANNOTATION_TYPE<span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Retention</span> <span class="token punctuation">{</span>
-    RetentionPolicy <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Documented</span></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(ElementType.ANNOTATION_TYPE)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Retention &#123;</div><div class="line">    <span class="function">RetentionPolicy <span class="title">value</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
 <li>RetentionPolicy.CLASS  ————  默认值，编译器将注解记录在字节码文件中，程序运行时，JVM不保留注解信息。</li>
 <li>RetentionPolicy.RUNTIME  ————  编译器将注解记录在字节码文件中，程序运行时，JVM可以获得注解信息，可通过反射获取该注解的信息。</li>
 <li>RetentionPolicy.SOURCE  ————  注解只保留在源代码中，编译器直接丢弃。</li>
 </ul>
 <p>2、@Target：指定被修饰的注解能用于哪些程序元素。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Documented</span>
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>ANNOTATION_TYPE<span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Target</span> <span class="token punctuation">{</span>
-    ElementType<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Documented</span></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(ElementType.ANNOTATION_TYPE)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Target &#123;</div><div class="line">    ElementType[] value();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
 <li>ElementType.ANNOTATION_TYPE: 修饰Annotation。</li>
 <li>ElementType.TYPE: 修饰类、接口（包括注解类型）、枚举。</li>
@@ -240,93 +227,23 @@
 <li>ElementType.TYPE_USE:  使用类型的任何语句</li>
 </ul>
 <p>TYPE_PARAMETER举例，若要对泛型进行标注，则定义注解时需设定Target为TYPE_PARAMETER：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE_PARAMETER<span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Animal</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Zoo</span><span class="token operator">&lt;</span><span class="token annotation punctuation">@Animal</span> T<span class="token operator">></span><span class="token punctuation">{</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Target</span>(ElementType.TYPE_PARAMETER)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Animal&#123;&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Zoo</span>&lt;@<span class="title">Animal</span> <span class="title">T</span>&gt;</span>&#123;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>TYPE_USE可用于标注各种使用到类型的地方，举例如下(上述例子可以将TYPE_PARAMETER改为TYPE_USE)：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-定义：
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE_USE<span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">UseTest</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
-
-使用：
-<span class="token annotation punctuation">@UseTest</span> String content<span class="token punctuation">;</span> 修饰类型，
-此种写法相当于java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>@UseTest String content<span class="token punctuation">;</span> 
-若<span class="token annotation punctuation">@UseTest</span> java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>String content<span class="token punctuation">;</span> 此为定义局部变量，写法不合法，UseTest需指定Target为LOCAL_VARIABLE。
-
-String content <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token annotation punctuation">@UseTest</span> String<span class="token punctuation">)</span> obj<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//类型转换</span>
-List<span class="token operator">&lt;</span><span class="token annotation punctuation">@UseTest</span> String<span class="token operator">></span> infos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//泛型</span>
-<span class="token keyword">implements</span> <span class="token annotation punctuation">@UseTest</span> XXXX<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//实现接口</span>
-<span class="token keyword">throws</span> <span class="token annotation punctuation">@UseTest</span> NullPointException<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//声明抛出异常</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">定义：</div><div class="line"><span class="meta">@Target</span>(ElementType.TYPE_USE)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UseTest</span></span>&#123;&#125;</div><div class="line"></div><div class="line">使用：</div><div class="line"><span class="meta">@UseTest</span> String content; 修饰类型，</div><div class="line">此种写法相当于java.lang.<span class="meta">@UseTest</span> String content; </div><div class="line">若<span class="meta">@UseTest</span> java.lang.String content; 此为定义局部变量，写法不合法，UseTest需指定Target为LOCAL_VARIABLE。</div><div class="line"></div><div class="line">String content = (<span class="meta">@UseTest</span> String) obj; <span class="comment">//类型转换</span></div><div class="line">List&lt;<span class="meta">@UseTest</span> String&gt; infos = <span class="keyword">new</span> ArrayList&lt;&gt;();  <span class="comment">//泛型</span></div><div class="line">implements <span class="meta">@UseTest</span> XXXX;  <span class="comment">//实现接口</span></div><div class="line"><span class="keyword">throws</span> <span class="meta">@UseTest</span> NullPointException;  <span class="comment">//声明抛出异常</span></div></pre></td></tr></table></figure>
 <p>3、@Documented：被该注解修饰的注解会被javadoc工具提取成文档。如果一个注解由@Documented修饰，则使用该注解的程序api文档中会包含该注解的说明。</p>
 <p>4、@Inherited: 此注解修饰的注解具有继承性。若@XXX被@Inherited修饰，则使用@XXX注解的类具有继承性，其子类自动被@XXX修饰。</p>
 <p>5、@Repeatable：重复注解，Java8的新特性。</p>
 <p>在Java8之前，重复注解的解决方案代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Student</span><span class="token punctuation">{</span>
-    String <span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-定义一个容器注解：
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Students</span><span class="token punctuation">{</span>
-    Student<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-使用：
-<span class="token annotation punctuation">@Students</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token annotation punctuation">@Student</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"Jack"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token annotation punctuation">@Student</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"Will"</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StudentTest</span><span class="token punctuation">{</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(ElementType.TYPE)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Student&#123;</div><div class="line">	<span class="function">String <span class="title">name</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">定义一个容器注解：</div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(ElementType.TYPE)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Students&#123;</div><div class="line">	Student[] value();</div><div class="line">&#125;</div><div class="line"></div><div class="line">使用：</div><div class="line"><span class="meta">@Students</span>(&#123;<span class="meta">@Student</span>(name = <span class="string">"Jack"</span>), <span class="meta">@Student</span>(name = <span class="string">"Will"</span>)&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StudentTest</span></span>&#123;</div><div class="line">	......</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在Java8中的方案则如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">//定义如上的容器注解Students，添加Repeatable注解，如下所示</span>
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Repeatable</span><span class="token punctuation">(</span>Students<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Student</span><span class="token punctuation">{</span>
-    String <span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-使用：
-<span class="token annotation punctuation">@Student</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"Jack"</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Student</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"Will"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StudentTest</span><span class="token punctuation">{</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//定义如上的容器注解Students，添加Repeatable注解，如下所示</span></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(ElementType.TYPE)</div><div class="line"><span class="meta">@Repeatable</span>(Students.class)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Student&#123;</div><div class="line">	<span class="function">String <span class="title">name</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">使用：</div><div class="line"><span class="meta">@Student</span>(name = <span class="string">"Jack"</span>)</div><div class="line"><span class="meta">@Student</span>(name = <span class="string">"Will"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StudentTest</span></span>&#123;</div><div class="line">	......</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="Java-反射简介"><a href="#Java-反射简介" class="headerlink" title="Java 反射简介"></a>Java 反射简介</h2><p>通过Java反射可以获取对象的属性、方法等。</p>
 <p>1、获取类</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token comment" spellcheck="true">//第一种方式</span>
-Class <span class="token class-name">stuClazz1</span> <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"com.lauzy.freedom.ReflectDemo.Student"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">//第二种方式</span>
-Class <span class="token class-name">stuClazz2</span> <span class="token operator">=</span> Student<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">//第三种方式</span>
-Student stu3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-Class <span class="token class-name">stuClazz3</span> <span class="token operator">=</span> stu3<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//第一种方式</span></div><div class="line">Class stuClazz1 = Class.forName(<span class="string">"com.lauzy.freedom.ReflectDemo.Student"</span>);</div><div class="line">	</div><div class="line"><span class="comment">//第二种方式</span></div><div class="line">Class stuClazz2 = Student.class;</div><div class="line">    </div><div class="line"><span class="comment">//第三种方式</span></div><div class="line">Student stu3 = <span class="keyword">new</span> Student();</div><div class="line">Class stuClazz3 = stu3.getClass();</div></pre></td></tr></table></figure>
 <p>2、创建对象</p>
-<pre class="line-numbers language-java"><code class="language-java">
-Class <span class="token class-name">stuClazz2</span> <span class="token operator">=</span> Student<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-Object stu <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Class stuClazz2 = Student.class;</div><div class="line">Object stu = stuClazz2.newInstance();</div></pre></td></tr></table></figure>
 <p>3、获取属性例子</p>
-<pre class="line-numbers language-java"><code class="language-java">
-Object stu <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//获取实例</span>
-Field age <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//获取特定属性</span>
-age<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//打破封装性</span>
-age<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>stu<span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//设置属性</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Object stu = stuClazz2.newInstance();   <span class="comment">//获取实例</span></div><div class="line">Field age = stuClazz2.getDeclaredField(<span class="string">"age"</span>);  <span class="comment">//获取特定属性</span></div><div class="line">age.setAccessible(<span class="keyword">true</span>);    <span class="comment">//打破封装性</span></div><div class="line">age.set(stu, <span class="number">25</span>);   <span class="comment">//设置属性</span></div></pre></td></tr></table></figure>
 <p>4、方法总结</p>
 <ul>
 <li>getDeclaredFields(): 获取所有属性。</li>
@@ -345,143 +262,21 @@ age<span class="token punctuation">.</span><span class="token function">set</spa
 <li>method.invoke(Object object, Object… values); //调用方法，values为方法的参数</li>
 </ul>
 <p>5、代码实例</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">try</span> <span class="token punctuation">{</span>
-    Class <span class="token class-name">stuClazz1</span> <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"com.lauzy.freedom.ReflectDemo.Student"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Class <span class="token class-name">stuClazz2</span> <span class="token operator">=</span> Student<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-    Student stu3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Class <span class="token class-name">stuClazz3</span> <span class="token operator">=</span> stu3<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>Field field <span class="token operator">:</span> stuClazz1<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Modifier<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>field<span class="token punctuation">.</span><span class="token function">getModifiers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true">//获取属性修饰符</span>
-                <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> field<span class="token punctuation">.</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span>     <span class="token comment" spellcheck="true">//获取属性类型名</span>
-                <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> field<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//获取属性名</span>
-    <span class="token punctuation">}</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>Method method <span class="token operator">:</span> stuClazz2<span class="token punctuation">.</span><span class="token function">getDeclaredMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Modifier<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>method<span class="token punctuation">.</span><span class="token function">getModifiers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true">//获取方法修饰符</span>
-                <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> method<span class="token punctuation">.</span><span class="token function">getReturnType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>   <span class="token comment" spellcheck="true">//方法返回类型名</span>
-                <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> method<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//方法名</span>
-    <span class="token punctuation">}</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>stuClazz2<span class="token punctuation">.</span><span class="token function">getDeclaredConstructor</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>stuClazz2<span class="token punctuation">.</span><span class="token function">getSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>Class <span class="token class-name">aClass</span> <span class="token operator">:</span> stuClazz2<span class="token punctuation">.</span><span class="token function">getInterfaces</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>aClass<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Object stu <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//获取实例</span>
-    Field name <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//获取特定属性</span>
-    name<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//打破封装性</span>
-    name<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>stu<span class="token punctuation">,</span> <span class="token string">"Jack"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">//设置属性</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>name<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>stu<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    Method profile <span class="token operator">=</span> stuClazz2<span class="token punctuation">.</span><span class="token function">getDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"getProfile"</span><span class="token punctuation">,</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//特定方法</span>
-    profile<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    profile<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>stu<span class="token punctuation">,</span> <span class="token string">"male"</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//调用方法</span>
-<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    Class stuClazz1 = Class.forName(<span class="string">"com.lauzy.freedom.ReflectDemo.Student"</span>);</div><div class="line">    Class stuClazz2 = Student.class;</div><div class="line">    Student stu3 = <span class="keyword">new</span> Student();</div><div class="line">    Class stuClazz3 = stu3.getClass();</div><div class="line">	<span class="keyword">for</span> (Field field : stuClazz1.getDeclaredFields()) &#123;</div><div class="line">        System.out.println(Modifier.toString(field.getModifiers())  <span class="comment">//获取属性修饰符</span></div><div class="line">                + <span class="string">"-"</span> + field.getType().getSimpleName()     <span class="comment">//获取属性类型名</span></div><div class="line">                + <span class="string">"-"</span> + field.getName());  <span class="comment">//获取属性名</span></div><div class="line">    &#125;</div><div class="line">    System.out.println(<span class="string">"--------"</span>);</div><div class="line">    <span class="keyword">for</span> (Method method : stuClazz2.getDeclaredMethods()) &#123;</div><div class="line">        System.out.println(Modifier.toString(method.getModifiers())  <span class="comment">//获取方法修饰符</span></div><div class="line">                + <span class="string">"-"</span> + method.getReturnType().toString()   <span class="comment">//方法返回类型名</span></div><div class="line">                + <span class="string">"-"</span> + method.getName());  <span class="comment">//方法名</span></div><div class="line">    &#125;</div><div class="line">    System.out.println(<span class="string">"--------"</span>);</div><div class="line">    System.out.println(stuClazz2.getDeclaredConstructor(String.class, String.class, <span class="keyword">int</span>.class).toString());</div><div class="line">    System.out.println(<span class="string">"--------"</span>);</div><div class="line">    System.out.println(stuClazz2.getSuperclass().getName().toString());</div><div class="line">    System.out.println(<span class="string">"--------"</span>);</div><div class="line">    <span class="keyword">for</span> (Class aClass : stuClazz2.getInterfaces()) &#123;</div><div class="line">        System.out.println(aClass.getName());</div><div class="line">    &#125;</div><div class="line">    System.out.println(<span class="string">"--------"</span>);</div><div class="line">    Object stu = stuClazz2.newInstance();   <span class="comment">//获取实例</span></div><div class="line">    Field name = stuClazz2.getDeclaredField(<span class="string">"name"</span>);  <span class="comment">//获取特定属性</span></div><div class="line">    name.setAccessible(<span class="keyword">true</span>);    <span class="comment">//打破封装性</span></div><div class="line">    name.set(stu, <span class="string">"Jack"</span>);   <span class="comment">//设置属性</span></div><div class="line">    System.out.println(name.get(stu));</div><div class="line"></div><div class="line">    Method profile = stuClazz2.getDeclaredMethod(<span class="string">"getProfile"</span>, String.class, <span class="keyword">int</span>.class);<span class="comment">//特定方法</span></div><div class="line">    profile.setAccessible(<span class="keyword">true</span>);</div><div class="line">    profile.invoke(stu, <span class="string">"male"</span>, <span class="number">30</span>);<span class="comment">//调用方法</span></div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>输出结果：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">private</span><span class="token operator">-</span>String<span class="token operator">-</span>name
-<span class="token keyword">public</span><span class="token operator">-</span>String<span class="token operator">-</span>gender
-<span class="token keyword">private</span><span class="token operator">-</span><span class="token keyword">int</span><span class="token operator">-</span>age
-<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
-<span class="token keyword">public</span><span class="token operator">-</span><span class="token keyword">class</span> <span class="token class-name">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>String</span><span class="token operator">-</span>getName
-<span class="token keyword">public</span><span class="token operator">-</span><span class="token keyword">void</span><span class="token operator">-</span>setName
-<span class="token keyword">private</span><span class="token operator">-</span><span class="token keyword">void</span><span class="token operator">-</span>getProfile
-<span class="token keyword">public</span><span class="token operator">-</span><span class="token keyword">int</span><span class="token operator">-</span>getAge
-<span class="token keyword">public</span><span class="token operator">-</span><span class="token keyword">void</span><span class="token operator">-</span>setAge
-<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
-<span class="token keyword">public</span> com<span class="token punctuation">.</span>lauzy<span class="token punctuation">.</span>freedom<span class="token punctuation">.</span>ReflectDemo<span class="token punctuation">.</span><span class="token function">Student</span><span class="token punctuation">(</span>java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>String<span class="token punctuation">,</span>java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>String<span class="token punctuation">,</span><span class="token keyword">int</span><span class="token punctuation">)</span>
-<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
-com<span class="token punctuation">.</span>lauzy<span class="token punctuation">.</span>freedom<span class="token punctuation">.</span>AnnotationDemo<span class="token punctuation">.</span>Person
-<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
-java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>Serializable
-<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
-Jack
-Name <span class="token operator">:</span> Jack <span class="token punctuation">;</span> Gender <span class="token operator">:</span> male <span class="token punctuation">;</span> Age <span class="token operator">:</span> <span class="token number">30</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">private-String-name</div><div class="line">public-String-gender</div><div class="line">private-int-age</div><div class="line">--------</div><div class="line">public-class java.lang.String-getName</div><div class="line">public-void-setName</div><div class="line">private-void-getProfile</div><div class="line">public-int-getAge</div><div class="line">public-void-setAge</div><div class="line">--------</div><div class="line">public com.lauzy.freedom.ReflectDemo.Student(java.lang.String,java.lang.String,int)</div><div class="line">--------</div><div class="line">com.lauzy.freedom.AnnotationDemo.Person</div><div class="line">--------</div><div class="line">java.io.Serializable</div><div class="line">--------</div><div class="line">Jack</div><div class="line">Name : Jack ; Gender : male ; Age : 30</div></pre></td></tr></table></figure>
 <h2 id="自定义注解、反射获取属性"><a href="#自定义注解、反射获取属性" class="headerlink" title="自定义注解、反射获取属性"></a>自定义注解、反射获取属性</h2><p>分别定义Name、Gender和SaveMoney注解：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">)</span>
-@<span class="token keyword">interface</span> <span class="token class-name">Name</span> <span class="token punctuation">{</span>
-    String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">"Will"</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">Gender</span> <span class="token punctuation">{</span>
-    String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">SaveMoney</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">int</span> <span class="token function">money</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token number">10000</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">int</span> <span class="token function">term</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token number">1</span><span class="token punctuation">;</span>
-
-    String <span class="token function">platform</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">"XXX"</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(ElementType.FIELD)</div><div class="line"><span class="meta">@interface</span> Name &#123;</div><div class="line">    <span class="function">String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> "Will"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(ElementType.FIELD)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Gender &#123;</div><div class="line">    <span class="function">String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(ElementType.METHOD)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SaveMoney &#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">money</span><span class="params">()</span> <span class="keyword">default</span> 10000</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">term</span><span class="params">()</span> <span class="keyword">default</span> 1</span>;</div><div class="line"></div><div class="line">    <span class="function">String <span class="title">platform</span><span class="params">()</span> <span class="keyword">default</span> "XXX"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>注解的使用：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">{</span>
-    <span class="token annotation punctuation">@Name</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"Jack"</span><span class="token punctuation">)</span>
-    <span class="token annotation punctuation">@Gender</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"man"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> String name<span class="token punctuation">;</span>
-
-    <span class="token annotation punctuation">@SaveMoney</span><span class="token punctuation">(</span>money <span class="token operator">=</span> <span class="token number">20000</span><span class="token punctuation">,</span> term <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">,</span> platform <span class="token operator">=</span> <span class="token string">"ChinaBank"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">saveMoney</span><span class="token punctuation">(</span><span class="token keyword">int</span> money<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"and then he spent "</span> <span class="token operator">+</span> money  <span class="token operator">+</span> <span class="token string">" on clothes."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</div><div class="line">    <span class="meta">@Name</span>(value = <span class="string">"Jack"</span>)</div><div class="line">    <span class="meta">@Gender</span>(value = <span class="string">"man"</span>)</div><div class="line">    <span class="keyword">public</span> String name;</div><div class="line"></div><div class="line">    <span class="meta">@SaveMoney</span>(money = <span class="number">20000</span>, term = <span class="number">5</span>, platform = <span class="string">"ChinaBank"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveMoney</span><span class="params">(<span class="keyword">int</span> money)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"and then he spent "</span> + money  + <span class="string">" on clothes."</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>利用反射获取注解的属性和方法：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AnnUtils</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span>Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> clazz<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>Field field <span class="token operator">:</span> clazz<span class="token punctuation">.</span><span class="token function">getFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>field<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>Name<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> field<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>Gender<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                Name name <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>Name<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                Gender gender <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>Gender<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"A "</span> <span class="token operator">+</span> gender<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" called "</span> <span class="token operator">+</span> name<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-
-        <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            Class<span class="token operator">&lt;</span>Person<span class="token operator">></span> personClass <span class="token operator">=</span> Person<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-            Method<span class="token punctuation">[</span><span class="token punctuation">]</span> methods <span class="token operator">=</span> personClass<span class="token punctuation">.</span><span class="token function">getMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">for</span> <span class="token punctuation">(</span>Method method <span class="token operator">:</span> methods<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>method<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>SaveMoney<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    SaveMoney saveMoney <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>SaveMoney<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">" deposited "</span> <span class="token operator">+</span> saveMoney<span class="token punctuation">.</span><span class="token function">money</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"RMB to "</span> <span class="token operator">+</span>
-                            saveMoney<span class="token punctuation">.</span><span class="token function">platform</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" for "</span> <span class="token operator">+</span> saveMoney<span class="token punctuation">.</span><span class="token function">term</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" months, "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-                    method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>personClass<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnnUtils</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(Class&lt;?&gt; clazz)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (Field field : clazz.getFields()) &#123;</div><div class="line">            <span class="keyword">if</span> (field.isAnnotationPresent(Name.class) &amp;&amp; field.isAnnotationPresent(Gender.class)) &#123;</div><div class="line">                Name name = field.getAnnotation(Name.class);</div><div class="line">                Gender gender = field.getAnnotation(Gender.class);</div><div class="line">                System.out.print(<span class="string">"A "</span> + gender.value() + <span class="string">" called "</span> + name.value());</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Class&lt;Person&gt; personClass = Person.class;</div><div class="line">            Method[] methods = personClass.getMethods();</div><div class="line">            <span class="keyword">for</span> (Method method : methods) &#123;</div><div class="line">                <span class="keyword">if</span> (method.isAnnotationPresent(SaveMoney.class)) &#123;</div><div class="line">                    SaveMoney saveMoney = method.getAnnotation(SaveMoney.class);</div><div class="line">                    System.out.print(<span class="string">" deposited "</span> + saveMoney.money() + <span class="string">"RMB to "</span> +</div><div class="line">                            saveMoney.platform() + <span class="string">" for "</span> + saveMoney.term() + <span class="string">" months, "</span>);</div><div class="line"></div><div class="line">                    method.invoke(personClass.newInstance(), <span class="number">1000</span>);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>执行 </p>
-<pre class="line-numbers language-java"><code class="language-java">AnnUtils<span class="token punctuation">.</span><span class="token function">test</span><span class="token punctuation">(</span>Person<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">AnnUtils.test(Person.class);</div></pre></td></tr></table></figure>
 <p>此时的输出结果为：</p>
-<pre class="line-numbers language-java"><code class="language-java">A man named Jack deposited 20000RMB to ChinaBank <span class="token keyword">for</span> <span class="token number">5</span> months<span class="token punctuation">,</span> and then he spent <span class="token number">1000</span> on clothes<span class="token punctuation">.</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A man named Jack deposited <span class="number">20000</span>RMB to ChinaBank <span class="keyword">for</span> <span class="number">5</span> months, and then he spent <span class="number">1000</span> on clothes.</div></pre></td></tr></table></figure>
 <p>此篇博客为基础用法及实例，下一篇<a href="http://lauzy.me/2017/05/09/201706IOC2/" target="_blank" rel="external">Java注解、反射，安卓IOC（二）</a>会介绍注解和反射在Android中的使用，运行时注解及butterknife的简单实现。</p>
 
 
@@ -505,6 +300,12 @@ Name <span class="token operator">:</span> Jack <span class="token punctuation">
                 
 
                 
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
 
             </div>
     <!-- Side Catalog Container -->
@@ -519,6 +320,16 @@ Name <span class="token operator">:</span> Jack <span class="token punctuation">
 
                 <!-- Featured Tags -->
                 
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Android 框架" title="Android 框架">Android 框架</a>
+                        
+                    </div>
+                </section>
+                
 
                 <!-- Friends Blog -->
                 
@@ -531,8 +342,57 @@ Name <span class="token operator">:</span> Jack <span class="token punctuation">
 
 
 
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Lauzy";
+    var disqus_identifier = "http://lauzy.github.io/2017/05/09/201706IOC1/";
+    var disqus_url = "http://lauzy.github.io/2017/05/09/201706IOC1/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
 
 
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
 
 
 
@@ -548,16 +408,34 @@ Name <span class="token operator">:</span> Jack <span class="token punctuation">
                 
 
                 
+                    <li>
+                        <a target="_blank" href="http://weibo.com/PaleRider">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
 
                 
 
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Lauzy">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
                 
 
                 
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lauzy 2017 
+                    Copyright &copy; Lauzy&#39;s Blog 2017 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">

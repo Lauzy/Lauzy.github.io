@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Life is like a box of chocolates.">
-    <meta name="keyword"  content="undefined">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
         
-          拖拽图片 - undefined
+          拖拽图片 - Lauzy的博客 | Lauzy&#39;s Blog
         
     </title>
 
@@ -50,8 +50,7 @@
 
     <!-- ga & ba script hoook -->
     <script></script>
-<link rel="stylesheet" href="/css/prism-solarizedlight.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 
 <!-- hack iOS CSS :active style -->
@@ -68,7 +67,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Lauzy</a>
+            <a class="navbar-brand" href="/">Lauzy&#39;s Blog</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -153,7 +152,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('/undefined')
+        background-image: url('/img/home-bg.jpg')
     }
 </style>
 <header class="intro-header" >
@@ -194,91 +193,9 @@
 <p><img src="http://oop6dcmck.bkt.clouddn.com/20170502Gank2.gif" width="270" height="450" alt="效果图"></p>
 <a id="more"></a>
 <p>实现方法当然是手势交互，那自然想到OnTouchListener()，流程还是很简单的，继承OnTouchListener，然后重写onTouch方法，由于效果相对简单，这里直接上代码：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onTouch</span><span class="token punctuation">(</span>View v<span class="token punctuation">,</span> MotionEvent event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
-        <span class="token comment" spellcheck="true">//获取View的LayoutParams，注意此种方法仅适合FrameLayout，这里仅是一种简单的实现思路。</span>
-        FrameLayout<span class="token punctuation">.</span>LayoutParams layoutParams <span class="token operator">=</span> <span class="token punctuation">(</span>FrameLayout<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">)</span> v<span class="token punctuation">.</span><span class="token function">getLayoutParams</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">switch</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span><span class="token function">getActionMasked</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">case</span> MotionEvent<span class="token punctuation">.</span>ACTION_DOWN<span class="token operator">:</span>
-            <span class="token comment" spellcheck="true">//获取手指按下时X和Y轴的坐标</span>
-                mOriginalY <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> event<span class="token punctuation">.</span><span class="token function">getRawY</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                mOriginalX <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> event<span class="token punctuation">.</span><span class="token function">getRawX</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token keyword">case</span> MotionEvent<span class="token punctuation">.</span>ACTION_MOVE<span class="token operator">:</span>
-            <span class="token comment" spellcheck="true">//获取移动的距离</span>
-                mMotionY <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span><span class="token function">getRawY</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> mOriginalY<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                mMotionX <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span><span class="token function">getRawX</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> mOriginalX<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//计算缩放比例</span>
-                <span class="token keyword">float</span> ratio <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mMotionY<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">1.0f</span> <span class="token operator">/</span> v<span class="token punctuation">.</span><span class="token function">getHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">float</span> ratioY <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mMotionY<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> v<span class="token punctuation">.</span><span class="token function">getHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token punctuation">(</span>ratio <span class="token operator">&lt;=</span> <span class="token number">0.5f</span> <span class="token operator">?</span> ratio <span class="token operator">:</span> <span class="token number">0.5f</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token number">0.5f</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//根据Y轴变化缩放比例</span>
-                v<span class="token punctuation">.</span><span class="token function">setScaleX</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">-</span> ratioY<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                v<span class="token punctuation">.</span><span class="token function">setScaleY</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">-</span> ratioY<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//设置layoutParams变化</span>
-                layoutParams<span class="token punctuation">.</span>topMargin <span class="token operator">=</span> mMotionY <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
-                layoutParams<span class="token punctuation">.</span>leftMargin <span class="token operator">=</span> mMotionX <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
-                layoutParams<span class="token punctuation">.</span>bottomMargin <span class="token operator">=</span> <span class="token operator">-</span>mMotionY <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
-                layoutParams<span class="token punctuation">.</span>rightMargin <span class="token operator">=</span> <span class="token operator">-</span>mMotionX <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
-                v<span class="token punctuation">.</span><span class="token function">setLayoutParams</span><span class="token punctuation">(</span>layoutParams<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//调用requestLayout 重置布局</span>
-                v<span class="token punctuation">.</span><span class="token function">requestLayout</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//设置透明度最低值</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mMotionY<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">500</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    mContentLayout<span class="token punctuation">.</span><span class="token function">getBackground</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAlpha</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    mCurAlpha <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                <span class="token comment" spellcheck="true">//根据移动距离计算透明度</span>
-                    <span class="token keyword">float</span> ratioAlpha <span class="token operator">=</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mMotionY<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">500.0f</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">255</span> <span class="token operator">-</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    mContentLayout<span class="token punctuation">.</span><span class="token function">getBackground</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAlpha</span><span class="token punctuation">(</span><span class="token number">255</span> <span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> ratioAlpha<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    mCurAlpha <span class="token operator">=</span> <span class="token number">255</span> <span class="token operator">-</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> ratioAlpha<span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token keyword">case</span> MotionEvent<span class="token punctuation">.</span>ACTION_UP<span class="token operator">:</span>
-            <span class="token keyword">case</span> MotionEvent<span class="token punctuation">.</span>ACTION_CANCEL<span class="token operator">:</span>
-            <span class="token comment" spellcheck="true">//手势抬起或者取消时，若移动距离大于400，实现自定义的接口方法</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mMotionY<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">400</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    mImageEventListener<span class="token punctuation">.</span><span class="token function">onActionBack</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                <span class="token comment" spellcheck="true">//无动画返回原状</span>
-                    <span class="token comment" spellcheck="true">/*v.setScaleY(1);
-                    v.setScaleX(1);
-                    layoutParams.topMargin = 0;
-                    layoutParams.bottomMargin = 0;
-                    layoutParams.leftMargin = 0;
-                    layoutParams.rightMargin = 0;
-                    mContentLayout.getBackground().setAlpha(255);*/</span>
-                <span class="token comment" spellcheck="true">//通过一系列动画将View复原</span>
-                    <span class="token function">setScaleAnim</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token function">setMarginAnim</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> layoutParams<span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>LEFT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token function">setMarginAnim</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> layoutParams<span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>RIGHT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token function">setMarginAnim</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> layoutParams<span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>TOP<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token function">setMarginAnim</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> layoutParams<span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>BOTTOM<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    v<span class="token punctuation">.</span><span class="token function">requestLayout</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-                ValueAnimator animator <span class="token operator">=</span> ValueAnimator<span class="token punctuation">.</span><span class="token function">ofInt</span><span class="token punctuation">(</span>mCurAlpha<span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                animator<span class="token punctuation">.</span><span class="token function">addUpdateListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ValueAnimator<span class="token punctuation">.</span>AnimatorUpdateListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    <span class="token annotation punctuation">@Override</span>
-                    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onAnimationUpdate</span><span class="token punctuation">(</span>ValueAnimator animation<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                        mContentLayout<span class="token punctuation">.</span><span class="token function">getBackground</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAlpha</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Integer<span class="token punctuation">)</span> animation<span class="token punctuation">.</span><span class="token function">getAnimatedValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token punctuation">}</span>
-                <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                animator<span class="token punctuation">.</span><span class="token function">setDuration</span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token comment" spellcheck="true">//消费事件</span>
-        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouch</span><span class="params">(View v, MotionEvent event)</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">//获取View的LayoutParams，注意此种方法仅适合FrameLayout，这里仅是一种简单的实现思路。</span></div><div class="line">       FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();</div><div class="line">       <span class="keyword">switch</span> (event.getActionMasked()) &#123;</div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_DOWN:</div><div class="line">		<span class="comment">//获取手指按下时X和Y轴的坐标</span></div><div class="line">               mOriginalY = (<span class="keyword">int</span>) event.getRawY();</div><div class="line">               mOriginalX = (<span class="keyword">int</span>) event.getRawX();</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_MOVE:</div><div class="line">		<span class="comment">//获取移动的距离</span></div><div class="line">               mMotionY = (<span class="keyword">int</span>) (event.getRawY() - mOriginalY);</div><div class="line">               mMotionX = (<span class="keyword">int</span>) (event.getRawX() - mOriginalX);</div><div class="line">		<span class="comment">//计算缩放比例</span></div><div class="line">               <span class="keyword">float</span> ratio = Math.abs(mMotionY) * <span class="number">1.0f</span> / v.getHeight();</div><div class="line">               <span class="keyword">float</span> ratioY = Math.abs(mMotionY) &lt;= v.getHeight() ? (ratio &lt;= <span class="number">0.5f</span> ? ratio : <span class="number">0.5f</span>) : <span class="number">0.5f</span>;</div><div class="line">           <span class="comment">//根据Y轴变化缩放比例</span></div><div class="line">               v.setScaleX(<span class="number">1</span> - ratioY);</div><div class="line">               v.setScaleY(<span class="number">1</span> - ratioY);</div><div class="line">		<span class="comment">//设置layoutParams变化</span></div><div class="line">               layoutParams.topMargin = mMotionY / <span class="number">2</span>;</div><div class="line">               layoutParams.leftMargin = mMotionX / <span class="number">2</span>;</div><div class="line">               layoutParams.bottomMargin = -mMotionY / <span class="number">2</span>;</div><div class="line">               layoutParams.rightMargin = -mMotionX / <span class="number">2</span>;</div><div class="line">               v.setLayoutParams(layoutParams);</div><div class="line">		<span class="comment">//调用requestLayout 重置布局</span></div><div class="line">               v.requestLayout();</div><div class="line">		<span class="comment">//设置透明度最低值</span></div><div class="line">               <span class="keyword">if</span> (Math.abs(mMotionY) &gt; <span class="number">500</span>) &#123;</div><div class="line">                   mContentLayout.getBackground().setAlpha(<span class="number">100</span>);</div><div class="line">                   mCurAlpha = <span class="number">100</span>;</div><div class="line">               &#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="comment">//根据移动距离计算透明度</span></div><div class="line">                   <span class="keyword">float</span> ratioAlpha = (Math.abs(mMotionY) / <span class="number">500.0f</span>) * (<span class="number">255</span> - <span class="number">100</span>);</div><div class="line">                   mContentLayout.getBackground().setAlpha(<span class="number">255</span> - (<span class="keyword">int</span>) ratioAlpha);</div><div class="line">                   mCurAlpha = <span class="number">255</span> - (<span class="keyword">int</span>) ratioAlpha;</div><div class="line">               &#125;</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">           <span class="keyword">case</span> MotionEvent.ACTION_CANCEL:</div><div class="line">		<span class="comment">//手势抬起或者取消时，若移动距离大于400，实现自定义的接口方法</span></div><div class="line">               <span class="keyword">if</span> (Math.abs(mMotionY) &gt; <span class="number">400</span>) &#123;</div><div class="line">                   mImageEventListener.onActionBack();</div><div class="line">               &#125; <span class="keyword">else</span> &#123;</div><div class="line">               <span class="comment">//无动画返回原状</span></div><div class="line">                   <span class="comment">/*v.setScaleY(1);</span></div><div class="line">                   v.setScaleX(1);</div><div class="line">                   layoutParams.topMargin = 0;</div><div class="line">                   layoutParams.bottomMargin = 0;</div><div class="line">                   layoutParams.leftMargin = 0;</div><div class="line">                   layoutParams.rightMargin = 0;</div><div class="line">                   mContentLayout.getBackground().setAlpha(255);*/</div><div class="line">			<span class="comment">//通过一系列动画将View复原</span></div><div class="line">                   setScaleAnim(v);</div><div class="line">                   setMarginAnim(v, layoutParams, Direction.LEFT);</div><div class="line">                   setMarginAnim(v, layoutParams, Direction.RIGHT);</div><div class="line">                   setMarginAnim(v, layoutParams, Direction.TOP);</div><div class="line">                   setMarginAnim(v, layoutParams, Direction.BOTTOM);</div><div class="line">                   v.requestLayout();</div><div class="line">               &#125;</div><div class="line">               ValueAnimator animator = ValueAnimator.ofInt(mCurAlpha, <span class="number">255</span>);</div><div class="line">               animator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">                   <span class="meta">@Override</span></div><div class="line">                   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator animation)</span> </span>&#123;</div><div class="line">                       mContentLayout.getBackground().setAlpha((Integer) animation.getAnimatedValue());</div><div class="line">                   &#125;</div><div class="line">               &#125;);</div><div class="line">               animator.setDuration(<span class="number">300</span>).start();</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">       &#125;</div><div class="line"><span class="comment">//消费事件</span></div><div class="line">       <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <p>然后在使用的地方直接调用即可：</p>
-<pre class="line-numbers language-java"><code class="language-java">        imageView<span class="token punctuation">.</span><span class="token function">setOnTouchListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">DragImageOnTouchListener</span><span class="token punctuation">(</span>frameLayout<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">DragImageOnTouchListener<span class="token punctuation">.</span>ImageEventListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onActionBack</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token function">onBackPressed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token comment" spellcheck="true">//可处理具体的逻辑</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">imageView.setOnTouchListener(<span class="keyword">new</span> DragImageOnTouchListener(frameLayout, <span class="keyword">new</span> DragImageOnTouchListener.ImageEventListener() &#123;</div><div class="line">          <span class="meta">@Override</span></div><div class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActionBack</span><span class="params">()</span> </span>&#123;</div><div class="line">              onBackPressed();</div><div class="line">		<span class="comment">//可处理具体的逻辑</span></div><div class="line">          &#125;</div><div class="line">      &#125;));</div></pre></td></tr></table></figure>
 <p>注意：此方法是根据LayoutParams重置布局实现，所以使用FrameLayout可达到图片所示效果。若使用其他布局，如RelativeLayout，则需要先初始化RelativeLayout.LayoutParams，使得视图不便控制。<br>具体代码可参考  <a href="https://github.com/Lauzy/LauzyCode" target="_blank" rel="external">我的Github</a> 的<a href="https://github.com/Lauzy/LauzyCode/tree/master/app/src/main/java/com/lauzy/freedom/lauzycode/DragImage" target="_blank" rel="external">DragImage包下</a>,<br>在我的<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营</a> 中也有具体的使用。</p>
 
 
@@ -302,6 +219,12 @@
                 
 
                 
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
 
             </div>
     <!-- Side Catalog Container -->
@@ -316,6 +239,16 @@
 
                 <!-- Featured Tags -->
                 
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Android 交互" title="Android 交互">Android 交互</a>
+                        
+                    </div>
+                </section>
+                
 
                 <!-- Friends Blog -->
                 
@@ -328,8 +261,57 @@
 
 
 
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Lauzy";
+    var disqus_identifier = "http://lauzy.github.io/2017/05/05/201706DragImage/";
+    var disqus_url = "http://lauzy.github.io/2017/05/05/201706DragImage/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
 
 
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
 
 
 
@@ -345,16 +327,34 @@
                 
 
                 
+                    <li>
+                        <a target="_blank" href="http://weibo.com/PaleRider">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
 
                 
 
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Lauzy">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
                 
 
                 
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lauzy 2017 
+                    Copyright &copy; Lauzy&#39;s Blog 2017 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">

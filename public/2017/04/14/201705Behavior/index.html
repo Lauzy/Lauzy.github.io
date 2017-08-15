@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Life is like a box of chocolates.">
-    <meta name="keyword"  content="undefined">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
         
-          LBehavior - undefined
+          LBehavior - Lauzy的博客 | Lauzy&#39;s Blog
         
     </title>
 
@@ -50,8 +50,7 @@
 
     <!-- ga & ba script hoook -->
     <script></script>
-<link rel="stylesheet" href="/css/prism-solarizedlight.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 
 <!-- hack iOS CSS :active style -->
@@ -68,7 +67,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Lauzy</a>
+            <a class="navbar-brand" href="/">Lauzy&#39;s Blog</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -153,7 +152,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('/undefined')
+        background-image: url('/img/home-bg.jpg')
     }
 </style>
 <header class="intro-header" >
@@ -212,196 +211,34 @@
 <p>滑动嵌套的简单流程为：控制子View(如RecyclerView)的onInterceptTouchEvent和onTouchEvent的事件分发 -&gt; 调用NestedScrollingChildHelper不同的方法 -&gt; 处理与NestedScrollingParent交互的逻辑 -&gt; 父布局(如CoordinatorLayout)实现NestedScrollingParent处理具体的逻辑<br> (-&gt; 而Behavior的事件处理方法则主要由CoordinatorLayout的各种事件处理方法来调用，返回值控制了父布局的事件消费情况)。</p>
 <p>具体方法的调用大家可以再研读Loader大神的博客。下边简单介绍下自定义Behavior实现的具体方法<a href="https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.Behavior.html" target="_blank" rel="external">Behavior官网</a>。</p>
 <h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="1-layoutDependsOn"><a href="#1-layoutDependsOn" class="headerlink" title="1.layoutDependsOn"></a>1.layoutDependsOn</h4><p>确定提供的子视图是否具有另一个特定的兄弟视图作为布局依赖关系。即用来确定依赖关系，如果某个控件需要依赖控件，则重写该方法<br>如AppBarLayout</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">layoutDependsOn</span><span class="token punctuation">(</span>CoordinatorLayout parent， View child， View dependency<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> dependency <span class="token keyword">instanceof</span> <span class="token class-name">AppBarLayout</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">layoutDependsOn</span><span class="params">(CoordinatorLayout parent， View child， View dependency)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> dependency <span class="keyword">instanceof</span> AppBarLayout;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="2-onDependentViewChanged"><a href="#2-onDependentViewChanged" class="headerlink" title="2.onDependentViewChanged"></a>2.onDependentViewChanged</h4><p>依赖视图的大小、位置发生变化时调用此方法，重写此方法可以处理child的响应。如常用的AppBarLayout，当其发生变化时，childView会根据重写的方法作出响应。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onDependentViewChanged</span><span class="token punctuation">(</span>CoordinatorLayout parent， View child， View dependency<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token function">offsetChildAsNeeded</span><span class="token punctuation">(</span>parent， child， dependency<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onDependentViewChanged</span><span class="params">(CoordinatorLayout parent， View child， View dependency)</span> </span>&#123;</div><div class="line">	offsetChildAsNeeded(parent， child， dependency);</div><div class="line">	<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="3-onStartNestedScroll"><a href="#3-onStartNestedScroll" class="headerlink" title="3.onStartNestedScroll"></a>3.onStartNestedScroll</h4><p>当CoordinatorLayout的子View开始嵌套滑动时（此处的滑动View必须实现NestedScrollingChild接口），触发此方法。添加Behavior的控件需要为CoordinatorLayout的直接子View，否则不会继续流程。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token comment" spellcheck="true">//判断是否垂直滑动</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onStartNestedScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout， View child， View directTargetChild， View target， <span class="token keyword">int</span> nestedScrollAxes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token punctuation">(</span>nestedScrollAxes <span class="token operator">&amp;</span> ViewCompat<span class="token punctuation">.</span>SCROLL_AXIS_VERTICAL<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//判断是否垂直滑动</span></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onStartNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout， View child， View directTargetChild， View target， <span class="keyword">int</span> nestedScrollAxes)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> (nestedScrollAxes &amp; ViewCompat.SCROLL_AXIS_VERTICAL) != <span class="number">0</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <h4 id="4-onNestedPreScroll"><a href="#4-onNestedPreScroll" class="headerlink" title="4.onNestedPreScroll"></a>4.onNestedPreScroll</h4><p>此方法中consumed，指的是父布局要消费的滚动距离，consumed[0]为水平方向消耗的距离，consumed[1]为垂直方向消耗的距离，可控制此参数作出相应的调整。<br>如垂直滑动时，若设置consumed[1]=dy，则代表父布局全部消耗了滑动的距离，类似AppBarLayout这种效果，当其由展开到折叠过渡时，通过consumed控制其中的嵌套滑动。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token comment" spellcheck="true">/**
-     * 触发滑动嵌套滚动之前调用的方法
-     *
-     * @param coordinatorLayout coordinatorLayout父布局
-     * @param child             使用Behavior的子View
-     * @param target            触发滑动嵌套的View(实现NestedScrollingChild接口)
-     * @param dx                滑动的X轴距离
-     * @param dy                滑动的Y轴距离
-     * @param consumed          父布局消费的滑动距离，consumed[0]和consumed[1]代表X和Y方向父布局消费的距离，默认为0
-     */</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNestedPreScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout， View child， View target， 
-        <span class="token keyword">int</span> dx， <span class="token keyword">int</span> dy， <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> consumed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onNestedPreScroll</span><span class="token punctuation">(</span>coordinatorLayout， child， target， dx， dy， consumed<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 触发滑动嵌套滚动之前调用的方法</div><div class="line">   *</div><div class="line">   * <span class="doctag">@param</span> coordinatorLayout coordinatorLayout父布局</div><div class="line">   * <span class="doctag">@param</span> child             使用Behavior的子View</div><div class="line">   * <span class="doctag">@param</span> target            触发滑动嵌套的View(实现NestedScrollingChild接口)</div><div class="line">   * <span class="doctag">@param</span> dx                滑动的X轴距离</div><div class="line">   * <span class="doctag">@param</span> dy                滑动的Y轴距离</div><div class="line">   * <span class="doctag">@param</span> consumed          父布局消费的滑动距离，consumed[0]和consumed[1]代表X和Y方向父布局消费的距离，默认为0</div><div class="line">   */</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNestedPreScroll</span><span class="params">(CoordinatorLayout coordinatorLayout， View child， View target， </span></span></div><div class="line"><span class="keyword">int</span> dx， <span class="keyword">int</span> dy， <span class="keyword">int</span>[] consumed) &#123;</div><div class="line">      <span class="keyword">super</span>.onNestedPreScroll(coordinatorLayout， child， target， dx， dy， consumed);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
 <h4 id="5-onNestedScroll"><a href="#5-onNestedScroll" class="headerlink" title="5.onNestedScroll"></a>5.onNestedScroll</h4><p>此方法中dyConsumed代表TargetView消费的距离，如RecyclerView滑动的距离，可通过控制NestScrollingChild的滑动来指定一些动画，<br>本篇博客实现的效果主要就是重写此方法，若根据onNestedPreScroll中dy来判断，则当RecyclerView条目很少时，也会触发逻辑代码，故选择了重写此方法。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token comment" spellcheck="true">/**
-     * 滑动嵌套滚动时触发的方法
-     *
-     * @param coordinatorLayout coordinatorLayout父布局
-     * @param child             使用Behavior的子View
-     * @param target            触发滑动嵌套的View
-     * @param dxConsumed        TargetView消费的X轴距离
-     * @param dyConsumed        TargetView消费的Y轴距离
-     * @param dxUnconsumed      未被TargetView消费的X轴距离
-     * @param dyUnconsumed      未被TargetView消费的Y轴距离(如RecyclerView已经到达顶部或底部，
-     *                而用户继续滑动，此时dyUnconsumed的值不为0，可处理一些越界事件)
-     */</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNestedScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout， View child， View target， 
-        <span class="token keyword">int</span> dxConsumed， <span class="token keyword">int</span> dyConsumed， <span class="token keyword">int</span> dxUnconsumed， <span class="token keyword">int</span> dyUnconsumed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onNestedScroll</span><span class="token punctuation">(</span>coordinatorLayout， child， target， 
-            dxConsumed， dyConsumed， dxUnconsumed， dyUnconsumed<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">    * 滑动嵌套滚动时触发的方法</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> coordinatorLayout coordinatorLayout父布局</div><div class="line">    * <span class="doctag">@param</span> child             使用Behavior的子View</div><div class="line">    * <span class="doctag">@param</span> target            触发滑动嵌套的View</div><div class="line">    * <span class="doctag">@param</span> dxConsumed        TargetView消费的X轴距离</div><div class="line">    * <span class="doctag">@param</span> dyConsumed        TargetView消费的Y轴距离</div><div class="line">    * <span class="doctag">@param</span> dxUnconsumed      未被TargetView消费的X轴距离</div><div class="line">    * <span class="doctag">@param</span> dyUnconsumed      未被TargetView消费的Y轴距离(如RecyclerView已经到达顶部或底部，</div><div class="line"> *				而用户继续滑动，此时dyUnconsumed的值不为0，可处理一些越界事件)</div><div class="line">    */</div><div class="line">   <span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout， View child， View target， </span></span></div><div class="line">	<span class="keyword">int</span> dxConsumed， <span class="keyword">int</span> dyConsumed， <span class="keyword">int</span> dxUnconsumed， <span class="keyword">int</span> dyUnconsumed) &#123;</div><div class="line">       <span class="keyword">super</span>.onNestedScroll(coordinatorLayout， child， target， </div><div class="line">		dxConsumed， dyConsumed， dxUnconsumed， dyUnconsumed);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <h2 id="自定义Behavior"><a href="#自定义Behavior" class="headerlink" title="自定义Behavior"></a>自定义Behavior</h2><h3 id="自定义Behavior主要有两种实现方式："><a href="#自定义Behavior主要有两种实现方式：" class="headerlink" title="自定义Behavior主要有两种实现方式："></a>自定义Behavior主要有两种实现方式：</h3><p>第一种为layoutDependsOn和onDependentViewChanged，child需要依赖于dependency，当dependency View发生变化时，onDependentViewChanged会被调用，child可作出响应的响应。<br>第二种为onStartNestedScroll 等嵌套滑动的流程，首先在onStartNestedScroll方法中判断是否垂直滑动等，然后在onNestedPreScroll、onNestedScroll等方法中实现效果。<br>由于第一种方式会导致child必须依赖于某个特定的View，这样就导致灵活性不太强，所以本文采用第二种实现方式。</p>
 <h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>在嵌套滑动开始之前，可以判断是否垂直滑动，做一些初始化工作，比如获取childView的初始坐标。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token comment" spellcheck="true">//判断垂直滑动</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onStartNestedScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout<span class="token punctuation">,</span> View child<span class="token punctuation">,</span> View directTargetChild<span class="token punctuation">,</span> View target<span class="token punctuation">,</span> <span class="token keyword">int</span> nestedScrollAxes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>isInit<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">// 设置标记，防止new Anim导致的parent和child坐标变化</span>
-            mCommonAnim <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LTitleBehaviorAnim</span><span class="token punctuation">(</span>child<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            isInit <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> <span class="token punctuation">(</span>nestedScrollAxes <span class="token operator">&amp;</span> ViewCompat<span class="token punctuation">.</span>SCROLL_AXIS_VERTICAL<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//判断垂直滑动</span></div><div class="line">   <span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onStartNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout, View child, View directTargetChild, View target, <span class="keyword">int</span> nestedScrollAxes)</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (isInit) &#123;<span class="comment">// 设置标记，防止new Anim导致的parent和child坐标变化</span></div><div class="line">           mCommonAnim = <span class="keyword">new</span> LTitleBehaviorAnim(child);</div><div class="line">           isInit = <span class="keyword">false</span>;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> (nestedScrollAxes &amp; ViewCompat.SCROLL_AXIS_VERTICAL) != <span class="number">0</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <p>触发嵌套滑动之前，可以在此处判断一些滑动手势，以及父布局的消费情况。由于若根据此方法中dy来判断，则当RecyclerView条目很少时，也会触发逻辑代码，故本文只是在此方法中给动画做一些自定义操作。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNestedPreScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout<span class="token punctuation">,</span> View child<span class="token punctuation">,</span> View target<span class="token punctuation">,</span> <span class="token keyword">int</span> dx<span class="token punctuation">,</span> <span class="token keyword">int</span> dy<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> consumed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>mCommonAnim <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            mCommonAnim<span class="token punctuation">.</span><span class="token function">setDuration</span><span class="token punctuation">(</span>mDuration<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mCommonAnim<span class="token punctuation">.</span><span class="token function">setInterpolator</span><span class="token punctuation">(</span>mInterpolator<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onNestedPreScroll</span><span class="token punctuation">(</span>coordinatorLayout<span class="token punctuation">,</span> child<span class="token punctuation">,</span> target<span class="token punctuation">,</span> dx<span class="token punctuation">,</span> dy<span class="token punctuation">,</span> consumed<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNestedPreScroll</span><span class="params">(CoordinatorLayout coordinatorLayout, View child, View target, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy, <span class="keyword">int</span>[] consumed)</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (mCommonAnim != <span class="keyword">null</span>) &#123;</div><div class="line">           mCommonAnim.setDuration(mDuration);</div><div class="line">           mCommonAnim.setInterpolator(mInterpolator);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">super</span>.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <p>滑动嵌套滚动时触发的方法，以Title(Toolbar)为例，若向上滑动，则隐藏Toolbar，反之显示。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNestedScroll</span><span class="token punctuation">(</span>CoordinatorLayout coordinatorLayout<span class="token punctuation">,</span> View child<span class="token punctuation">,</span> View target<span class="token punctuation">,</span> <span class="token keyword">int</span> dxConsumed<span class="token punctuation">,</span> <span class="token keyword">int</span> dyConsumed<span class="token punctuation">,</span> <span class="token keyword">int</span> dxUnconsumed<span class="token punctuation">,</span> <span class="token keyword">int</span> dyUnconsumed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onNestedScroll</span><span class="token punctuation">(</span>coordinatorLayout<span class="token punctuation">,</span> child<span class="token punctuation">,</span> target<span class="token punctuation">,</span> dxConsumed<span class="token punctuation">,</span> dyConsumed<span class="token punctuation">,</span> dxUnconsumed<span class="token punctuation">,</span> dyUnconsumed<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>dyConsumed <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>isHide<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                mCommonAnim<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                isHide <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>dyConsumed <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isHide<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                mCommonAnim<span class="token punctuation">.</span><span class="token function">hide</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                isHide <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNestedScroll</span><span class="params">(CoordinatorLayout coordinatorLayout, View child, View target, <span class="keyword">int</span> dxConsumed, <span class="keyword">int</span> dyConsumed, <span class="keyword">int</span> dxUnconsumed, <span class="keyword">int</span> dyUnconsumed)</span> </span>&#123;</div><div class="line">       <span class="keyword">super</span>.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);</div><div class="line">	<span class="keyword">if</span> (dyConsumed &lt; <span class="number">0</span>) &#123;</div><div class="line">           <span class="keyword">if</span> (isHide) &#123;</div><div class="line">               mCommonAnim.show();</div><div class="line">               isHide = <span class="keyword">false</span>;</div><div class="line">           &#125;</div><div class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dyConsumed &gt; <span class="number">0</span>) &#123;</div><div class="line">           <span class="keyword">if</span> (!isHide) &#123;</div><div class="line">               mCommonAnim.hide();</div><div class="line">               isHide = <span class="keyword">true</span>;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <h2 id="仿知乎效果的动画实现及个性化"><a href="#仿知乎效果的动画实现及个性化" class="headerlink" title="仿知乎效果的动画实现及个性化"></a>仿知乎效果的动画实现及个性化</h2><p>大家都知道知乎客户端的各种动画非常优雅，网上仿写其动画的博客也是层出不穷，之前利用空闲时间撸了一款<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营客户端</a>，突然想到了采用知乎的首页效果，然后就拿起键盘，复制粘贴搞了起来。<br>开个玩笑，其实大致实现效果还是比较容易的，这里主要分享下实现的思路以及需要注意的细节。</p>
 <p>首先大致流程就如上边几个方法介绍，动画效果的实现也非常简单，这里以显示和隐藏BottomView为例，直接上代码。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token keyword">public</span> <span class="token function">LBottomBehaviorAnim</span><span class="token punctuation">(</span>View bottomView<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        mBottomView <span class="token operator">=</span> bottomView<span class="token punctuation">;</span>
-        mOriginalY <span class="token operator">=</span> mBottomView<span class="token punctuation">.</span><span class="token function">getY</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//因为Y值随动画会发生变化，嵌套滑动开始之前先记录初始的坐标。</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//显示</span>
-        ValueAnimator animator <span class="token operator">=</span> ValueAnimator<span class="token punctuation">.</span><span class="token function">ofFloat</span><span class="token punctuation">(</span>mBottomView<span class="token punctuation">.</span><span class="token function">getY</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> mOriginalY<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        animator<span class="token punctuation">.</span><span class="token function">setDuration</span><span class="token punctuation">(</span><span class="token function">getDuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        animator<span class="token punctuation">.</span><span class="token function">setInterpolator</span><span class="token punctuation">(</span><span class="token function">getInterpolator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        animator<span class="token punctuation">.</span><span class="token function">addUpdateListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ValueAnimator<span class="token punctuation">.</span>AnimatorUpdateListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onAnimationUpdate</span><span class="token punctuation">(</span>ValueAnimator valueAnimator<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                mBottomView<span class="token punctuation">.</span><span class="token function">setY</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Float<span class="token punctuation">)</span> valueAnimator<span class="token punctuation">.</span><span class="token function">getAnimatedValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        animator<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">hide</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//隐藏</span>
-        ValueAnimator animator <span class="token operator">=</span> ValueAnimator<span class="token punctuation">.</span><span class="token function">ofFloat</span><span class="token punctuation">(</span>mBottomView<span class="token punctuation">.</span><span class="token function">getY</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> mOriginalY <span class="token operator">+</span> mBottomView<span class="token punctuation">.</span><span class="token function">getHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        animator<span class="token punctuation">.</span><span class="token function">setDuration</span><span class="token punctuation">(</span><span class="token function">getDuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        animator<span class="token punctuation">.</span><span class="token function">setInterpolator</span><span class="token punctuation">(</span><span class="token function">getInterpolator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        animator<span class="token punctuation">.</span><span class="token function">addUpdateListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ValueAnimator<span class="token punctuation">.</span>AnimatorUpdateListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onAnimationUpdate</span><span class="token punctuation">(</span>ValueAnimator valueAnimator<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                mBottomView<span class="token punctuation">.</span><span class="token function">setY</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Float<span class="token punctuation">)</span> valueAnimator<span class="token punctuation">.</span><span class="token function">getAnimatedValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        animator<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">LBottomBehaviorAnim</span><span class="params">(View bottomView)</span> </span>&#123;</div><div class="line">       mBottomView = bottomView;</div><div class="line">       mOriginalY = mBottomView.getY();<span class="comment">//因为Y值随动画会发生变化，嵌套滑动开始之前先记录初始的坐标。</span></div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;<span class="comment">//显示</span></div><div class="line">       ValueAnimator animator = ValueAnimator.ofFloat(mBottomView.getY(), mOriginalY);</div><div class="line">       animator.setDuration(getDuration());</div><div class="line">       animator.setInterpolator(getInterpolator());</div><div class="line">       animator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator valueAnimator)</span> </span>&#123;</div><div class="line">               mBottomView.setY((Float) valueAnimator.getAnimatedValue());</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">       animator.start();</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hide</span><span class="params">()</span> </span>&#123;<span class="comment">//隐藏</span></div><div class="line">       ValueAnimator animator = ValueAnimator.ofFloat(mBottomView.getY(), mOriginalY + mBottomView.getHeight());</div><div class="line">       animator.setDuration(getDuration());</div><div class="line">       animator.setInterpolator(getInterpolator());</div><div class="line">       animator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator valueAnimator)</span> </span>&#123;</div><div class="line">               mBottomView.setY((Float) valueAnimator.getAnimatedValue());</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">       animator.start();</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <p>整个大致流程这样其实已经结束了，但是还达不到我们预期的效果。再次打开知乎客户端，以很缓慢的速度滑一滑，这时候你会发现竟然没有触发动画，OK，先记录下这个问题；再以很缓慢的速度向下滑，突然又触发动画了。整体来看，知乎的动画有种分层嵌套的效果。</p>
 <p>先来解决第一个问题，只用加一行代码，即dyConsumed距离大于一定值的时候才允许滑动。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token keyword">if</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>dyConsumed<span class="token punctuation">)</span> <span class="token operator">></span> minScrollY<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment" spellcheck="true">//onNestedScroll里边的逻辑代码</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span>(Math.abs(dyConsumed) &gt; minScrollY)&#123;</div><div class="line">	...<span class="comment">//onNestedScroll里边的逻辑代码</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>对于第二个问题，我一开始想，滑动一定的距离，难道要根据判断RecyclerView滑动的距离来判断是否触发动画？其实思路是正确的，但是我们不可能再去实现addOnScrollListener的一系列方法。这时候再想一想嵌套滑动，dyConsumed不就是recyclerView消费的距离吗，想到这里，那就很好实现了，只用将dyConsumed相加，相加的和大于一定值，就触发动画，代码也是很简单，结合第一个问题，知乎的效果就实现了。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    mTotalScrollY <span class="token operator">+=</span> dyConsumed<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//累加消费的距离</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>dyConsumed<span class="token punctuation">)</span> <span class="token operator">></span> minScrollY <span class="token operator">||</span> Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>mTotalScrollY<span class="token punctuation">)</span> <span class="token operator">></span> scrollYDistance<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment" spellcheck="true">//onNestedScroll里边的逻辑代码</span>
-        mTotalScrollY <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//动画执行完毕后重置</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">mTotalScrollY += dyConsumed;<span class="comment">//累加消费的距离</span></div><div class="line">   <span class="keyword">if</span> (Math.abs(dyConsumed) &gt; minScrollY || Math.abs(mTotalScrollY) &gt; scrollYDistance) &#123;</div><div class="line">	...<span class="comment">//onNestedScroll里边的逻辑代码</span></div><div class="line">       mTotalScrollY = <span class="number">0</span>;<span class="comment">//动画执行完毕后重置</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <p>接下来我们可以自定义设置一些属性值。首先要获取这个Behavior对象。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token keyword">public</span> <span class="token keyword">static</span> CommonBehavior <span class="token function">from</span><span class="token punctuation">(</span>View view<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        ViewGroup<span class="token punctuation">.</span>LayoutParams params <span class="token operator">=</span> view<span class="token punctuation">.</span><span class="token function">getLayoutParams</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>params <span class="token keyword">instanceof</span> <span class="token class-name">CoordinatorLayout<span class="token punctuation">.</span>LayoutParams</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"The view is not a child of CoordinatorLayout"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        CoordinatorLayout<span class="token punctuation">.</span>Behavior behavior <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>CoordinatorLayout<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">)</span> params<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getBehavior</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>behavior <span class="token keyword">instanceof</span> <span class="token class-name">CommonBehavior</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"The view's behavior isn't an instance of CommonBehavior. Try to check the [app:layout_behavior]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> <span class="token punctuation">(</span>CommonBehavior<span class="token punctuation">)</span> behavior<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> CommonBehavior <span class="title">from</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">       ViewGroup.LayoutParams params = view.getLayoutParams();</div><div class="line">       <span class="keyword">if</span> (!(params <span class="keyword">instanceof</span> CoordinatorLayout.LayoutParams)) &#123;</div><div class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"The view is not a child of CoordinatorLayout"</span>);</div><div class="line">       &#125;</div><div class="line">       CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) params).getBehavior();</div><div class="line">       <span class="keyword">if</span> (!(behavior <span class="keyword">instanceof</span> CommonBehavior)) &#123;</div><div class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"The view's behavior isn't an instance of CommonBehavior. Try to check the [app:layout_behavior]"</span>);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> (CommonBehavior) behavior;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <p>然后可以设置对象的属性：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    <span class="token keyword">public</span> CommonBehavior <span class="token function">setDuration</span><span class="token punctuation">(</span><span class="token keyword">int</span> duration<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        mDuration <span class="token operator">=</span> duration<span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> CommonBehavior <span class="token function">setInterpolator</span><span class="token punctuation">(</span>Interpolator interpolator<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        mInterpolator <span class="token operator">=</span> interpolator<span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> CommonBehavior <span class="token function">setMinScrollY</span><span class="token punctuation">(</span><span class="token keyword">int</span> minScrollY<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>minScrollY <span class="token operator">=</span> minScrollY<span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> CommonBehavior <span class="token function">setScrollYDistance</span><span class="token punctuation">(</span><span class="token keyword">int</span> scrollYDistance<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>scrollYDistance <span class="token operator">=</span> scrollYDistance<span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> CommonBehavior <span class="title">setDuration</span><span class="params">(<span class="keyword">int</span> duration)</span> </span>&#123;</div><div class="line">       mDuration = duration;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> CommonBehavior <span class="title">setInterpolator</span><span class="params">(Interpolator interpolator)</span> </span>&#123;</div><div class="line">       mInterpolator = interpolator;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> CommonBehavior <span class="title">setMinScrollY</span><span class="params">(<span class="keyword">int</span> minScrollY)</span> </span>&#123;</div><div class="line">       <span class="keyword">this</span>.minScrollY = minScrollY;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> CommonBehavior <span class="title">setScrollYDistance</span><span class="params">(<span class="keyword">int</span> scrollYDistance)</span> </span>&#123;</div><div class="line">       <span class="keyword">this</span>.scrollYDistance = scrollYDistance;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <p>至此，整个流程已经实现了，其他TitleView及悬浮按钮的动画也是类似的规则，我又给Behavior和动画设置了Common类剔除掉一些重复代码，这里就不贴出来了。具体可以参考<a href="https://github.com/Lauzy/LBehavior" target="_blank" rel="external">我的Github</a></p>
 <p>动画已经实现，但是写代码的时候坑貌似永远是填不完的。</p>
 <p>当我使用写出来的动画时，就发现了一个问题，由于是CoordinatorLayout作为根布局，所以RecyclerView顶部的item被toolbar遮挡了，<br>我们再看看知乎，轻轻滑动一小段距离，发现他的顶部Toolbar遮挡的地方其实是空白，可以发现知乎其实也是有这个问题的，不过人家处理的很好，所以用户基本上不会发现。<br>不过这个问题还是可以解决的，比如判断item为第一个时，可以加一个View填充，个人采用的自定义ItemDecoration，判断下若为第一个item，outRect.set(0, titleHeight, 0, 0)，设置titleHeight的大小即可。BottomView也是同理，解决方法也是有不少的。</p>
@@ -409,18 +246,7 @@
 <p>此外，当知乎的RecyclerView滑动到底部的时候，BottomView是会自动显示的，个人觉得可以根据dyUnconsumed的值或者onStopNestedScroll来判断RecyclerView是否滑动到底部来处理，全部加载完毕后再处理最后一个item的ItemDecoration，本文并没有具体实现，只是提供思路。</p>
 <p>我们再来整理下解决问题的思路：首先想好做什么，然后研究原理，选择方案，再初步实现，继续优化细节，最后应用到项目。我想我们写程序的时候都应该这样，知其然知其所以然，做到举一反三。</p>
 <p>整个流程就是这样，实现后再封装，然后呢，抽离出来提交到Github。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-    allprojects <span class="token punctuation">{</span>
-        repositories <span class="token punctuation">{</span>
-            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-            maven <span class="token punctuation">{</span> url <span class="token string">'https://jitpack.io'</span> <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-
-    dependencies <span class="token punctuation">{</span>
-        compile <span class="token string">'com.github.Lauzy:LBehavior:1.0.1'</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">allprojects &#123;</div><div class="line">    repositories &#123;</div><div class="line">	    ...</div><div class="line">	    maven &#123; url <span class="string">'https://jitpack.io'</span> &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">   dependencies &#123;</div><div class="line">    compile <span class="string">'com.github.Lauzy:LBehavior:1.0.1'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>具体使用也很简单</p>
 <table>
 <thead>
@@ -480,13 +306,7 @@
 </tr>
 </tbody>
 </table>
-<pre class="line-numbers language-java"><code class="language-java">
-    CommonBehavior<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>mFloatingActionButton<span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">setMinScrollY</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">setScrollYDistance</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">setDuration</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">setInterpolator</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">LinearOutSlowInInterpolator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">CommonBehavior.from(mFloatingActionButton)</div><div class="line">	.setMinScrollY(<span class="number">20</span>)</div><div class="line">	.setScrollYDistance(<span class="number">100</span>)</div><div class="line">	.setDuration(<span class="number">1000</span>)</div><div class="line">	.setInterpolator(<span class="keyword">new</span> LinearOutSlowInInterpolator());</div></pre></td></tr></table></figure>
 <p>最后附上项目的地址，戳  <a href="https://github.com/Lauzy/LBehavior" target="_blank" rel="external">我的Github</a> ，顺便可以看看撸的<a href="https://github.com/Lauzy/GankPro" target="_blank" rel="external">干货集中营客户端</a>。</p>
 
 
@@ -510,6 +330,12 @@
                 
 
                 
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
 
             </div>
     <!-- Side Catalog Container -->
@@ -524,6 +350,16 @@
 
                 <!-- Featured Tags -->
                 
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#自定义View" title="自定义View">自定义View</a>
+                        
+                    </div>
+                </section>
+                
 
                 <!-- Friends Blog -->
                 
@@ -536,8 +372,57 @@
 
 
 
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Lauzy";
+    var disqus_identifier = "http://lauzy.github.io/2017/04/14/201705Behavior/";
+    var disqus_url = "http://lauzy.github.io/2017/04/14/201705Behavior/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
 
 
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
 
 
 
@@ -553,16 +438,34 @@
                 
 
                 
+                    <li>
+                        <a target="_blank" href="http://weibo.com/PaleRider">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
 
                 
 
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Lauzy">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
                 
 
                 
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lauzy 2017 
+                    Copyright &copy; Lauzy&#39;s Blog 2017 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">

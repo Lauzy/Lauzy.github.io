@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Life is like a box of chocolates.">
-    <meta name="keyword"  content="undefined">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
         
-          沉浸、透明及白底黑字状态栏技巧 - undefined
+          沉浸、透明及白底黑字状态栏技巧 - Lauzy的博客 | Lauzy&#39;s Blog
         
     </title>
 
@@ -50,8 +50,7 @@
 
     <!-- ga & ba script hoook -->
     <script></script>
-<link rel="stylesheet" href="/css/prism-solarizedlight.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 
 <!-- hack iOS CSS :active style -->
@@ -68,7 +67,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Lauzy</a>
+            <a class="navbar-brand" href="/">Lauzy&#39;s Blog</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -153,7 +152,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('/undefined')
+        background-image: url('/img/home-bg.jpg')
     }
 </style>
 <header class="intro-header" >
@@ -196,66 +195,21 @@
 <p>读这篇文章之前建议研读郭神的<a href="http://blog.csdn.net/guolin_blog/article/details/51763825" target="_blank" rel="external">Android状态栏微技巧，带你真正理解沉浸式模式</a>。这里我们坚决不考虑4.4以下的系统，那么基本上可以分为几种情况，4.4、 5.0以上6.0以下、 6.0+。</p>
 <p>本篇文章目录：<br>1.透明与半透明状态栏<br>2.结合Toolbar使用技巧<br>3.白底黑字状态栏<br>4.其他注意事项</p>
 <h2 id="透明与半透明状态栏"><a href="#透明与半透明状态栏" class="headerlink" title="透明与半透明状态栏"></a>透明与半透明状态栏</h2><p>首先我们实现上边两图的效果，注意下版本的判断，直接上代码：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>LOLLIPOP<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    View decorView <span class="token operator">=</span> <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDecorView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> option <span class="token operator">=</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_STABLE<span class="token punctuation">;</span>
-    decorView<span class="token punctuation">.</span><span class="token function">setSystemUiVisibility</span><span class="token punctuation">(</span>option<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setStatusBarColor</span><span class="token punctuation">(</span>Color<span class="token punctuation">.</span>TRANSPARENT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">//getWindow().setStatusBarColor(Color.parseColor("#40000000"));  //此种效果为类似QQ的半透明状态栏</span>
-<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>KITKAT<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setFlags</span><span class="token punctuation">(</span>WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>FLAG_TRANSLUCENT_STATUS<span class="token punctuation">,</span> WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>FLAG_TRANSLUCENT_STATUS<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">	View decorView = getWindow().getDecorView();</div><div class="line">	<span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN</div><div class="line">		| View.SYSTEM_UI_FLAG_LAYOUT_STABLE;</div><div class="line">	decorView.setSystemUiVisibility(option);</div><div class="line">	getWindow().setStatusBarColor(Color.TRANSPARENT);</div><div class="line">	<span class="comment">//getWindow().setStatusBarColor(Color.parseColor("#40000000"));  //此种效果为类似QQ的半透明状态栏</span></div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</div><div class="line">	getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>版本号为21以上时，效果便如上边两图所示，4.4系统则如下图所示：</p>
 <p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E9%80%8F%E6%98%8E4.4%E6%95%88%E6%9E%9C.png" alt="4.4效果"></p>
 <h2 id="结合标题栏使用的技巧"><a href="#结合标题栏使用的技巧" class="headerlink" title="结合标题栏使用的技巧"></a>结合标题栏使用的技巧</h2><p>上述方法基本上已经实现了透明状态栏的效果，但是我们添加一个Toolbar，设置各种属性后，各种元素都上移了，如下图所示：</p>
 <p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E4%B8%8D%E8%AE%BE%E7%BD%AEPadding%E6%95%88%E6%9E%9C.png" alt="上移效果"></p>
 <p>部分开发者用android:fitsSystemWindows = “true”，然后给状态栏添加一个View来解决，经本人各种实验后，发现这种方法不太适合自己。<br>这里采用一个比较直接的方式，设置透明后相当于toolbar已经被拉长，所以为其设置一个padding值来解决问题，代码如下，ScreenUtils为获取屏幕属性的一个工具类：</p>
-<pre class="line-numbers language-java"><code class="language-java">mToolbar <span class="token operator">=</span> <span class="token punctuation">(</span>Toolbar<span class="token punctuation">)</span> <span class="token function">findViewById</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>toolbar_common<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">if</span> <span class="token punctuation">(</span>mToolbar <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    mToolbar<span class="token punctuation">.</span><span class="token function">getLayoutParams</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>height <span class="token operator">+=</span> ScreenUtils<span class="token punctuation">.</span><span class="token function">getStatusHeight</span><span class="token punctuation">(</span><span class="token function">getApplicationContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    mToolbar<span class="token punctuation">.</span><span class="token function">setPadding</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> ScreenUtils<span class="token punctuation">.</span><span class="token function">getStatusHeight</span><span class="token punctuation">(</span><span class="token function">getApplicationContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">setSupportActionBar</span><span class="token punctuation">(</span>mToolbar<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ActionBar supportActionBar <span class="token operator">=</span> <span class="token function">getSupportActionBar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>supportActionBar <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        supportActionBar<span class="token punctuation">.</span><span class="token function">setDisplayShowTitleEnabled</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//此处是为了不显示默认的标题</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">mToolbar = (Toolbar) findViewById(R.id.toolbar_common);</div><div class="line"><span class="keyword">if</span> (mToolbar != <span class="keyword">null</span>) &#123;</div><div class="line">	mToolbar.getLayoutParams().height += ScreenUtils.getStatusHeight(getApplicationContext());</div><div class="line">	mToolbar.setPadding(<span class="number">0</span>, ScreenUtils.getStatusHeight(getApplicationContext()), <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">	setSupportActionBar(mToolbar);</div><div class="line">	ActionBar supportActionBar = getSupportActionBar();</div><div class="line">	<span class="keyword">if</span> (supportActionBar != <span class="keyword">null</span>) &#123;</div><div class="line">		supportActionBar.setDisplayShowTitleEnabled(<span class="keyword">false</span>);  <span class="comment">//此处是为了不显示默认的标题</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>设置之后，就达到我们想要的效果了。</p>
 <h2 id="白底黑字状态栏"><a href="#白底黑字状态栏" class="headerlink" title="白底黑字状态栏"></a>白底黑字状态栏</h2><p>有时候我们的toolbar背景为浅色甚至是白色，如果不加修饰的话，状态栏的文字由于默认白色，导致很难分辨。6.0以上系统直接提供了方法，但是考虑到其他版本，需要具体判断:</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">//设置状态栏文字为暗色</span>
-<span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>M<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">//6.0以上可以通过直接设置SYSTEM_UI_FLAG_LIGHT_STATUS_BAR属性即可。</span>
-    <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDecorView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setSystemUiVisibility</span><span class="token punctuation">(</span>View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LIGHT_STATUS_BAR<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>LOLLIPOP<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setStatusBarColor</span><span class="token punctuation">(</span>Color<span class="token punctuation">.</span>GRAY<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//21以上不支持6.0直接设置的方法，可用灰色代替，具体可自己设置</span>
-    <span class="token comment" spellcheck="true">//getWindow().setStatusBarColor(Color.parseColor("#40000000"));</span>
-<span class="token punctuation">}</span> <span class="token keyword">else</span>  <span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>JELLY_BEAN<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDecorView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setSystemUiVisibility</span><span class="token punctuation">(</span>View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//4.4版本本身就含有暗色阴影，不作其他处理即可</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//设置状态栏文字为暗色</span></div><div class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) &#123;</div><div class="line">	<span class="comment">//6.0以上可以通过直接设置SYSTEM_UI_FLAG_LIGHT_STATUS_BAR属性即可。</span></div><div class="line">	getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);</div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">	getWindow().setStatusBarColor(Color.GRAY);  <span class="comment">//21以上不支持6.0直接设置的方法，可用灰色代替，具体可自己设置</span></div><div class="line">	<span class="comment">//getWindow().setStatusBarColor(Color.parseColor("#40000000"));</span></div><div class="line">&#125; <span class="keyword">else</span>  <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.JELLY_BEAN)&#123;</div><div class="line">	getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);<span class="comment">//4.4版本本身就含有暗色阴影，不作其他处理即可</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>效果图如下：<br>6.0效果：<img src="http://oop6dcmck.bkt.clouddn.com/20170421%E7%99%BD%E8%89%B26.0%E6%95%88%E6%9E%9C.png" alt="6.0白色"><br>5.0以上6.0以下： <img src="http://oop6dcmck.bkt.clouddn.com/201704215.0%E4%BB%A5%E4%B8%8A6.0%E4%BB%A5%E4%B8%8B%E7%99%BD%E8%89%B2.png" alt="5.0以上6.0以下"><br>4.4效果： <img src="http://oop6dcmck.bkt.clouddn.com/20170421%E7%99%BD%E8%89%B24.4%E6%95%88%E6%9E%9C.png" alt="4.4效果"></p>
 <h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>上述方法基本上已经可以满足大部分需求了，效果都可以称为(半)透明状态栏。下边看看真正的沉浸式状态栏，状态栏文字和导航栏都被隐藏：</p>
 <p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E6%B2%89%E6%B5%B8.png" alt="沉浸"></p>
 <p>代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token annotation punctuation">@Override</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onWindowFocusChanged</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> hasFocus<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onWindowFocusChanged</span><span class="token punctuation">(</span>hasFocus<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>hasFocus <span class="token operator">&amp;&amp;</span> Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">>=</span> Build<span class="token punctuation">.</span>VERSION_CODES<span class="token punctuation">.</span>KITKAT<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        View decorView <span class="token operator">=</span> <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDecorView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        decorView<span class="token punctuation">.</span><span class="token function">setSystemUiVisibility</span><span class="token punctuation">(</span>
-        View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_STABLE
-        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_FULLSCREEN
-        <span class="token operator">|</span> View<span class="token punctuation">.</span>SYSTEM_UI_FLAG_IMMERSIVE_STICKY<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onWindowFocusChanged</span><span class="params">(<span class="keyword">boolean</span> hasFocus)</span> </span>&#123;</div><div class="line">	<span class="keyword">super</span>.onWindowFocusChanged(hasFocus);</div><div class="line">	<span class="keyword">if</span> (hasFocus &amp;&amp; Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</div><div class="line">		View decorView = getWindow().getDecorView();</div><div class="line">		decorView.setSystemUiVisibility(</div><div class="line">		View.SYSTEM_UI_FLAG_LAYOUT_STABLE</div><div class="line">		| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION</div><div class="line">		| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN</div><div class="line">		| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION</div><div class="line">		| View.SYSTEM_UI_FLAG_FULLSCREEN</div><div class="line">		| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>实际开发中，我们当然不可能每个Activity中都写一大堆重复的代码，所以建议讲透明状态栏的代码封装在BaseActivity中，然后Toolbar设置相同的id，或者使用<include>标签公用，自定义的一个布局或者其他View也是同理。<br>Demo中做了一些简单的封装，可以参考下，具体实现还是需要看具体的需求。</include></p>
 <p>本文所有代码的地址,戳 <a href="https://github.com/Lauzy/LauzyCode" target="_blank" rel="external">我的Github</a> ，在StatusBar包中。</p>
 
@@ -276,6 +230,12 @@
                 
 
                 
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
 
             </div>
     <!-- Side Catalog Container -->
@@ -290,6 +250,16 @@
 
                 <!-- Featured Tags -->
                 
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Android Tips" title="Android Tips">Android Tips</a>
+                        
+                    </div>
+                </section>
+                
 
                 <!-- Friends Blog -->
                 
@@ -302,8 +272,57 @@
 
 
 
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Lauzy";
+    var disqus_identifier = "http://lauzy.github.io/2017/03/30/201705StatusBar/";
+    var disqus_url = "http://lauzy.github.io/2017/03/30/201705StatusBar/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
 
 
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
 
 
 
@@ -319,16 +338,34 @@
                 
 
                 
+                    <li>
+                        <a target="_blank" href="http://weibo.com/PaleRider">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
 
                 
 
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Lauzy">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
                 
 
                 
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Lauzy 2017 
+                    Copyright &copy; Lauzy&#39;s Blog 2017 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">

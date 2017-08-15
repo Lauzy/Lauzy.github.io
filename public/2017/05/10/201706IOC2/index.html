@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Lauzy">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/Lauzy.github.io/img/favicon.ico">
+
+    <title>
+        
+          Java注解、反射，安卓IOC（二） - Lauzy | Lauzy&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://lauzy.github.io/Lauzy.github.io/2017/05/10/201706IOC2/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/Lauzy.github.io/">Lauzy&#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/Lauzy.github.io/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://lauzy.github.io/Lauzy.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/Lauzy.github.io/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/Lauzy.github.io/tags/#Android 解析" title="Android 解析">Android 解析</a>
+                        
+                    </div>
+                    <h1>Java注解、反射，安卓IOC（二）</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Lauzy on
+                        2017-05-10
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>在项目开发中，大部分 Android 开发者都使用过 ButterKnife 这个通过注解简化代码的框架。部分 Android 开发者也使用过 xUtils 这种快速开发的框架。<br>两者均使用到了注解。在上一篇 <a href="http://lauzy.me/2017/05/09/201706IOC1/" target="_blank" rel="external">Java注解、反射，安卓IOC（一）</a> 中我们知道了注解及反射的用法。本篇会分别介绍下其实现机制。</p>
+<h2 id="运行时注解"><a href="#运行时注解" class="headerlink" title="运行时注解"></a>运行时注解</h2><p>首先我们自己简单实现类似 xUtils 这种运行时注解框架。</p>
+<h3 id="绑定-View-控件"><a href="#绑定-View-控件" class="headerlink" title="绑定 View 控件"></a>绑定 View 控件</h3><p>创建注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)<span class="comment">//运行时注解</span></div><div class="line"><span class="meta">@Target</span>(ElementType.FIELD)<span class="comment">//Target为属性</span></div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> FindView &#123;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> -1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>View解析代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewInject</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(Activity activity)</span> </span>&#123;</div><div class="line">        inject(<span class="keyword">new</span> ViewFinder(activity), activity);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">        inject(<span class="keyword">new</span> ViewFinder(view), view);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(View view, Object obj)</span> </span>&#123;</div><div class="line">        inject(<span class="keyword">new</span> ViewFinder(view), obj);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">inject</span><span class="params">(ViewFinder finder, Object obj)</span> </span>&#123;</div><div class="line">        injectFields(finder, obj);</div><div class="line">        injectMethods(finder, obj);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">injectFields</span><span class="params">(ViewFinder finder, Object obj)</span> </span>&#123;</div><div class="line">        Class&lt;?&gt; clazz = obj.getClass();</div><div class="line">        Field[] fields = clazz.getDeclaredFields();<span class="comment">//获取所有变量</span></div><div class="line">        <span class="keyword">for</span> (Field field : fields) &#123;</div><div class="line">            <span class="keyword">if</span> (field.isAnnotationPresent(FindView.class)) &#123;</div><div class="line">                FindView findView = field.getAnnotation(FindView.class);<span class="comment">//获取注解</span></div><div class="line">                <span class="keyword">if</span> (findView.value() &lt; <span class="number">0</span>) &#123;</div><div class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"The id can't be -1."</span>);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    View view = finder.findViewById(findView.value());</div><div class="line">                    <span class="keyword">try</span> &#123;</div><div class="line">                        field.setAccessible(<span class="keyword">true</span>);<span class="comment">//破坏封装</span></div><div class="line">                        field.set(obj, view); <span class="comment">//设置属性</span></div><div class="line">                    &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">                        e.printStackTrace();</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>主要流程为通过反射获取并遍历所有变量，若变量被注解修饰，则将注解的 ID 赋值给指定方法并调用。</p>
+<h3 id="绑定-OnClick-事件"><a href="#绑定-OnClick-事件" class="headerlink" title="绑定 OnClick 事件"></a>绑定 OnClick 事件</h3><p>创建注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(ElementType.METHOD) <span class="comment">//Target为方法</span></div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> OnClick &#123;</div><div class="line">    <span class="keyword">int</span>[] id();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>OnClick 事件注入：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">injectMethods</span><span class="params">(ViewFinder finder, <span class="keyword">final</span> Object obj)</span> </span>&#123;</div><div class="line">    Method[] methods = obj.getClass().getDeclaredMethods();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">final</span> Method method : methods) &#123;</div><div class="line">        <span class="keyword">if</span> (method.isAnnotationPresent(OnClick.class)) &#123;</div><div class="line">            OnClick onClick = method.getAnnotation(OnClick.class);</div><div class="line">            <span class="keyword">if</span> (onClick.id().length != <span class="number">0</span>) &#123;</div><div class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i : onClick.id()) &#123;</div><div class="line">                    View view = finder.findViewById(i);</div><div class="line">                    method.setAccessible(<span class="keyword">true</span>);</div><div class="line">                    view.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">                        <span class="meta">@Override</span></div><div class="line">                        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">                            <span class="keyword">try</span> &#123;</div><div class="line">                                method.invoke(obj, v);</div><div class="line">                            &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">                                e.printStackTrace();</div><div class="line">                            &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</div><div class="line">                                e.printStackTrace();</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125;);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>主要流程为通过反射获取并遍历所有方法，若方法被注解修饰，遍历所有的 ID ，将注解的 ID 赋值给 findViewById 方法，然后在 setOnClickListener 调用 method 方法。</p>
+<p>在 Activity 中的使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IocActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@FindView</span>(R.id.txt_ioc_test)</div><div class="line">    <span class="keyword">private</span> TextView mTxtTest;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_ioc);</div><div class="line">        ViewInject.bind(<span class="keyword">this</span>);</div><div class="line">        mTxtTest.setText(<span class="string">"测试"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@OnClick</span>(id = &#123;R.id.btn_ioc_test, R.id.btn_ioc_test2&#125;)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (view.getId()) &#123;</div><div class="line">            <span class="keyword">case</span> R.id.btn_ioc_test:</div><div class="line">                Toast.makeText(<span class="keyword">this</span>, <span class="string">"Click1"</span>, Toast.LENGTH_SHORT).show();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> R.id.btn_ioc_test2:</div><div class="line">                Toast.makeText(<span class="keyword">this</span>, <span class="string">"Click2"</span>, Toast.LENGTH_SHORT).show();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上为运行时注解的简单实现，即 xUtils 使用的注解方法。但是这种方法因为通过一系列反射获取属性、方法等，对性能会有所影响，所以不建议在实际项目中使用，下边介绍下轻量级的编译时注解。</p>
+<h2 id="编译时注解"><a href="#编译时注解" class="headerlink" title="编译时注解"></a>编译时注解</h2><p>ButterKnife 源码解析网上已经有很多不错的文章了，例如这篇 <a href="http://www.jianshu.com/p/0f3f4f7ca505" target="_blank" rel="external">ButterKnife源码分析</a> 讲的就很好。这里主要介绍下自己的大致实现以及编译时注解在 Android Studio 中的使用。</p>
+<p>首先介绍下大概的项目结构，如下图所示：</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170626APT%E7%BB%93%E6%9E%84.png"></p>
+<ul>
+<li>annotation module: Java library  - 定义一系列注解。</li>
+<li>injetc module: Android library  - 定义注解的接口及调用方法。</li>
+<li>compiler module: Java library  - 自定义编译时注解 AbstractProcessor 在编译期间生成 java 代码。</li>
+<li>app: 使用方法。</li>
+</ul>
+<p>本篇文章主要为介绍及学习，所以此处仅实现 setContentView 的编译时注解。</p>
+<p>1、声明注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.CLASS) <span class="comment">//编译时注解</span></div><div class="line"><span class="meta">@Target</span>(ElementType.TYPE) <span class="comment">//修饰类</span></div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ContentView &#123;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">value</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2、声明外界接口及方法</p>
+<p>声明接口：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ContentInjector</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">injectContent</span><span class="params">(T obj, Activity activity)</span></span>; <span class="comment">//此处仅用 Activity 参数即可实现文章的 demo</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>提供方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContentViewInject</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(Activity activity)</span> </span>&#123;<span class="comment">//绑定</span></div><div class="line">        injectContentView(activity);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">injectContentView</span><span class="params">(Activity activity)</span> </span>&#123;</div><div class="line">        Class&lt;? extends Activity&gt; clazz = activity.getClass();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            ContentInjector injector = (ContentInjector) Class.forName(clazz.getName()</div><div class="line">                    + <span class="string">"$$ViewBinder"</span>).newInstance();</div><div class="line">            injector.injectContent(activity, activity);</div><div class="line">        &#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码为简单使用，butterknife 中的 UnBinder 解绑，使用 Map 缓存等暂不考虑。<br>此处的 Class.forName(“”) 以及 class.newInstance() 会对性能略有影响，butterknife 在此进行了 map 缓存优化。</p>
+<p>3、自定义 AbstractProcessor，此处需将 module 设置为 Java library 才可继承 AbstractProcessor。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@AutoService</span>(Processor.class)</div><div class="line"><span class="meta">@SupportedSourceVersion</span>(value = SourceVersion.RELEASE_7)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContentViewInjectProcessor</span> <span class="keyword">extends</span> <span class="title">AbstractProcessor</span> </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line">true<span class="comment">//可用 @SupportedAnnotationTypes("com.lauzy.ContentView") 注解 ContentViewInjectProcessor 代替</span></div><div class="line">true<span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span> </span>&#123;</div><div class="line">        Set&lt;String&gt; supportTypes = <span class="keyword">new</span> LinkedHashSet&lt;&gt;();</div><div class="line">        supportTypes.add(ContentView.class.getCanonicalName());</div><div class="line">        <span class="keyword">return</span> supportTypes;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; set, RoundEnvironment roundEnvironment)</span> </span>&#123;</div><div class="line">        String packageName;</div><div class="line">        String className;</div><div class="line">        <span class="comment">//遍历每个被 ContentView 修饰的 class 文件</span></div><div class="line">        <span class="keyword">for</span> (Element element : roundEnvironment.getElementsAnnotatedWith(ContentView.class)) &#123;</div><div class="line">            <span class="keyword">if</span> (element.getKind() == ElementKind.CLASS) &#123;</div><div class="line">                TypeElement typeElement = (TypeElement) element;</div><div class="line">                PackageElement packageEle = (PackageElement) element.getEnclosingElement();</div><div class="line">                packageName = packageEle.getQualifiedName().toString();<span class="comment">//获取包名</span></div><div class="line">                <span class="comment">//因为是 ElementKind.CLASS 类型，所以可以直接强制转换，获取类名</span></div><div class="line">                className = typeElement.getSimpleName().toString();</div><div class="line"></div><div class="line">                <span class="keyword">int</span> layoutId = typeElement.getAnnotation(ContentView.class).value();<span class="comment">//获取注解的 id</span></div><div class="line">truetruetruetrue</div><div class="line">truetruetruetrue<span class="comment">//拼接 Jav a类的字符串</span></div><div class="line">                StringBuilder builder = <span class="keyword">new</span> StringBuilder();</div><div class="line">                builder.append(<span class="string">"package "</span>).append(packageName).append(<span class="string">";\n"</span>);</div><div class="line">                builder.append(<span class="string">"import android.view.View;\n"</span>);</div><div class="line">                builder.append(<span class="string">"import android.app.Activity;\n"</span>);</div><div class="line">                builder.append(<span class="string">"import com.freedom.lauzy.inject.ContentInjector;\n"</span>);</div><div class="line">                builder.append(<span class="string">'\n'</span>);</div><div class="line"></div><div class="line">                builder.append(<span class="string">"public class "</span>).append(className + <span class="string">"$$ViewBinder"</span>);</div><div class="line">                builder.append(<span class="string">"&lt;T extends "</span>).append(className).append(<span class="string">"&gt;"</span>);</div><div class="line">                builder.append(<span class="string">" implements ContentInjector&lt;T&gt;"</span>);</div><div class="line">                builder.append(<span class="string">" &#123;\n"</span>);</div><div class="line">                builder.append(<span class="string">"@Override\n"</span>)</div><div class="line">                        .append(<span class="string">"public void injectContent(final T source, Activity activity) &#123;\n"</span>);</div><div class="line">                builder.append(<span class="string">"    ((Activity) source).setContentView("</span> + layoutId);</div><div class="line">                builder.append(<span class="string">");\n"</span>);</div><div class="line">                builder.append(<span class="string">"&#125;\n\n&#125;\n"</span>);</div><div class="line"></div><div class="line"></div><div class="line">truetruetruetrue<span class="comment">//写入 Java 文件</span></div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(</div><div class="line">                            packageName + <span class="string">"."</span> + className + <span class="string">"$$ViewBinder"</span>,</div><div class="line">                            typeElement);</div><div class="line">                    Writer writer = fileObject.openWriter();</div><div class="line">                    writer.write(builder.toString());</div><div class="line">                    writer.flush();</div><div class="line">                    writer.close();</div><div class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                    System.out.println(<span class="string">"error"</span>);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>butterknife 中使用了 <a href="https://github.com/square/javapoet" target="_blank" rel="external">javapoet</a> 生成 Java 代码文件</p>
+<p>此 module 的 gradle 配置如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">apply plugin: <span class="string">'java'</span></div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(include: [<span class="string">'*.jar'</span>], dir: <span class="string">'libs'</span>)</span></span></div><div class="line">    compile 'com.google.auto.service:auto-service:1.0-rc2' <span class="comment">// google 的生成源代码库</span></div><div class="line">    compile <span class="title">project</span><span class="params">(<span class="string">':annotation'</span>)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">sourceCompatibility = <span class="string">"1.7"</span></div><div class="line">targetCompatibility = <span class="string">"1.7"</span></div></pre></td></tr></table></figure></p>
+<p>4、app 使用</p>
+<p>app 的 gradle 配置如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">true...</div><div class="line">    <span class="function">annotationProcessor <span class="title">project</span><span class="params">(<span class="string">':compiler'</span>)</span></span></div><div class="line">    compile <span class="title">project</span><span class="params">(<span class="string">':annotation'</span>)</span></div><div class="line">    compile <span class="title">project</span><span class="params">(<span class="string">':inject'</span>)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>activity 中使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@ContentView</span>(R.layout.activity_ioc)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IocActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        ContentViewInject.bind(<span class="keyword">this</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样，整个流程就结束了。此时 build 整个项目则会在 app/build/generated/source/apt/debug/com.lauzy.freedom.lauzycode/IOC 文件夹下生成一个<br>IocActivity$$ViewBinder 的 Java 文件，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">package</span> com.lauzy.freedom.lauzycode.IOC;</div><div class="line"><span class="keyword">import</span> android.app.Activity;</div><div class="line"><span class="keyword">import</span> com.freedom.lauzy.inject.ContentInjector;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IocActivity</span>$$<span class="title">ViewBinder</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">IocActivity</span>&gt; <span class="keyword">implements</span> <span class="title">ContentInjector</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">injectContent</span><span class="params">(<span class="keyword">final</span> T source, Activity activity)</span> </span>&#123;</div><div class="line">    ((Activity) source).setContentView(<span class="number">2130968606</span>);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到，其实是在编译时生成了一个 Java 文件，并在 activity 的 onCreate 方法中调用了 setContentView 方法。</p>
+<p>注意事项：</p>
+<p>1、若不使用 com.google.auto.service:auto-service:1.0-rc2 这个 google 的生成源代码库，则需要手动创建一个 META_INF 文件来指定注解。<br>需要在 compiler 中创建 compiler/src/main/resources/META-INF/services 目录(注意 META-INF 中间不是下划线，减号即可)，并新建 text 文件 javax.annotation.processing.Processor，<br>文件中写入自定义 AbstractProcessor 的全名称，如： com.lauzy.ContentViewInjectProcessor 。多个的话换行写入。</p>
+<p>如下图所示：<br><img src="http://oop6dcmck.bkt.clouddn.com/20170626META_INF.png"></p>
+<p>2、本文使用 annotationProcessor 的注解处理器代替 <a href="https://bitbucket.org/hvisser/android-apt" target="_blank" rel="external">android-apt</a> ，Google 内置的注解处理器，建议使用。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>编译时注解的优点 ：在于对性能影响很小的情况下，大量简化程序员的代码，像 butterknife 在首次查找类的时候对性能稍有影响，其他情况下影响微乎其微。<br>编译时注解的缺点 ：build 过程生成更多的代码，增加了类和方法的数量；对性能影响很小，但是多少会有的。</p>
+<p>本人认为编译时注解在优化代码，提高效率方面是有很大优势的，远远大于其缺点。</p>
+<p>本篇文章主要是分析及梳理大致的实现方式，仅为学习使用，所有代码均托管在 <a href="https://github.com/Lauzy/LauzyCode" target="_blank" rel="external">我的Github</a> 上。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/Lauzy.github.io/2017/08/12/201708PlayPauseView/" data-toggle="tooltip" data-placement="top" title="Android自定义View：让播放、暂停按钮优雅的过渡">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/Lauzy.github.io/2017/05/09/201706IOC1/" data-toggle="tooltip" data-placement="top" title="Java注解、反射，安卓IOC（一）">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/Lauzy.github.io/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/Lauzy.github.io/tags/#Android 解析" title="Android 解析">Android 解析</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://www.jianshu.com/u/e76853f863a9" target="_blank">我的简书</a></li>
+                    
+                        <li><a href="https://importx.xyz/" target="_blank">IAzUr</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Lauzy";
+    var disqus_identifier = "http://lauzy.github.io/Lauzy.github.io/2017/05/10/201706IOC2/";
+    var disqus_url = "http://lauzy.github.io/Lauzy.github.io/2017/05/10/201706IOC2/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/freedompal">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Lauzy">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Lauzy&#39;s Blog 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/Lauzy.github.io/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/Lauzy.github.io/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/Lauzy.github.io/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://lauzy.github.io/Lauzy.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://lauzy.github.io/Lauzy.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

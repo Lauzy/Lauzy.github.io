@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Lauzy">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/Lauzy.github.io/img/favicon.ico">
+
+    <title>
+        
+          沉浸、透明及白底黑字状态栏技巧 - Lauzy | Lauzy&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://lauzy.github.io/Lauzy.github.io/2017/03/30/201705StatusBar/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/Lauzy.github.io/">Lauzy&#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/Lauzy.github.io/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://lauzy.github.io/Lauzy.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/Lauzy.github.io/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/Lauzy.github.io/tags/#Android Tips" title="Android Tips">Android Tips</a>
+                        
+                    </div>
+                    <h1>沉浸、透明及白底黑字状态栏技巧</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Lauzy on
+                        2017-03-30
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>我们知道，Android5.0以上已经可以通过设置colorPrimaryDark来改变状态栏的颜色。但是，大多数Android开发者都会遇到让系统状态栏透明或者半透明的需求，如下图所示:</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C.png" alt="透明"></p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E5%8D%8A%E9%80%8F%E6%98%8E.png" alt="半透明"></p>
+<a id="more"></a>
+<p>读这篇文章之前建议研读郭神的<a href="http://blog.csdn.net/guolin_blog/article/details/51763825" target="_blank" rel="external">Android状态栏微技巧，带你真正理解沉浸式模式</a>。这里我们坚决不考虑4.4以下的系统，那么基本上可以分为几种情况，4.4、 5.0以上6.0以下、 6.0+。</p>
+<p>本篇文章目录：<br>1.透明与半透明状态栏<br>2.结合Toolbar使用技巧<br>3.白底黑字状态栏<br>4.其他注意事项</p>
+<h2 id="透明与半透明状态栏"><a href="#透明与半透明状态栏" class="headerlink" title="透明与半透明状态栏"></a>透明与半透明状态栏</h2><p>首先我们实现上边两图的效果，注意下版本的判断，直接上代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">trueView decorView = getWindow().getDecorView();</div><div class="line">true<span class="keyword">int</span> option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN</div><div class="line">truetrue| View.SYSTEM_UI_FLAG_LAYOUT_STABLE;</div><div class="line">truedecorView.setSystemUiVisibility(option);</div><div class="line">truegetWindow().setStatusBarColor(Color.TRANSPARENT);</div><div class="line">true<span class="comment">//getWindow().setStatusBarColor(Color.parseColor("#40000000"));  //此种效果为类似QQ的半透明状态栏</span></div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</div><div class="line">truegetWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>版本号为21以上时，效果便如上边两图所示，4.4系统则如下图所示：</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E9%80%8F%E6%98%8E4.4%E6%95%88%E6%9E%9C.png" alt="4.4效果"></p>
+<h2 id="结合标题栏使用的技巧"><a href="#结合标题栏使用的技巧" class="headerlink" title="结合标题栏使用的技巧"></a>结合标题栏使用的技巧</h2><p>上述方法基本上已经实现了透明状态栏的效果，但是我们添加一个Toolbar，设置各种属性后，各种元素都上移了，如下图所示：</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E4%B8%8D%E8%AE%BE%E7%BD%AEPadding%E6%95%88%E6%9E%9C.png" alt="上移效果"></p>
+<p>部分开发者用android:fitsSystemWindows = “true”，然后给状态栏添加一个View来解决，经本人各种实验后，发现这种方法不太适合自己。<br>这里采用一个比较直接的方式，设置透明后相当于toolbar已经被拉长，所以为其设置一个padding值来解决问题，代码如下，ScreenUtils为获取屏幕属性的一个工具类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">mToolbar = (Toolbar) findViewById(R.id.toolbar_common);</div><div class="line"><span class="keyword">if</span> (mToolbar != <span class="keyword">null</span>) &#123;</div><div class="line">truemToolbar.getLayoutParams().height += ScreenUtils.getStatusHeight(getApplicationContext());</div><div class="line">truemToolbar.setPadding(<span class="number">0</span>, ScreenUtils.getStatusHeight(getApplicationContext()), <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">truesetSupportActionBar(mToolbar);</div><div class="line">trueActionBar supportActionBar = getSupportActionBar();</div><div class="line">true<span class="keyword">if</span> (supportActionBar != <span class="keyword">null</span>) &#123;</div><div class="line">truetruesupportActionBar.setDisplayShowTitleEnabled(<span class="keyword">false</span>);  <span class="comment">//此处是为了不显示默认的标题</span></div><div class="line">true&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>设置之后，就达到我们想要的效果了。</p>
+<h2 id="白底黑字状态栏"><a href="#白底黑字状态栏" class="headerlink" title="白底黑字状态栏"></a>白底黑字状态栏</h2><p>有时候我们的toolbar背景为浅色甚至是白色，如果不加修饰的话，状态栏的文字由于默认白色，导致很难分辨。6.0以上系统直接提供了方法，但是考虑到其他版本，需要具体判断:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//设置状态栏文字为暗色</span></div><div class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) &#123;</div><div class="line">true<span class="comment">//6.0以上可以通过直接设置SYSTEM_UI_FLAG_LIGHT_STATUS_BAR属性即可。</span></div><div class="line">truegetWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);</div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">truegetWindow().setStatusBarColor(Color.GRAY);  <span class="comment">//21以上不支持6.0直接设置的方法，可用灰色代替，具体可自己设置</span></div><div class="line">true<span class="comment">//getWindow().setStatusBarColor(Color.parseColor("#40000000"));</span></div><div class="line">&#125; <span class="keyword">else</span>  <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.JELLY_BEAN)&#123;</div><div class="line">truegetWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);<span class="comment">//4.4版本本身就含有暗色阴影，不作其他处理即可</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>效果图如下：<br>6.0效果：<img src="http://oop6dcmck.bkt.clouddn.com/20170421%E7%99%BD%E8%89%B26.0%E6%95%88%E6%9E%9C.png" alt="6.0白色"><br>5.0以上6.0以下： <img src="http://oop6dcmck.bkt.clouddn.com/201704215.0%E4%BB%A5%E4%B8%8A6.0%E4%BB%A5%E4%B8%8B%E7%99%BD%E8%89%B2.png" alt="5.0以上6.0以下"><br>4.4效果： <img src="http://oop6dcmck.bkt.clouddn.com/20170421%E7%99%BD%E8%89%B24.4%E6%95%88%E6%9E%9C.png" alt="4.4效果"></p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>上述方法基本上已经可以满足大部分需求了，效果都可以称为(半)透明状态栏。下边看看真正的沉浸式状态栏，状态栏文字和导航栏都被隐藏：</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20170421%E6%B2%89%E6%B5%B8.png" alt="沉浸"></p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onWindowFocusChanged</span><span class="params">(<span class="keyword">boolean</span> hasFocus)</span> </span>&#123;</div><div class="line">true<span class="keyword">super</span>.onWindowFocusChanged(hasFocus);</div><div class="line">true<span class="keyword">if</span> (hasFocus &amp;&amp; Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</div><div class="line">truetrueView decorView = getWindow().getDecorView();</div><div class="line">truetruedecorView.setSystemUiVisibility(</div><div class="line">truetrueView.SYSTEM_UI_FLAG_LAYOUT_STABLE</div><div class="line">truetrue| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION</div><div class="line">truetrue| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN</div><div class="line">truetrue| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION</div><div class="line">truetrue| View.SYSTEM_UI_FLAG_FULLSCREEN</div><div class="line">truetrue| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);</div><div class="line">true&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实际开发中，我们当然不可能每个Activity中都写一大堆重复的代码，所以建议讲透明状态栏的代码封装在BaseActivity中，然后Toolbar设置相同的id，或者使用<include>标签公用，自定义的一个布局或者其他View也是同理。<br>Demo中做了一些简单的封装，可以参考下，具体实现还是需要看具体的需求。</include></p>
+<p>本文所有代码的地址,戳 <a href="https://github.com/Lauzy/LauzyCode" target="_blank" rel="external">我的Github</a> ，在StatusBar包中。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/Lauzy.github.io/2017/04/14/201705Behavior/" data-toggle="tooltip" data-placement="top" title="LBehavior">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/Lauzy.github.io/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/Lauzy.github.io/tags/#Android Tips" title="Android Tips">Android Tips</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://www.jianshu.com/u/e76853f863a9" target="_blank">我的简书</a></li>
+                    
+                        <li><a href="https://importx.xyz/" target="_blank">IAzUr</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Lauzy";
+    var disqus_identifier = "http://lauzy.github.io/Lauzy.github.io/2017/03/30/201705StatusBar/";
+    var disqus_url = "http://lauzy.github.io/Lauzy.github.io/2017/03/30/201705StatusBar/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/freedompal">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Lauzy">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Lauzy&#39;s Blog 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/Lauzy.github.io/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/Lauzy.github.io/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/Lauzy.github.io/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://lauzy.github.io/Lauzy.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://lauzy.github.io/Lauzy.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

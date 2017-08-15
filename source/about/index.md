@@ -1,7 +1,7 @@
 ---
 title: "About"
 layout: "about"
-date: 2017-05-30
+date: 2017-05-30 14:20:45
 description: "世界微尘里，吾宁爱与憎。"
 header-img: "img/about-bg.jpg"
 comments: true

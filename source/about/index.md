@@ -17,8 +17,8 @@ comments: true
 - Android 开发者一枚
 - 毕业于NUPT
 - 电影爱好者：希区柯克、马丁斯科塞斯……
-- 最近喜欢美剧：Got、绝命毒师、硅谷……
-- 皇马球迷、最爱水爷拉莫斯 
+- 最近喜欢美剧：权力的游戏、绝命毒师、硅谷……
+- 皇马球迷
 - Learning and sharing
 
 ## Contact

@@ -52,7 +52,7 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 
 	@Override
 	public boolean layoutDependsOn(CoordinatorLayout parent， View child， View dependency) {
-		return dependency instanceof AppBarLayout;
+        return dependency instanceof AppBarLayout;
 	}
 
 ```
@@ -65,8 +65,8 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 
 	@Override
 	public boolean onDependentViewChanged(CoordinatorLayout parent， View child， View dependency) {
-		offsetChildAsNeeded(parent， child， dependency);
-		return false;
+        offsetChildAsNeeded(parent， child， dependency);
+        return false;
 	}
 ```
 

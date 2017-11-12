@@ -58,12 +58,12 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 mToolbar = (Toolbar) findViewById(R.id.toolbar_common);
 if (mToolbar != null) {
     mToolbar.getLayoutParams().height += ScreenUtils.getStatusHeight(getApplicationContext());
-	mToolbar.setPadding(0, ScreenUtils.getStatusHeight(getApplicationContext()), 0, 0);
-	setSupportActionBar(mToolbar);
-	ActionBar supportActionBar = getSupportActionBar();
-	if (supportActionBar != null) {
-	    supportActionBar.setDisplayShowTitleEnabled(false);  //此处是为了不显示默认的标题
-	}
+    mToolbar.setPadding(0, ScreenUtils.getStatusHeight(getApplicationContext()), 0, 0);
+    setSupportActionBar(mToolbar);
+    ActionBar supportActionBar = getSupportActionBar();
+    if (supportActionBar != null) {
+        supportActionBar.setDisplayShowTitleEnabled(false);  //此处是为了不显示默认的标题
+    }
 }
 
 ```
@@ -78,10 +78,10 @@ if (mToolbar != null) {
 //设置状态栏文字为暗色
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
     //6.0以上可以通过直接设置SYSTEM_UI_FLAG_LIGHT_STATUS_BAR属性即可。
-	getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     getWindow().setStatusBarColor(Color.GRAY);  //21以上不支持6.0直接设置的方法，可用灰色代替，具体可自己设置
-	//getWindow().setStatusBarColor(Color.parseColor("#40000000"));
+    //getWindow().setStatusBarColor(Color.parseColor("#40000000"));
 } else  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);//4.4版本本身就含有暗色阴影，不作其他处理即可
 }
@@ -106,16 +106,16 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 @Override
 public void onWindowFocusChanged(boolean hasFocus) {
     super.onWindowFocusChanged(hasFocus);
-	if (hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-	    View decorView = getWindow().getDecorView();
-		decorView.setSystemUiVisibility(
-		View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-		| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-		| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-		| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-		| View.SYSTEM_UI_FLAG_FULLSCREEN
-		| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-	}
+    if (hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        | View.SYSTEM_UI_FLAG_FULLSCREEN
+        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
 }
 
 ```

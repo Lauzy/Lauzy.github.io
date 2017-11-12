@@ -190,12 +190,12 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
                 isHide = false;
             }
         } else if (dyConsumed > 0) {
-		    if (!isHide) {
-			    mCommonAnim.hide();
-				isHide = true;
-			}
-		}
-	}
+            if (!isHide) {
+                mCommonAnim.hide();
+                isHide = true;
+            }
+        }
+    }
 
 
 ```
@@ -212,7 +212,7 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 
 	public LBottomBehaviorAnim(View bottomView) {
 	    mBottomView = bottomView;
-		mOriginalY = mBottomView.getY();//因为Y值随动画会发生变化，嵌套滑动开始之前先记录初始的坐标。
+        mOriginalY = mBottomView.getY();//因为Y值随动画会发生变化，嵌套滑动开始之前先记录初始的坐标。
     }
 
 	@Override
@@ -335,8 +335,8 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 
 	allprojects {
 	    repositories {
-		    ...
-			maven { url 'https://jitpack.io' }
+            ...
+            maven { url 'https://jitpack.io' }
 	    }
 	}
 
@@ -371,9 +371,9 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 
 	CommonBehavior.from(mFloatingActionButton)
 	    .setMinScrollY(20)
-		.setScrollYDistance(100)
-		.setDuration(1000)
-		.setInterpolator(new LinearOutSlowInInterpolator());
+        .setScrollYDistance(100)
+        .setDuration(1000)
+        .setInterpolator(new LinearOutSlowInInterpolator());
 		
 ```
 

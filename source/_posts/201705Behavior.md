@@ -52,7 +52,7 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 
 	@Override
 	public boolean layoutDependsOn(CoordinatorLayout parent， View child， View dependency) {
-        return dependency instanceof AppBarLayout;
+	    return dependency instanceof AppBarLayout;
 	}
 
 ```
@@ -102,7 +102,7 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
      */
     @Override
     public void onNestedPreScroll(CoordinatorLayout coordinatorLayout， View child， View target， 
-		int dx， int dy， int[] consumed) {
+        int dx， int dy， int[] consumed) {
         super.onNestedPreScroll(coordinatorLayout， child， target， dx， dy， consumed);
     }
 ```
@@ -131,7 +131,7 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
     public void onNestedScroll(CoordinatorLayout coordinatorLayout， View child， View target， 
 		int dxConsumed， int dyConsumed， int dxUnconsumed， int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout， child， target， 
-			dxConsumed， dyConsumed， dxUnconsumed， dyUnconsumed);
+            dxConsumed， dyConsumed， dxUnconsumed， dyUnconsumed);
     }
 
 ```
@@ -184,18 +184,18 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 	@Override
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-		if (dyConsumed < 0) {
+        if (dyConsumed < 0) {
             if (isHide) {
                 mCommonAnim.show();
                 isHide = false;
             }
         } else if (dyConsumed > 0) {
-            if (!isHide) {
-                mCommonAnim.hide();
-                isHide = true;
-            }
-        }
-    }
+		    if (!isHide) {
+			    mCommonAnim.hide();
+				isHide = true;
+			}
+		}
+	}
 
 
 ```
@@ -211,8 +211,8 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 ```java
 
 	public LBottomBehaviorAnim(View bottomView) {
-        mBottomView = bottomView;
-        mOriginalY = mBottomView.getY();//因为Y值随动画会发生变化，嵌套滑动开始之前先记录初始的坐标。
+	    mBottomView = bottomView;
+		mOriginalY = mBottomView.getY();//因为Y值随动画会发生变化，嵌套滑动开始之前先记录初始的坐标。
     }
 
 	@Override
@@ -252,7 +252,7 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 ```java
 
 	if(Math.abs(dyConsumed) > minScrollY){
-		...//onNestedScroll里边的逻辑代码
+	    ...//onNestedScroll里边的逻辑代码
 	}
 
 ```
@@ -263,7 +263,7 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 
 	mTotalScrollY += dyConsumed;//累加消费的距离
     if (Math.abs(dyConsumed) > minScrollY || Math.abs(mTotalScrollY) > scrollYDistance) {
-		...//onNestedScroll里边的逻辑代码
+	    ...//onNestedScroll里边的逻辑代码
         mTotalScrollY = 0;//动画执行完毕后重置
     }
 
@@ -336,7 +336,7 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 	allprojects {
 	    repositories {
 		    ...
-		    maven { url 'https://jitpack.io' }
+			maven { url 'https://jitpack.io' }
 	    }
 	}
 
@@ -370,7 +370,7 @@ Android滑动嵌套的原理及Behavior分析已经有很多大神讲解过了�
 ```java
 
 	CommonBehavior.from(mFloatingActionButton)
-		.setMinScrollY(20)
+	    .setMinScrollY(20)
 		.setScrollYDistance(100)
 		.setDuration(1000)
 		.setInterpolator(new LinearOutSlowInInterpolator());

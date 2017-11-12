@@ -7,7 +7,6 @@ tags:
 
 近期空闲时间在写一个音乐播放器 [TicktockMusic](https://github.com/Lauzy/TicktockMusic) ，基本功能已经实现，仍有诸多细节待完善。由于公司新项目开启，加上此项目的坑仍需花不少时间来填，平时敲得略累，所以闲来打算写写博客来分享下项目的经验。计划是打算多写几篇文章，将此项目的搭建，封装，逻辑实现等都写出来，分享的同时也是自己的总结。本文先从项目的搭建及架构开始写起。
 
-<!--more-->
 
 ## 架构
 在项目创建之初，考虑了诸多架构，众所周知，Android 项目架构有 MVC，MVP，MVVM，Flux或者相互结合等，各个架构的优缺点网上有很多优秀的文章，此处不再介绍。在参考了诸多文章后，我选择了 [Android Clean Architecture](https://github.com/android10/Android-CleanArchitecture) ，此架构分为三层，分别为 领域层 (Domain Layer)、数据层 (Data Layer)、表现层 (Presentation Layer)。
@@ -113,4 +112,52 @@ dependencies {
 
 这样，在更改版本或者引用三方库的时候，我们只需要统一管理即可。
 
-//TODO res 分包
+### Res 分包
+
+当项目比较庞大时，资源文件会越来越多，一般可以通过模块命名的方式进行区分，但是有时候总感觉很不方便。这时我们可以利用 gradle 进行资源模块的拆分。操作如下：
+
+```java
+
+android {
+    ...
+    }
+  
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java', '.apt_generated']
+            aidl.srcDirs = ['src/main/aidl', '.apt_generated']
+            assets.srcDirs = ['src/main/assets']
+            res.srcDirs =
+                    [
+                            'src/main/res/layouts/main',
+                            'src/main/res/layouts/music',
+                            'src/main/res/'
+                    ]
+        }
+    }
+
+    buildTypes {
+        debug {
+          ...
+        }
+        release {
+           ...
+        }
+    }
+}
+
+```
+
+配置完成后，可在 res 根目录下创建 layouts 文件夹，然后在 layouts 文件夹下创建配置的模块文件夹，此文件夹下可创建各种资源文件夹，然后在build 项目，这样就可以使用单独模块的资源了。如下图所示：
+
+<img src = "http://oop6dcmck.bkt.clouddn.com/20171112res_split.png">
+
+## 总结
+
+本篇文章简单介绍了项目的搭建和配置。在项目创建之初，架构的选择还是很重要的，但是在开发过程中，架构不可能满足所有需求，所以我们也不能拘泥于架构。实际项目中，我们可能会因不同的业务进行组件化、模块化等，选择合适的方案，才能更加有效率的解决问题。 
+
+最后，附上项目地址  [TicktockMusic](https://github.com/Lauzy/TicktockMusic) 。
+
+

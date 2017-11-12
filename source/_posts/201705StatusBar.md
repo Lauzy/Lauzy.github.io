@@ -28,14 +28,14 @@ tags:
 
 ```java
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-	View decorView = getWindow().getDecorView();
+    View decorView = getWindow().getDecorView();
 	int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-		| View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+	    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 	decorView.setSystemUiVisibility(option);
 	getWindow().setStatusBarColor(Color.TRANSPARENT);
 	//getWindow().setStatusBarColor(Color.parseColor("#40000000"));  //此种效果为类似QQ的半透明状态栏
 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-	getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 }
 
 ```
@@ -57,12 +57,12 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 ```java 
 mToolbar = (Toolbar) findViewById(R.id.toolbar_common);
 if (mToolbar != null) {
-	mToolbar.getLayoutParams().height += ScreenUtils.getStatusHeight(getApplicationContext());
+    mToolbar.getLayoutParams().height += ScreenUtils.getStatusHeight(getApplicationContext());
 	mToolbar.setPadding(0, ScreenUtils.getStatusHeight(getApplicationContext()), 0, 0);
 	setSupportActionBar(mToolbar);
 	ActionBar supportActionBar = getSupportActionBar();
 	if (supportActionBar != null) {
-		supportActionBar.setDisplayShowTitleEnabled(false);  //此处是为了不显示默认的标题
+	    supportActionBar.setDisplayShowTitleEnabled(false);  //此处是为了不显示默认的标题
 	}
 }
 
@@ -77,13 +77,13 @@ if (mToolbar != null) {
 ```java
 //设置状态栏文字为暗色
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-	//6.0以上可以通过直接设置SYSTEM_UI_FLAG_LIGHT_STATUS_BAR属性即可。
+    //6.0以上可以通过直接设置SYSTEM_UI_FLAG_LIGHT_STATUS_BAR属性即可。
 	getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-	getWindow().setStatusBarColor(Color.GRAY);  //21以上不支持6.0直接设置的方法，可用灰色代替，具体可自己设置
+    getWindow().setStatusBarColor(Color.GRAY);  //21以上不支持6.0直接设置的方法，可用灰色代替，具体可自己设置
 	//getWindow().setStatusBarColor(Color.parseColor("#40000000"));
 } else  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
-	getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);//4.4版本本身就含有暗色阴影，不作其他处理即可
+    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);//4.4版本本身就含有暗色阴影，不作其他处理即可
 }
 
 ```
@@ -105,9 +105,9 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
 @Override
 public void onWindowFocusChanged(boolean hasFocus) {
-	super.onWindowFocusChanged(hasFocus);
+    super.onWindowFocusChanged(hasFocus);
 	if (hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-		View decorView = getWindow().getDecorView();
+	    View decorView = getWindow().getDecorView();
 		decorView.setSystemUiVisibility(
 		View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 		| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

@@ -29,11 +29,11 @@ tags:
 ```java
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     View decorView = getWindow().getDecorView();
-	int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-	    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-	decorView.setSystemUiVisibility(option);
-	getWindow().setStatusBarColor(Color.TRANSPARENT);
-	//getWindow().setStatusBarColor(Color.parseColor("#40000000"));  //此种效果为类似QQ的半透明状态栏
+    int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+    decorView.setSystemUiVisibility(option);
+    getWindow().setStatusBarColor(Color.TRANSPARENT);
+    //getWindow().setStatusBarColor(Color.parseColor("#40000000"));  //此种效果为类似QQ的半透明状态栏
 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 }

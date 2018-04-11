@@ -1,5 +1,5 @@
 ---
-title: Android项目篇（TicktockMusic）：项目搭建及架构
+title: Android项目篇（一）：项目搭建及架构
 date: 2017-10-15 17:42:27
 tags: 
 	- Android Project

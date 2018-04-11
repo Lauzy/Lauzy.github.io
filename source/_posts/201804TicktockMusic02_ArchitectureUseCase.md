@@ -1,13 +1,12 @@
 ---
-title: Android项目篇（二）：项目构建及封装
+title: Android项目篇（二）：项目架构实现
 date: 2018-04-11 21:42:27
 tags: 
 	- Android Project
 ---
 
-去年年底的时候写了 Android 项目的第一篇博客[项目搭建及架构](https://www.jianshu.com/p/15ea0fecb61d)，当时计划是年前把项目和博客都写完，但是由于公司项目开启，平时比较累，加上项目期间的收获部分也应用到 [TicktockMusic](https://github.com/Lauzy/TicktockMusic) 上边，功能写的较少，原有的东西改动较多，所以进度比较缓慢，直到年后才把剩余的部分功能写完（此项目主要用于学习交流，部分功能可能有所缺失）。
+去年年底的时候写了 Android 项目的第一篇博客，当时计划是年前把项目和博客都写完，但是由于公司项目开启，平时比较累，加上项目期间的收获部分也应用到 [TicktockMusic](https://github.com/Lauzy/TicktockMusic) 上边，功能写的较少，原有的东西改动较多，所以进度比较缓慢，直到年后才把剩余的部分功能写完（此项目主要用于学习交流，部分功能可能有所缺失），现在将项目的心得及体会写几篇博客来分享。
 
-## 一、架构
 
 上篇文章简单介绍了 clean architecture 的特点，并没有具体说明如何构建使用，本篇文章会根据 [TicktockMusic](https://github.com/Lauzy/TicktockMusic) 介绍下如何使用。
 
@@ -80,7 +79,7 @@ public class GetSongListUseCase extends UseCase<List<NetSongBean>, GetSongListUs
 
 data 层的任务就是获取数据，具体实现业务所需数据及数据处理。 这一层做的工作相对比较多，上一步我们写好了业务接口，此处便要具体的实现从网络中获取数据。
 首先我们需要根据网络数据来定义数据模型（如果数据模型和 domain 层的 NetSongBean 一样则无需多此一举）；
-其次利用封装好的网络框架来实现网络操作，
+其次利用封装好的网络框架来实现网络操作， [https://github.com/android10/Android-CleanArchitecture](https://github.com/android10/Android-CleanArchitecture) 此项目还区分了数据源，我这里相对简化了。
 
 ```java
 
@@ -91,7 +90,7 @@ public class SongRepositoryImpl implements SongRepository {
     public Observable<List<NetSongBean>> getSongList(final String method, final int type,
                                                      final int offset, final int size) {
 
-        return RetrofitHelper.INSTANCE.createApi(SongService.class)
+        return RetrofitHelper.getInstance().createApi(SongService.class)
                 .getMusicData(method, type, offset, size)
 				.map(new Function<MusicEntity, List<NetSongBean>>() {
                     @Override
@@ -154,4 +153,7 @@ dagger2 构建对象:
 
 这样，presenter 处理完逻辑，activity 或者 fragment 控制视图显示，便完成了一个流程。
 
-//待续
+
+### 总结
+
+采用 clean 架构的好处就是数据独立，层次清晰。 本篇简单介绍了具体的使用，下篇会介绍下三方库的封装和使用。

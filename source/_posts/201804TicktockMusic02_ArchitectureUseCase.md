@@ -1,6 +1,6 @@
 ---
 title: Android项目篇（二）：项目构建及封装
-date: 2017-10-15 17:42:27
+date: 2018-04-11 21:42:27
 tags: 
 	- Android Project
 ---
@@ -41,7 +41,7 @@ public interface SongRepository {
 }
 
 ```
-然后就可以写好用例，此处的业务为获取网络数据和缓存的数据，得到 Observable<NetSongEntity> 即可：
+然后就可以写好用例，此处的业务为获取网络数据和缓存的数据，得到 Observable<NetSongBean> 即可：
 
 ```java
 
@@ -79,7 +79,7 @@ public class GetSongListUseCase extends UseCase<List<NetSongBean>, GetSongListUs
 ### 2、data 层
 
 data 层的任务就是获取数据，具体实现业务所需数据及数据处理。 这一层做的工作相对比较多，上一步我们写好了业务接口，此处便要具体的实现从网络中获取数据。
-首先我们需要根据网络数据来定义数据模型（如果数据模型和 domain 层的 NetSongEntity 一样则无需多此一举）；
+首先我们需要根据网络数据来定义数据模型（如果数据模型和 domain 层的 NetSongBean 一样则无需多此一举）；
 其次利用封装好的网络框架来实现网络操作，
 
 ```java
@@ -92,7 +92,14 @@ public class SongRepositoryImpl implements SongRepository {
                                                      final int offset, final int size) {
 
         return RetrofitHelper.INSTANCE.createApi(SongService.class)
-                .getMusicData(method, type, offset, size) ...;
+                .getMusicData(method, type, offset, size)
+				.map(new Function<MusicEntity, List<NetSongBean>>() {
+                    @Override
+                    public List<NetSongBean> apply(@NonNull MusicEntity musicEntity) throws Exception {
+                        SongListMapper mapper = new SongListMapper();
+                        return mapper.transform(musicEntity.song_list);
+                    }
+                }).doOnNext(...);
     }
 
     @Override
@@ -103,7 +110,7 @@ public class SongRepositoryImpl implements SongRepository {
 
 ```
 
-这里说明一下 NetSongMapper ，由于我从百度音乐获取到的数据直接转换为 bean 类后属性极多而且大部分无用，所以此处采用数据模型映射来转换为具体需要的业务模型，即 NetSongEntity。此方面可以参考 [https://www.jianshu.com/p/c9384eef179e](https://www.jianshu.com/p/c9384eef179e),根据需要来取舍。
+这里说明一下 SongListMapper ，由于我从百度音乐获取到的数据直接转换为 bean 类后属性极多而且大部分无用，所以此处采用数据模型映射来转换为具体需要的业务模型，即 NetSongBean。此方面可以参考 [https://www.jianshu.com/p/c9384eef179e](https://www.jianshu.com/p/c9384eef179e),根据需要来取舍。
 
 这一层实现了具体的网络数据获取，所以接下来我们就可以处理 UI 显示了。
 
@@ -146,3 +153,5 @@ dagger2 构建对象:
 ```
 
 这样，presenter 处理完逻辑，activity 或者 fragment 控制视图显示，便完成了一个流程。
+
+//待续

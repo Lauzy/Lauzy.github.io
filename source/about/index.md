@@ -2,14 +2,14 @@
 title: "About"
 layout: "about"
 date: 2017-05-30 14:20:45
-description: "世界微尘里，吾宁爱与憎。"
+description: "The world is a fine place and worth fighting for.I agree with the second part."
 header-img: "img/about-bg.jpg"
 comments: true
 ---
 
 
 > Android Developer
-> 安安静静的敲代码是一件很享受的事。
+> Life is like a box of chocolates.
 
 ## Info
 

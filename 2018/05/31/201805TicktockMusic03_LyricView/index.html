@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Lauzy">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/Lauzy.github.io/img/favicon.ico">
+
+    <title>
+        
+          自定义View：Android 歌词控件 - Lauzy | Lauzy&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://lauzy.github.io/Lauzy.github.io/2018/05/31/201805TicktockMusic03_LyricView/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/Lauzy.github.io/">Lauzy&#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/Lauzy.github.io/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://lauzy.github.io/Lauzy.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/Lauzy.github.io/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/Lauzy.github.io/tags/#Android自定义View" title="Android自定义View">Android自定义View</a>
+                        
+                    </div>
+                    <h1>自定义View：Android 歌词控件</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Lauzy on
+                        2018-05-31
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>之前做 <a href="https://github.com/Lauzy/TicktockMusic" target="_blank" rel="external">TicktockMusic</a> 音乐播放器，一个必要的需求肯定是歌词，在 github 上找了几个，发现或多或少都有点不满足需求，所以就自己动手写了一个。</p>
+<p>先附上项目地址和效果图：</p>
+<p>地址：<a href="https://github.com/Lauzy/LyricView" target="_blank" rel="external">https://github.com/Lauzy/LyricView</a></p>
+<p>效果图：</p>
+<p><img src="http://oop6dcmck.bkt.clouddn.com/20180531LrcViewCompress.gif" width="270" height="450" alt="效果图"></p>
+<h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h4><p>歌词的需求我想大家都很清楚，简单的话，直接打开一个音乐播放器查看一下。我们打开后分析一下歌词的功能：歌词完整的显示出来、当前歌词变色、可以根据时间而进行定位、可以手动滑动、滑动后显示一个指示器、点击指示器播放进度跳转、滑动时指示器变色等等。OK，我们自己写歌词控件，这些功能也是必不可少的，接下来就逐步分析下实现的过程。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ul>
+<li>歌词解析</li>
+<li>歌词显示</li>
+<li>滑动处理</li>
+</ul>
+<p>基本实现就是这三个过程，接下来一步步的分析。</p>
+<h4 id="歌词解析"><a href="#歌词解析" class="headerlink" title="歌词解析"></a>歌词解析</h4><p>首先，我们在网上下载一个歌词，即以 lrc 为后缀的文件。比如海阔天空这首歌的歌词，我们用记事本或者其他工具打开后就可以看到具体的歌词内容，如下：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[ti: 海阔天空]</div><div class="line">[ar:黄家驹]</div><div class="line">[al:乐与怒]</div><div class="line">[by:mp3.50004.com]</div><div class="line">[00:00.00]Beyond：海阔天空 </div><div class="line">[<span class="string">01:40.00</span>][<span class="symbol">00:16.00</span>]今天我寒夜里看雪飘过 </div><div class="line">[<span class="string">01:48.00</span>][<span class="symbol">00:24.00</span>]怀著冷却了的心窝飘远方 </div><div class="line">[<span class="string">01:53.00</span>][<span class="symbol">00:29.00</span>]风雨里追赶 </div><div class="line">...</div><div class="line"></div><div class="line">[00:42.00]多少次迎著冷眼与嘲笑 </div><div class="line">[00:49.00]从没有放弃过心中的理想 </div><div class="line">[00:54.00]一刹那恍惚 </div><div class="line">...</div></pre></td></tr></table></figure>
+<p>可以看到，歌词主要包含歌名、歌手、专辑、作者等头元素，以及歌词的主体内容，我们需要处理的就是主体的歌词内容。首先，歌词是一行一行的文本，其次，每行的文本都包含时间标签和具体的一行歌词，我们首先将歌词解析为一行行的数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">InputStreamReader isr = <span class="keyword">null</span>;</div><div class="line">BufferedReader br = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    isr = <span class="keyword">new</span> InputStreamReader(inputStream, CHARSET);</div><div class="line">    br = <span class="keyword">new</span> BufferedReader(isr);</div><div class="line">    String line;</div><div class="line">    <span class="keyword">while</span> ((line = br.readLine()) != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">//此处的 line 即为一行行的文本</span></div><div class="line">        <span class="comment">//parseLrc 方法为解析单行</span></div><div class="line">        List&lt;Lrc&gt; lrcList = parseLrc(line);</div><div class="line">        <span class="keyword">if</span> (lrcList != <span class="keyword">null</span> &amp;&amp; lrcList.size() != <span class="number">0</span>) &#123;</div><div class="line">            lrcs.addAll(lrcList);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    sortLrcs(lrcs);</div><div class="line">    <span class="keyword">return</span> lrcs;</div><div class="line">&#125;<span class="keyword">catch</span> ...</div></pre></td></tr></table></figure>
+<p>解析为一行行的文字后，就需要具体的处理单行的文字了，我们可以看到，大部分歌词包含两种格式，即单个时间标签和多个时间标签，这里可以采用正则表达式来匹配文字，正则表达式为 (([\d{2}:\d{2}.\d{2}])+)(.*) </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[<span class="string">01:53.00</span>][<span class="symbol">00:29.00</span>]风雨里追赶    //多个时间标签</div><div class="line"></div><div class="line">[00:42.00]多少次迎著冷眼与嘲笑     //单个时间标签</div></pre></td></tr></table></figure>
+<p>接下来根据正则表达式来解析单行歌词</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> List&lt;Lrc&gt; <span class="title">parseLrc</span><span class="params">(String lrcLine)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (lrcLine.trim().isEmpty()) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    List&lt;Lrc&gt; lrcs = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    Matcher matcher = Pattern.compile(LINE_REGEX).matcher(lrcLine);</div><div class="line">    <span class="keyword">if</span> (!matcher.matches()) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    String time = matcher.group(<span class="number">1</span>);</div><div class="line">    String content = matcher.group(<span class="number">3</span>);</div><div class="line">    Matcher timeMatcher = Pattern.compile(TIME_REGEX).matcher(time);</div><div class="line"></div><div class="line">    <span class="keyword">while</span> (timeMatcher.find()) &#123;</div><div class="line">        String min = timeMatcher.group(<span class="number">1</span>);</div><div class="line">        String sec = timeMatcher.group(<span class="number">2</span>);</div><div class="line">        String mil = timeMatcher.group(<span class="number">3</span>);</div><div class="line">        Lrc lrc = <span class="keyword">new</span> Lrc();</div><div class="line">        <span class="keyword">if</span> (content != <span class="keyword">null</span> &amp;&amp; content.length() != <span class="number">0</span>) &#123;</div><div class="line">            lrc.setTime(Long.parseLong(min) * <span class="number">60</span> * <span class="number">1000</span> + Long.parseLong(sec) * <span class="number">1000</span></div><div class="line">                    + Long.parseLong(mil) * <span class="number">10</span>);</div><div class="line">            lrc.setText(content);</div><div class="line">            lrcs.add(lrc);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> lrcs;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样，第一步就完成了，歌词解析完成后得到歌词的数据集合，每个元素都包括时间和内容。</p>
+<h4 id="歌词显示"><a href="#歌词显示" class="headerlink" title="歌词显示"></a>歌词显示</h4><p>歌词显示的思路就是将歌词一行行的画出来，我们首先假设屏幕足够大，那么只需要定位第一行歌词的位置，画出来第一行歌词，然后逐行下移一个固定的距离，再画出下一行歌词，依次类推，整个歌词内容就会全部花在画布上了。依照这个思路，我们可以先画出来文字。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//此处为伪代码</span></div><div class="line"></div><div class="line"><span class="keyword">float</span> y = getLrcHeight() / <span class="number">2</span>;</div><div class="line"><span class="keyword">float</span> x = getLrcWidth() / <span class="number">2</span> + getPaddingLeft();</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; getLrcCount(); i++) &#123;</div><div class="line">      <span class="keyword">if</span> (i &gt; <span class="number">0</span>) &#123;</div><div class="line">          y += textHeight  + mLrcLineSpaceHeight;</div><div class="line">      &#125;</div><div class="line">    ...</div><div class="line">     canvas.drawText(text, x, y, mPaint);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>画出来文字的思路就是这样，首先从屏幕的中间开始，然后纵坐标每次增加文字的高度与距离之和，依次画出来每行文字。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/Lauzy.github.io/2018/05/28/201805TicktockMusic02_Library/" data-toggle="tooltip" data-placement="top" title="Android项目篇（二）：开源库及工具的封装">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/Lauzy.github.io/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/Lauzy.github.io/tags/#Android自定义View" title="Android自定义View">Android自定义View</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://www.jianshu.com/u/e76853f863a9" target="_blank">我的简书</a></li>
+                    
+                        <li><a href="https://importx.xyz/" target="_blank">IAzUr</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Lauzy";
+    var disqus_identifier = "http://lauzy.github.io/2018/05/31/201805TicktockMusic03_LyricView/";
+    var disqus_url = "http://lauzy.github.io/2018/05/31/201805TicktockMusic03_LyricView/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/freedompal">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Lauzy">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Lauzy&#39;s Blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/Lauzy.github.io/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/Lauzy.github.io/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/Lauzy.github.io/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://lauzy.github.io/Lauzy.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://lauzy.github.io/Lauzy.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Lauzy">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/Lauzy.github.io/img/favicon.ico">
+
+    <title>
+        
+          Android项目篇（一）：项目架构-Clean Architecture - Lauzy | Lauzy&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://lauzy.github.io/Lauzy.github.io/2018/04/12/201710TicktockMusic01_ProjectArchitecture /">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/Lauzy.github.io/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/Lauzy.github.io/">Lauzy&#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/Lauzy.github.io/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/Lauzy.github.io/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://lauzy.github.io/Lauzy.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/Lauzy.github.io/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/Lauzy.github.io/tags/#Android Project" title="Android Project">Android Project</a>
+                        
+                    </div>
+                    <h1>Android项目篇（一）：项目架构-Clean Architecture</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Lauzy on
+                        2018-04-12
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>去年开始写一个音乐播放器 <a href="https://github.com/Lauzy/TicktockMusic" target="_blank" rel="external">TicktockMusic</a> ，当时计划是年前把项目和博客都写完，但是由于公司项目开启，平时比较累，加上项目期间的收获部分也应用到 <a href="https://github.com/Lauzy/TicktockMusic" target="_blank" rel="external">TicktockMusic</a>上边，功能写的较少，原有的东西改动较多，所以进度比较缓慢，直到年后才把剩余的部分功能写完（此项目主要用于学习交流，部分功能可能有所缺失），现在将项目的心得及体会写几篇博客来分享。本文先从项目的搭建及架构开始写起。</p>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><p>在项目创建之初，考虑了诸多架构，众所周知，Android 项目架构有 MVC，MVP，MVVM，Flux或者相互结合等，各个架构的优缺点网上有很多优秀的文章，此处不再介绍。在参考了诸多文章后，我选择了 <a href="https://github.com/android10/Android-CleanArchitecture" target="_blank" rel="external">Android Clean Architecture</a> ，此架构分为三层，分别为 领域层 (Domain Layer)、数据层 (Data Layer)、表现层 (Presentation Layer)。</p>
+<p>Clean Architecture 有许多文章分析：</p>
+<ul>
+<li><a href="https://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/" target="_blank" rel="external">Architecting Android…The clean way?</a></li>
+<li><a href="https://zhuanlan.zhihu.com/tech-frontier/20001838" target="_blank" rel="external">一种更清晰的Android架构（Architecting Android…The clean way?译文）</a></li>
+<li><a href="https://fernandocejas.com/2015/07/18/architecting-android-the-evolution/" target="_blank" rel="external">Architecting Android…The evolution</a></li>
+<li><a href="https://fernandocejas.com/2016/12/24/clean-architecture-dynamic-parameters-in-use-cases/" target="_blank" rel="external">Clean Architecture: Dynamic Parameters in Use Cases</a></li>
+</ul>
+<p>本文简单介绍下 Clean 架构的分层。</p>
+<p>1、 Domain Layer</p>
+<p>简单来说，领域层就是处理业务逻辑的一层，主要包含了 UseCase(Interactor) 、Repository 等接口。本层为 Java Library ，不包含 Android 的依赖，具体来说，就是控制数据层，通过接口对数据进行增删改查等业务交互。 例如 <a href="https://github.com/android10/Android-CleanArchitecture" target="_blank" rel="external">Android Clean Architecture</a> 中的 interactor 与 repository 的交互。</p>
+<p>2、 Data Layer</p>
+<p>顾名思义，Data 层提供了整个 App 所需要的数据，主要是通过实现 Domain Layer 的接口，根据不同的场景来获取需求的数据。 <a href="https://github.com/android10/Android-CleanArchitecture" target="_blank" rel="external">Android Clean Architecture</a> 项目中主要是通过一个工厂方法，来根据不同的条件从不同的数据源中获取数据。实体类的映射转换，cache缓存，数据相关的自定义异常等，均在数据层实现。</p>
+<p>3、 Presentation Layer</p>
+<p>表现层则主要负责 UI 的逻辑，与数据层完全隔离，根据 Domain Layer 的反馈进行界面展示等。本层即为传统的 UI 层，Activity、Fragment 等都在此层处理 UI 相关的逻辑。<br>本层可以采用 MVP 架构（MVC,MVVM等均可）进行开发，M层可处理一些数据转换，如 Mapper 转换等。P层则主要根据 Domain 的 use case 反馈来进行视图层的业务处理，<a href="https://github.com/android10/Android-CleanArchitecture" target="_blank" rel="external">Android Clean Architecture</a> 项目通过 Dagger 注入进行 use case 接口等的实例化，分层更加明确；V层则为 Activity 或 Fragment，主要用户数据展示，UI控制等。</p>
+<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><p>Clean架构有很明确的优点，最主要则为层级分明，各个层级分工明确且只需关注结果。其次，易于测试和代码迭代更新。但是每个架构都不是完美的，clean架构分工明确但视图层可能也采用MVP等模式，这就造成了业务复杂的时候，P 和 V 的接口量是巨大的。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="1、domain-层"><a href="#1、domain-层" class="headerlink" title="1、domain 层"></a>1、domain 层</h3><p>通俗来讲就是业务的接口层。如何定义接口需要根据具体的业务来确定，拿我的音乐类App来讲，用到的数据有本地音乐（包括专辑、歌手等）、网络音乐、增删改查喜欢的音乐和最近播放等。 实际项目中用到最多的就是网络的数据获取，此处就拿网络数据来举例：</p>
+<p>首先确定数据模型，也就是实体类 NetSongBean；</p>
+<p>其次定义一个数据仓库的接口NetSongRepository：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SongRepository</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 获取网络数据</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> method method</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> type 类型</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> offset 页数</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> size 页面加载量</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> ob</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    Observable&lt;List&lt;NetSongBean&gt;&gt; getSongList(String method, <span class="keyword">int</span> type, <span class="keyword">int</span> offset, <span class="keyword">int</span> size);</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 获取缓存数据</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> type 类型</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> ob</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    Observable&lt;List&lt;NetSongBean&gt;&gt; getCacheSongList(<span class="keyword">int</span> type);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后就可以写好用例，此处的业务为获取网络数据和缓存的数据，得到 Observable<netsongbean> 即可：</netsongbean></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetSongListUseCase</span> <span class="keyword">extends</span> <span class="title">UseCase</span>&lt;<span class="title">List</span>&lt;<span class="title">NetSongBean</span>&gt;, <span class="title">GetSongListUseCase</span>.<span class="title">Params</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> SongRepository mSongRepository;</div><div class="line"></div><div class="line">    <span class="meta">@Inject</span></div><div class="line">    GetSongListUseCase(SongRepository songRepository, ThreadExecutor threadExecutor,</div><div class="line">                       PostExecutionThread postExecutionThread) &#123;</div><div class="line">        <span class="keyword">super</span>(threadExecutor, postExecutionThread);</div><div class="line">        mSongRepository = songRepository;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    Observable&lt;List&lt;NetSongBean&gt;&gt; buildUseCaseObservable(GetSongListUseCase.Params params) &#123;</div><div class="line">        <span class="keyword">return</span> mSongRepository.getSongList(params.method, params.type, params.offset, params.size);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 获取缓存数据 Observable</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> param 类型</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span> Observable</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">public</span> Observable&lt;List&lt;NetSongBean&gt;&gt; buildCacheObservable(<span class="keyword">int</span> param) &#123;</div><div class="line">        <span class="keyword">return</span> mSongRepository.getCacheSongList(param);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样domain层的一个业务接口及用例便写好了，接下来我们需要实现 data 层。</p>
+<h3 id="2、data-层"><a href="#2、data-层" class="headerlink" title="2、data 层"></a>2、data 层</h3><p>data 层的任务就是获取数据，具体实现业务所需数据及数据处理。 这一层做的工作相对比较多，上一步我们写好了业务接口，此处便要具体的实现从网络中获取数据。<br>首先我们需要根据网络数据来定义数据模型（如果数据模型和 domain 层的 NetSongBean 一样则无需多此一举）；<br>其次利用封装好的网络框架来实现网络操作， <a href="https://github.com/android10/Android-CleanArchitecture" target="_blank" rel="external">https://github.com/android10/Android-CleanArchitecture</a> 此项目还区分了数据源，我这里相对简化了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Singleton</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SongRepositoryImpl</span> <span class="keyword">implements</span> <span class="title">SongRepository</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> Observable&lt;List&lt;NetSongBean&gt;&gt; getSongList(<span class="keyword">final</span> String method, <span class="keyword">final</span> <span class="keyword">int</span> type,</div><div class="line">                                                     <span class="keyword">final</span> <span class="keyword">int</span> offset, <span class="keyword">final</span> <span class="keyword">int</span> size) &#123;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> RetrofitHelper.getInstance().createApi(SongService.class)</div><div class="line">                .getMusicData(method, type, offset, size)</div><div class="line">truetruetruetrue.map(<span class="keyword">new</span> Function&lt;MusicEntity, List&lt;NetSongBean&gt;&gt;() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> List&lt;NetSongBean&gt; <span class="title">apply</span><span class="params">(@NonNull MusicEntity musicEntity)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">                        SongListMapper mapper = <span class="keyword">new</span> SongListMapper();</div><div class="line">                        <span class="keyword">return</span> mapper.transform(musicEntity.song_list);</div><div class="line">                    &#125;</div><div class="line">                &#125;).doOnNext(...);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> Observable&lt;List&lt;NetSongBean&gt;&gt; getCacheSongList(<span class="keyword">final</span> <span class="keyword">int</span> type) &#123;</div><div class="line">        <span class="keyword">return</span> Observable.create(...);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里说明一下 SongListMapper ，由于我从百度音乐获取到的数据直接转换为 bean 类后属性极多而且大部分无用，所以此处采用数据模型映射来转换为具体需要的业务模型，即 NetSongBean。此方面可以参考 <a href="https://www.jianshu.com/p/c9384eef179e" target="_blank" rel="external">https://www.jianshu.com/p/c9384eef179e</a>,根据需要来取舍。</p>
+<p>这一层实现了具体的网络数据获取，所以接下来我们就可以处理 UI 显示了。</p>
+<h3 id="3、presentation-层"><a href="#3、presentation-层" class="headerlink" title="3、presentation 层"></a>3、presentation 层</h3><p>这一层主要用于 UI 展示及 Android 的业务处理，在这一层我才用了结构相对清晰的 MVP ，这一层和 domain 及 data 层的连接主要是通过 dagger2 来构建对象，然后 presenter 中进行处理 UI 的逻辑。</p>
+<p>dagger2 构建对象:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Provides</span></div><div class="line"><span class="meta">@Singleton</span></div><div class="line"><span class="function">SongRepository <span class="title">provideSongRepository</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> SongRepositoryImpl(mApplication);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 presenter 中注入对象并使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Inject</span></div><div class="line">NetMusicPresenter(GetSongListUseCase songListUseCase) &#123;</div><div class="line">    mSongListUseCase = songListUseCase;</div><div class="line">&#125;</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line"> <span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadNetMusicList</span><span class="params">()</span> </span>&#123;</div><div class="line">    GetSongListUseCase.Params params = GetSongListUseCase.Params.forSongList(METHOD, mType, <span class="number">0</span>, SIZE);</div><div class="line">    mSongListUseCase.buildCacheObservable(mType)</div><div class="line">            .flatMap(songListBeen -&gt; mSongListUseCase.buildObservable(params))</div><div class="line">            .compose(RxHelper.ioMain())</div><div class="line">            .subscribeWith(...);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样，presenter 处理完逻辑，activity 或者 fragment 控制视图显示，便完成了一个流程。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本篇文章简单介绍了在项目创建之初架构的选择。在开发过程中，架构不可能满足所有需求，所以我们也不能拘泥于架构。实际项目中，我们可能会因不同的业务进行组件化、模块化等，选择合适的方案，才能更加有效率的解决问题。 </p>
+<p>最后，附上项目地址  <a href="https://github.com/Lauzy/TicktockMusic" target="_blank" rel="external">TicktockMusic</a> 。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/Lauzy.github.io/2018/05/28/201805TicktockMusic02_Library/" data-toggle="tooltip" data-placement="top" title="Android项目篇（二）：开源库及工具的封装">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/Lauzy.github.io/2017/08/12/201708PlayPauseView/" data-toggle="tooltip" data-placement="top" title="Android自定义View：让播放、暂停按钮优雅的过渡">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/Lauzy.github.io/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/Lauzy.github.io/tags/#Android Project" title="Android Project">Android Project</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://www.jianshu.com/u/e76853f863a9" target="_blank">我的简书</a></li>
+                    
+                        <li><a href="https://importx.xyz/" target="_blank">IAzUr</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Lauzy";
+    var disqus_identifier = "http://lauzy.github.io/2018/04/12/201710TicktockMusic01_ProjectArchitecture /";
+    var disqus_url = "http://lauzy.github.io/2018/04/12/201710TicktockMusic01_ProjectArchitecture /";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/freedompal">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Lauzy">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Lauzy&#39;s Blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/Lauzy.github.io/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/Lauzy.github.io/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/Lauzy.github.io/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://lauzy.github.io/Lauzy.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://lauzy.github.io/Lauzy.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

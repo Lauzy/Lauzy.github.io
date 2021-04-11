@@ -14,17 +14,16 @@ comments: true
 ## Info
 
 - Lauzy
-- Android 开发者一枚
-- 毕业于NUPT
+- Android 开发者
+- 毕业于 NUPT
 - 电影爱好者：希区柯克、马丁斯科塞斯……
-- 最近喜欢美剧：权力的游戏、绝命毒师、硅谷……
+- 喜欢美剧：权力的游戏、绝命毒师、老友记、硅谷……
 - 皇马球迷
-- Learning and sharing
+- 潜心学习 ……
 
 ## Contact
 
 Email：freedompaladin@gmail.com (Spare：lauzy@lauzy.cc)
-Sina Weibo: [http://www.weibo.com/freedompal](http://www.weibo.com/freedompal)
 
 
 
